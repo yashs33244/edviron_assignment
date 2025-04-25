@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("MONGODB_URI")
+}
+
+model User {
+    id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+    email              String    @unique
+    name               String?
+    password           String
+    role               String    @default("user")
+    resetPasswordToken String?
+    resetTokenExpiry   DateTime?
+    createdAt          DateTime  @default(now())
+    updatedAt          DateTime  @updatedAt
+}
+
+model Order {
+    id            String       @id @default(auto()) @map("_id") @db.ObjectId
+    schoolId      String       @db.ObjectId
+    trusteeId     String       @db.ObjectId
+    studentInfo   StudentInfo
+    gatewayName   String
+    customOrderId String       @unique
+    createdAt     DateTime     @default(now())
+    updatedAt     DateTime     @updatedAt
+    status        OrderStatus?
+}
+
+type StudentInfo {
+    name  String
+    id    String
+    email String
+}
+
+model OrderStatus {
+    id                String    @id @default(auto()) @map("_id") @db.ObjectId
+    order             Order     @relation(fields: [orderId], references: [id])
+    orderId           String    @unique @db.ObjectId
+    orderAmount       Float
+    transactionAmount Float
+    paymentMode       String?
+    paymentDetails    String?
+    bankReference     String?
+    paymentMessage    String?
+    status            String    @default("pending")
+    errorMessage      String?
+    paymentTime       DateTime?
+    createdAt         DateTime  @default(now())
+    updatedAt         DateTime  @updatedAt
+}
+
+model WebhookLog {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    payload     Json
+    processedAt DateTime @default(now())
+    status      String
+    error       String?
+}

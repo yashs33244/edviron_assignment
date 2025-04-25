@@ -1,0 +1,33 @@
+FROM oven/bun:1.0.20 as base
+
+WORKDIR /app
+
+# Install dependencies
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Generate Prisma client
+RUN bunx prisma generate
+
+# Build production bundle
+RUN bun run build
+
+# Production stage
+FROM oven/bun:1.0.20 as production
+
+WORKDIR /app
+
+# Copy built files and necessary configs from base stage
+COPY --from=base /app/dist ./dist
+COPY --from=base /app/node_modules ./node_modules
+COPY --from=base /app/package.json ./
+COPY --from=base /app/prisma ./prisma
+
+# Expose port
+EXPOSE 4000
+
+# Start the application in production mode
+CMD ["bun", "dist/index.js"]

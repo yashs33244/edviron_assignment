@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+  # MongoDB service
+  mongodb:
+    image: mongo:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-edviron}-mongodb
+    restart: unless-stopped
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Backend service
+  backend:
+    container_name: ${COMPOSE_PROJECT_NAME:-edviron}-backend
+    build:
+      context: ./be
+      dockerfile: ${DOCKER_ENV:-Dockerfile.dev}
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - MONGODB_URI=mongodb://mongodb:27017/payment-gateway
+      - PORT=4000
+      - EMAIL_SERVER_HOST=${EMAIL_SERVER_HOST:-smtp.gmail.com}
+      - EMAIL_SERVER_PORT=${EMAIL_SERVER_PORT:-465}
+      - EMAIL_SERVER_USER=${EMAIL_SERVER_USER:-yashs3324@gmail.com}
+      - EMAIL_SERVER_PASSWORD=${EMAIL_SERVER_PASSWORD:-avhszmzkkkfqjtwa}
+      - EMAIL_FROM=${EMAIL_FROM:-yashs3324@gmail.com}
+      - JWT_SECRET=${JWT_SECRET:-change_this_to_a_secure_random_string_in_production}
+      - PG_KEY=${PG_KEY:-edvtest01}
+      - PG_API_KEY=${PG_API_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWIAMWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2LCJpYXQiOjE3MTE2MjIyNzAsImV4cCI6MTc0MzE3OTgNzB9.Rye77Dp59GGxwCmwWekJHRj6edXWJnff9finjMhxKuw}
+      - SCHOOL_ID=${SCHOOL_ID:-65b0e6293e9f76a9694d84b4}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./be:/app
+      - /app/node_modules
+    networks:
+      - app_network
+
+  # Frontend service
+  frontend:
+    container_name: ${COMPOSE_PROJECT_NAME:-edviron}-frontend
+    build:
+      context: ./fe
+      dockerfile: ${DOCKER_ENV:-Dockerfile.dev}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - NEXT_PUBLIC_API_URL=http://backend:4000
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-change_this_to_a_secure_random_string_in_production}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-343021709770-j3bv77jmqp5sgostfmf5kooopag4l2gq.apps.googleusercontent.com}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-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}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./fe:/app
+      - /app/node_modules
+    networks:
+      - app_network
+
+# Persistent volumes
+volumes:
+  mongodb_data:
+    driver: local
+
+# Networks
+networks:
+  app_network:
+    driver: bridge

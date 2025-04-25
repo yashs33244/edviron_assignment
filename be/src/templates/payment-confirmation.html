@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Confirmation</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      border-top: 4px solid #10b981;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo {
+      width: 180px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #10b981;
+      font-size: 28px;
+      margin: 0 0 20px;
+    }
+    .greeting {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    p {
+      margin: 0 0 20px;
+    }
+    .transaction-details {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .detail-label {
+      font-weight: bold;
+      color: #6b7280;
+    }
+    .detail-value {
+      font-weight: bold;
+    }
+    .amount {
+      color: #10b981;
+      font-size: 24px;
+    }
+    .view-button {
+      display: inline-block;
+      background-color: #10b981;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 12px 30px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .view-button:hover {
+      background-color: #059669;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      color: #888;
+      font-size: 14px;
+    }
+    .support-section {
+      margin: 30px 0;
+      background-color: #f0fdf4;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #10b981;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://via.placeholder.com/180x60?text=Payment+Gateway" alt="Payment Gateway Logo" class="logo">
+      <h1>Payment Confirmation</h1>
+    </div>
+    
+    <p class="greeting">Hello {{name}},</p>
+    
+    <p>Your payment has been successfully processed. Thank you for using our payment gateway!</p>
+    
+    <div class="transaction-details">
+      <div class="detail-row">
+        <span class="detail-label">Transaction ID:</span>
+        <span class="detail-value">{{transactionId}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Date:</span>
+        <span class="detail-value">{{date}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Payment Method:</span>
+        <span class="detail-value">Credit Card</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Amount:</span>
+        <span class="detail-value amount">₹{{amount}}</span>
+      </div>
+    </div>
+    
+    <div style="text-align: center;">
+      <a href="https://paymentgateway.com/transactions/{{transactionId}}" class="view-button">View Transaction Details</a>
+    </div>
+    
+    <div class="support-section">
+      <strong>Need help?</strong> If you have any questions about this payment, please contact our support team at <a href="mailto:support@paymentgateway.com">support@paymentgateway.com</a> or call us at +1-800-123-4567.
+    </div>
+    
+    <p>Thank you for your business!</p>
+    
+    <p>Best regards,<br>The Payment Gateway Team</p>
+    
+    <div class="footer">
+      <p>© 2023 Payment Gateway. All rights reserved.</p>
+      <p>This is an automated email. Please do not reply to this message.</p>
+    </div>
+  </div>
+</body>
+</html> 
