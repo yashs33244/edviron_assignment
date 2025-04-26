@@ -37,12 +37,16 @@ export function useAuth() {
     queryFn: getProfile,
     enabled: isAuthenticated,
     retry: 1,
-    onError: () => {
+  });
+
+  // Handle error in user profile fetch
+  useEffect(() => {
+    if (error) {
       // If error fetching profile, clear token and set authenticated to false
       localStorage.removeItem("auth_token");
       setIsAuthenticated(false);
-    },
-  });
+    }
+  }, [error]);
 
   // Logout function
   const handleLogout = () => {

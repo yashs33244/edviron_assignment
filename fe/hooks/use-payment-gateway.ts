@@ -16,8 +16,6 @@ import {
   type PaymentRequest,
   type PaymentResponse,
   type Transaction,
-  type TransactionResponse,
-  type TransactionStatus,
   type TransactionFilters
 } from "@/api/payment-gateway";
 
@@ -43,9 +41,9 @@ export function useTransactions(
   page = 1, 
   limit = 10, 
   filters: TransactionFilters = {}
-): UseQueryResult<TransactionResponse> {
+): UseQueryResult<any> {
   return useQuery({
-    queryKey: ['transactions', page, limit, filters],
+    queryKey: ["transactions", page, limit, filters],
     queryFn: () => getTransactions(page, limit, filters),
     placeholderData: keepPreviousDataUpdater,
   });
@@ -59,7 +57,7 @@ export function useSchoolTransactions(
   page = 1,
   limit = 10,
   filters: Omit<TransactionFilters, 'schoolId'> = {}
-): UseQueryResult<TransactionResponse> {
+): UseQueryResult<any> {
   return useQuery({
     queryKey: ['schoolTransactions', schoolId, page, limit, filters],
     queryFn: () => getSchoolTransactions(schoolId, page, limit, filters),
@@ -71,7 +69,7 @@ export function useSchoolTransactions(
 /**
  * Hook to fetch transaction status for a specific order ID
  */
-export function useTransactionStatus(orderId: string | null): UseQueryResult<TransactionStatus> {
+export function useTransactionStatus(orderId: string | null): UseQueryResult<any> {
   return useQuery({
     queryKey: ['transactionStatus', orderId],
     queryFn: () => {

@@ -1,7 +1,16 @@
-"use client"
-import { CreditCard, DollarSign, Home, LayoutDashboard, School, Search, Settings } from "lucide-react"
-import { usePathname } from "next/navigation"
-import Link from "next/link"
+"use client";
+import {
+  CreditCard,
+  DollarSign,
+  Home,
+  LayoutDashboard,
+  School,
+  Search,
+  Settings,
+  CircleDollarSign,
+} from "lucide-react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 import {
   Sidebar as ShadcnSidebar,
@@ -16,16 +25,21 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 export function Sidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const navItems = [
     {
       title: "Dashboard",
       icon: LayoutDashboard,
       href: "/",
+    },
+    {
+      title: "Payments",
+      icon: CircleDollarSign,
+      href: "/payment",
     },
     {
       title: "Investments",
@@ -47,7 +61,7 @@ export function Sidebar() {
       icon: Settings,
       href: "/settings",
     },
-  ]
+  ];
 
   return (
     <SidebarProvider>
@@ -62,7 +76,10 @@ export function Sidebar() {
           <form>
             <SidebarGroup className="py-0">
               <SidebarGroupContent className="relative">
-                <SidebarInput placeholder="Search payment..." className="pl-8" />
+                <SidebarInput
+                  placeholder="Search payment..."
+                  className="pl-8"
+                />
                 <Search className="pointer-events-none absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 select-none opacity-50" />
               </SidebarGroupContent>
             </SidebarGroup>
@@ -75,7 +92,10 @@ export function Sidebar() {
               <SidebarMenu>
                 {navItems.map((item) => (
                   <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton asChild isActive={pathname === item.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname === item.href}
+                    >
                       <Link href={item.href}>
                         <item.icon className="h-4 w-4" />
                         <span>{item.title}</span>
@@ -90,5 +110,5 @@ export function Sidebar() {
         <SidebarRail />
       </ShadcnSidebar>
     </SidebarProvider>
-  )
+  );
 }

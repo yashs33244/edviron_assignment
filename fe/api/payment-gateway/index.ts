@@ -1,74 +1,89 @@
 /**
  * Payment Gateway API client
- * Implements the API endpoints documented in API_DOCUMENTATION.md
+ * This file integrates with our own backend payment API
  */
 
-// Types
+// Types for the payment API
 export interface PaymentRequest {
-  studentName: string;
   studentId: string;
+  studentName: string;
   studentEmail: string;
   amount: number;
+  description?: string;
 }
 
 export interface PaymentResponse {
-  redirectUrl: string;
-  orderId: string;
+  success: boolean;
+  message: string;
+  data: {
+    redirectUrl: string;
+    orderId: string;
+    amount: number;
+  }
 }
 
 export interface Transaction {
-  collect_id: string;
-  school_id: string;
-  gateway: string;
-  order_amount: number;
-  transaction_amount: number;
-  status: "success" | "pending" | "failed";
-  custom_order_id: string;
-  student_info: {
-    name: string;
-    id: string;
-    email: string;
-  };
-  created_at: string;
-  payment_time: string;
-}
-
-export interface TransactionResponse {
-  transactions: Transaction[];
-  pagination: {
-    total: number;
-    page: number;
-    limit: number;
-    pages: number;
-  };
-}
-
-export interface TransactionStatus {
-  collect_id: string;
-  custom_order_id: string;
-  school_id: string;
-  gateway: string;
-  order_amount: number;
-  transaction_amount: number;
-  status: "success" | "pending" | "failed";
-  payment_mode: string;
-  payment_details: string;
-  bank_reference: string;
-  payment_message: string;
-  error_message: string | null;
-  payment_time: string;
-  created_at: string;
+  _id?: string;
+  id?: string;
+  custom_order_id?: string;
+  customOrderId?: string;
+  order_id?: string;
+  studentId?: string;
+  studentName?: string;
+  amount?: number;
+  status: 'pending' | 'success' | 'failed' | 'loading';
+  createdAt?: string;
+  created_at?: string;
+  paymentMethod?: string;
+  payment_mode?: string;
+  transactionId?: string;
+  transaction_id?: string;
+  order_amount?: number;
+  transaction_amount?: number;
+  payment_details?: any;
+  payment_time?: string;
+  student_info?: any;
 }
 
 export interface TransactionFilters {
+  status?: 'pending' | 'success' | 'failed';
+  startDate?: string;
+  endDate?: string;
   schoolId?: string;
-  status?: string;
-  search?: string;
-  date?: string;
+  studentId?: string;
 }
 
-// Base API URL from environment or default to local development
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+export interface PaginatedResponse<T> {
+  success: boolean;
+  message: string;
+  data: {
+    items: T[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }
+}
+
+// API URL from env or default
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
+
+// Helper function to get headers with auth token
+const getHeaders = () => {
+  // Get token from local storage
+  const getAuthToken = (): string => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('auth_token') || '';
+    }
+    return '';
+  };
+
+  const token = getAuthToken();
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+  };
+};
 
 // Helper function to handle API responses
 async function handleResponse<T>(response: Response): Promise<T> {
@@ -81,89 +96,123 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json();
 }
 
-// Create payment
+/**
+ * Create a payment request through our backend
+ * @param paymentData Payment request data
+ * @returns Payment response with redirect URL
+ */
 export async function createPayment(paymentData: PaymentRequest): Promise<PaymentResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/payments/create`, {
+  const response = await fetch(`${API_URL}/api/payments/create-payment`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${getAuthToken()}`,
-    },
-    body: JSON.stringify(paymentData),
+    headers: getHeaders(),
+    body: JSON.stringify(paymentData)
   });
 
-  return handleResponse<{ success: boolean; message: string; data: PaymentResponse }>(response)
-    .then(res => res.data);
+  return handleResponse<PaymentResponse>(response);
 }
 
-// Get all transactions
+/**
+ * Get all transactions with optional filters and pagination
+ * @param page Page number for pagination
+ * @param limit Items per page
+ * @param filters Optional filters for transactions
+ * @returns Paginated list of transactions
+ */
 export async function getTransactions(
-  page = 1,
-  limit = 10,
+  page = 1, 
+  limit = 10, 
   filters: TransactionFilters = {}
-): Promise<TransactionResponse> {
+): Promise<PaginatedResponse<Transaction>> {
+  // Build query string from filters
   const queryParams = new URLSearchParams({
     page: page.toString(),
     limit: limit.toString(),
+    ...Object.entries(filters).reduce((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = value.toString();
+      }
+      return acc;
+    }, {} as Record<string, string>)
   });
 
-  if (filters.schoolId) queryParams.set('school_id', filters.schoolId);
-  if (filters.status) queryParams.set('status', filters.status);
-  if (filters.search) queryParams.set('search', filters.search);
-  if (filters.date) queryParams.set('date', filters.date);
-
-  const response = await fetch(`${API_BASE_URL}/api/payments/transactions?${queryParams}`, {
-    headers: {
-      'Authorization': `Bearer ${getAuthToken()}`,
-    }
+  const response = await fetch(`${API_URL}/api/payments/transactions?${queryParams}`, {
+    headers: getHeaders()
   });
 
-  return handleResponse<{ success: boolean; data: TransactionResponse }>(response)
-    .then(res => res.data);
+  return handleResponse<PaginatedResponse<Transaction>>(response);
 }
 
-// Get transactions by school
+/**
+ * Get transactions for a specific school
+ * @param schoolId ID of the school
+ * @param page Page number for pagination
+ * @param limit Items per page
+ * @param filters Optional filters for transactions
+ * @returns Paginated list of transactions for the school
+ */
 export async function getSchoolTransactions(
-  schoolId: string,
-  page = 1,
-  limit = 10,
+  schoolId: string, 
+  page = 1, 
+  limit = 10, 
   filters: Omit<TransactionFilters, 'schoolId'> = {}
-): Promise<TransactionResponse> {
-  const queryParams = new URLSearchParams({
-    page: page.toString(),
-    limit: limit.toString(),
-  });
-
-  if (filters.status) queryParams.set('status', filters.status);
-  if (filters.search) queryParams.set('search', filters.search);
-  if (filters.date) queryParams.set('date', filters.date);
-
-  const response = await fetch(`${API_BASE_URL}/api/payments/transactions/school/${schoolId}?${queryParams}`, {
-    headers: {
-      'Authorization': `Bearer ${getAuthToken()}`,
-    }
-  });
-
-  return handleResponse<{ success: boolean; data: TransactionResponse }>(response)
-    .then(res => res.data);
+): Promise<PaginatedResponse<Transaction>> {
+  return getTransactions(page, limit, { ...filters, schoolId });
 }
 
-// Get transaction status
-export async function getTransactionStatus(orderId: string): Promise<TransactionStatus> {
-  const response = await fetch(`${API_BASE_URL}/api/payments/status/${orderId}`, {
-    headers: {
-      'Authorization': `Bearer ${getAuthToken()}`,
-    }
-  });
+/**
+ * Get transaction status by order ID or collect request ID
+ * @param orderId Order ID or Collect Request ID to check
+ * @returns Transaction details with status
+ */
+export async function getTransactionStatus(orderId: string): Promise<{ 
+  success: boolean; 
+  data: Transaction | null; 
+  message: string 
+}> {
+  try {
+    console.log(`Checking transaction status for ID: ${orderId}`);
+    const response = await fetch(`${API_URL}/api/payments/transaction-status/${orderId}`, {
+      headers: getHeaders()
+    });
 
-  return handleResponse<{ success: boolean; data: TransactionStatus }>(response)
-    .then(res => res.data);
-}
-
-// Helper function to get auth token from localStorage
-function getAuthToken(): string {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('auth_token') || '';
+    const result = await handleResponse<{ success: boolean; data: Transaction | null; message: string }>(response);
+    console.log(`Transaction status result:`, result);
+    return result;
+  } catch (error: any) {
+    console.error(`Error checking transaction status:`, error);
+    return {
+      success: false,
+      data: null,
+      message: error.message || 'Failed to get transaction status'
+    };
   }
-  return '';
+}
+
+/**
+ * Check status of payment using collect request ID
+ * @param collectRequestId ID from payment gateway
+ * @returns Status of the payment
+ */
+export async function checkPaymentStatus(collectRequestId: string): Promise<{
+  success: boolean;
+  data: {
+    status: string;
+    amount: number;
+    details?: Record<string, any>;
+  } | null;
+  message: string;
+}> {
+  const response = await fetch(`${API_URL}/api/payments/check-status/${collectRequestId}`, {
+    headers: getHeaders()
+  });
+
+  return handleResponse<{
+    success: boolean;
+    data: {
+      status: string;
+      amount: number;
+      details?: Record<string, any>;
+    } | null;
+    message: string;
+  }>(response);
 }
