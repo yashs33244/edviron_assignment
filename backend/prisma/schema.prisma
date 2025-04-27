@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String @unique
+  password String
+  name     String
+  role     String @default("user")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id                 String      @id @default(auto()) @map("_id") @db.ObjectId
+  school_id          String
+  trustee_id         String
+  student_info       StudentInfo
+  gateway_name       String
+  custom_order_id    String?     @unique
+  collect_request_id String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderStatus OrderStatus?
+}
+
+type StudentInfo {
+  name  String
+  id    String
+  email String
+}
+
+model OrderStatus {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  collect_id         String    @unique @db.ObjectId
+  order_amount       Float
+  transaction_amount Float
+  payment_mode       String?
+  payment_details    String?
+  bank_reference     String?
+  payment_message    String?
+  status             String
+  error_message      String?
+  payment_time       DateTime?
+
+  order Order @relation(fields: [collect_id], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WebhookLog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  payload   Json
+  status    String
+  createdAt DateTime @default(now())
+}
