@@ -9,7 +9,8 @@
     "dev": "nodemon src/index.ts",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node src/seed.ts",
+    "clear-orders": "ts-node src/scripts/clearOrders.ts"
   },
   "keywords": ["payment", "api", "gateway"],
   "author": "",

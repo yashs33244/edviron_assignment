@@ -2,11 +2,14 @@ import { Request, Response } from 'express';
 import prisma from '../config/db';
 import { createCollectRequest, checkPaymentStatus } from '../utils/paymentService';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
 // Default values
 const DEFAULT_SCHOOL_ID = process.env.SCHOOL_ID || '65b0e6293e9f76a9694d84b4';
-const DEFAULT_PG_KEY = process.env.PG_KEY || 'edvtest01';
+const PG_KEY = process.env.PG_KEY || 'edvtest01';
 const DEFAULT_TRUSTEE_ID = process.env.TRUSTEE_ID || '65b0e552dd31950a9b41c5ba';
+const PG_API_URL = process.env.PG_API_URL || 'https://dev-vanilla.edviron.com/erp';
+const API_KEY = process.env.API_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2LCJpYXQiOjE3MTE2MjIyNzAsImV4cCI6MTc0MzE3OTg3MH0.Rye77Dp59GGxwCmwWekJHRj6edXWJnff9finjMhxKuw';
 
 /**
  * Create a new payment request
@@ -53,19 +56,41 @@ export const createPayment = async (req: Request, res: Response) => {
       
       console.log(`[Payment Controller] Order created in database with ID: ${order.id}`);
       
-      // Create payment using the payment service
-      const paymentResponse = await createCollectRequest({
-        studentName: student_info.name,
-        studentId: student_info.id,
-        studentEmail: student_info.email,
-        amount,
+      // Create JWT payload for signing
+      const jwtPayload = {
         school_id,
+        amount,
         callback_url
-      });
+      };
+
+      // Sign the JWT using the PG key
+      const sign = jwt.sign(jwtPayload, PG_KEY);
+      console.log(`[Payment Controller] Generated JWT signature`);
+
+      // Create collect request at payment gateway
+      const collectRequestData = {
+        school_id,
+        amount,
+        callback_url,
+        sign
+      };
+
+      console.log(`[Payment Controller] Sending collect request to payment gateway:`, collectRequestData);
+
+      const paymentResponse = await axios.post(
+        `${PG_API_URL}/create-collect-request`,
+        collectRequestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY}`
+          }
+        }
+      );
+
+      console.log(`[Payment Controller] Payment gateway response:`, paymentResponse.data);
       
-      console.log(`[Payment Controller] Payment gateway response received in ${Date.now() - startTime}ms`);
-      
-      if (paymentResponse.success && paymentResponse.data) {
+      if (paymentResponse.data?.collect_request_id && paymentResponse.data?.collect_request_url) {
         // Update order with collect_request_id
         await prisma.order.update({
           where: { id: order.id },
@@ -80,8 +105,11 @@ export const createPayment = async (req: Request, res: Response) => {
           success: true,
           message: "Payment request created successfully",
           data: {
-            ...paymentResponse.data,
-            orderId: order.id
+            collect_request_id: paymentResponse.data.collect_request_id,
+            collect_request_url: paymentResponse.data.collect_request_url,
+            custom_order_id: order.custom_order_id,
+            orderId: order.id,
+            sign: paymentResponse.data.sign
           }
         });
       } else {
@@ -92,15 +120,15 @@ export const createPayment = async (req: Request, res: Response) => {
             status: "failed",
             order_amount: parseFloat(amount) || 0,
             transaction_amount: 0,
-            error_message: paymentResponse.error || "Failed to create payment request"
+            error_message: "Failed to create payment request: Invalid response from payment gateway"
           }
         });
         
-        console.error(`[Payment Controller] Payment creation failed: ${paymentResponse.error}`);
+        console.error(`[Payment Controller] Payment creation failed: Invalid response from payment gateway`);
         
         return res.status(400).json({
           success: false,
-          message: paymentResponse.error || "Failed to create payment request"
+          message: "Failed to create payment request: Invalid response from payment gateway"
         });
       }
     } catch (dbError: any) {
@@ -181,7 +209,7 @@ export const processWebhook = async (req: Request, res: Response) => {
           data: {
             school_id: DEFAULT_SCHOOL_ID,
             trustee_id: DEFAULT_TRUSTEE_ID,
-            gateway_name: 'Edviron Payment Gateway',
+            gateway_name: 'Edviron Payment Gateway not found order',
             custom_order_id: custom_order_id !== 'NA' ? custom_order_id : `ORD-${Date.now()}`,
             collect_request_id,
             student_info: { name: 'Unknown', id: 'Unknown', email: 'Unknown' },

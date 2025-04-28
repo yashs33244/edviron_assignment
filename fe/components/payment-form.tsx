@@ -25,7 +25,7 @@ const DEFAULT_SCHOOL_ID = "65b0e6293e9f76a9694d84b4";
 export function PaymentForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    school_id: DEFAULT_SCHOOL_ID, // Pre-fill with default value
+    school_id: DEFAULT_SCHOOL_ID,
     amount: "",
     student_name: "",
     student_id: "",
@@ -48,12 +48,9 @@ export function PaymentForm() {
       const customOrderId = `ORD-${Date.now()}`;
       console.log(`Generated custom order ID: ${customOrderId}`);
 
-      // Get the current domain for callback URL - ensure it has proper format
-      // Important: The callback URL must be properly formatted for the payment gateway to redirect correctly
+      // Get the current domain for callback URL
       const baseCallbackUrl = `${window.location.origin}/payment-callback`;
-      // We'll add the custom_order_id and explicitly include collect_request_id parameter
-      // The payment gateway will replace {collect_request_id} with the actual ID
-      const callbackUrl = `${baseCallbackUrl}?custom_order_id=${customOrderId}&collect_request_id={collect_request_id}`;
+      const callbackUrl = `${baseCallbackUrl}?custom_order_id=${customOrderId}`;
 
       console.log(`Using callback URL: ${callbackUrl}`);
 
@@ -69,13 +66,11 @@ export function PaymentForm() {
         custom_order_id: customOrderId,
       });
 
-      // Redirect to payment URL
-      if (response.data?.collect_request_url) {
+      if (response.success && response.data?.collect_request_url) {
         const redirectUrl = response.data.collect_request_url;
         console.log("Redirecting to payment URL:", redirectUrl);
 
-        // Important: Store the collect_request_id in localStorage so we can retrieve it
-        // in case the gateway doesn't pass it back via URL parameters
+        // Store the collect_request_id in localStorage
         if (response.data.collect_request_id) {
           localStorage.setItem(
             "current_collect_request_id",
@@ -120,7 +115,6 @@ export function PaymentForm() {
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
-          {/* Hidden school ID field - no need to show since it's fixed */}
           <input
             type="hidden"
             id="school_id"
