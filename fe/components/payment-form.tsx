@@ -22,7 +22,11 @@ import {
 // Default school ID from the environment
 const DEFAULT_SCHOOL_ID = "65b0e6293e9f76a9694d84b4";
 
-export function PaymentForm() {
+interface PaymentFormProps {
+  onSuccess?: () => void;
+}
+
+export function PaymentForm({ onSuccess }: PaymentFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     school_id: DEFAULT_SCHOOL_ID,
@@ -80,6 +84,11 @@ export function PaymentForm() {
           console.log(
             `Stored collect_request_id in localStorage: ${response.data.collect_request_id}`
           );
+        }
+
+        // Call onSuccess if provided
+        if (onSuccess) {
+          onSuccess();
         }
 
         // Use window.location.href for redirect

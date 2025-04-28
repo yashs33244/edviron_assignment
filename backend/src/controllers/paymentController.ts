@@ -23,10 +23,10 @@ export const createPayment = async (req: Request, res: Response) => {
     
     // Extract payment details from request body
     const { 
-      school_id, 
+      school_id,
       amount, 
-      callback_url, 
-      student_info, 
+      callback_url,
+      student_info,
       pg_key,
       custom_order_id 
     } = req.body;
@@ -62,7 +62,7 @@ export const createPayment = async (req: Request, res: Response) => {
         amount,
         callback_url
       };
-
+      
       // Sign the JWT using the PG key
       const sign = jwt.sign(jwtPayload, PG_KEY);
       console.log(`[Payment Controller] Generated JWT signature`);
@@ -70,8 +70,8 @@ export const createPayment = async (req: Request, res: Response) => {
       // Create collect request at payment gateway
       const collectRequestData = {
         school_id,
-        amount,
-        callback_url,
+      amount,
+      callback_url,
         sign
       };
 
@@ -94,7 +94,7 @@ export const createPayment = async (req: Request, res: Response) => {
         // Update order with collect_request_id
         await prisma.order.update({
           where: { id: order.id },
-          data: {
+      data: {
             collect_request_id: paymentResponse.data.collect_request_id
           }
         });
@@ -111,15 +111,15 @@ export const createPayment = async (req: Request, res: Response) => {
             orderId: order.id,
             sign: paymentResponse.data.sign
           }
-        });
+    });
       } else {
         // Payment creation failed, update order status
-        await prisma.orderStatus.create({
-          data: {
-            collect_id: order.id,
+    await prisma.orderStatus.create({
+      data: {
+        collect_id: order.id,
             status: "failed",
             order_amount: parseFloat(amount) || 0,
-            transaction_amount: 0,
+        transaction_amount: 0,
             error_message: "Failed to create payment request: Invalid response from payment gateway"
           }
         });
@@ -224,32 +224,32 @@ export const processWebhook = async (req: Request, res: Response) => {
 
       if (order.orderStatus) {
         // Update existing order status
-        await prisma.orderStatus.update({
+          await prisma.orderStatus.update({
           where: { id: order.orderStatus.id },
-          data: {
-            order_amount: parseFloat(amount?.toString() || '0') || order.orderStatus.order_amount,
-            transaction_amount: parseFloat(transaction_amount?.toString() || '0') || order.orderStatus.transaction_amount,
+            data: {
+              order_amount: parseFloat(amount?.toString() || '0') || order.orderStatus.order_amount,
+              transaction_amount: parseFloat(transaction_amount?.toString() || '0') || order.orderStatus.transaction_amount,
             status: paymentStatus,
-            payment_mode: details?.payment_mode || order.orderStatus.payment_mode,
-            payment_details: JSON.stringify(details || {}),
-            bank_reference: details?.bank_ref || order.orderStatus.bank_reference,
-            payment_time: new Date(),
-          }
-        });
-      } else {
+              payment_mode: details?.payment_mode || order.orderStatus.payment_mode,
+              payment_details: JSON.stringify(details || {}),
+              bank_reference: details?.bank_ref || order.orderStatus.bank_reference,
+              payment_time: new Date(),
+            }
+          });
+        } else {
         // Create new order status
-        await prisma.orderStatus.create({
-          data: {
-            collect_id: order.id,
-            order_amount: parseFloat(amount?.toString() || '0') || 0,
-            transaction_amount: parseFloat(transaction_amount?.toString() || '0') || 0,
+          await prisma.orderStatus.create({
+            data: {
+              collect_id: order.id,
+              order_amount: parseFloat(amount?.toString() || '0') || 0,
+              transaction_amount: parseFloat(transaction_amount?.toString() || '0') || 0,
             status: paymentStatus,
-            payment_mode: details?.payment_mode,
-            payment_details: JSON.stringify(details || {}),
-            bank_reference: details?.bank_ref,
-            payment_time: new Date(),
-          }
-        });
+              payment_mode: details?.payment_mode,
+              payment_details: JSON.stringify(details || {}),
+              bank_reference: details?.bank_ref,
+              payment_time: new Date(),
+            }
+          });
       }
 
       res.status(200).json({

@@ -1,318 +1,229 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { CreditCard, ArrowRight, Shield, Zap, BarChart3 } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  ChevronRight,
+  CreditCard,
+  BarChart3,
+  Shield,
+  TrendingUp,
+  LineChart,
+  PieChart,
+} from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-16 flex items-center justify-between border-b border-muted">
+    <div className="flex flex-col min-h-screen bg-black text-white">
+      <header className="border-b border-zinc-800 px-4 lg:px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <CreditCard className="h-6 w-6 text-primary" />
-          <span className="font-bold text-xl">Payment Gateway</span>
+          <CreditCard className="h-6 w-6 text-[#2BE82A]" />
+          <span className="font-bold text-xl tracking-tight">
+            Edviron Finance
+          </span>
         </div>
-        <nav className="hidden md:flex gap-6">
-          <Link href="#features" className="text-sm font-medium hover:text-primary">
-            Features
-          </Link>
-          <Link href="#how-it-works" className="text-sm font-medium hover:text-primary">
-            How It Works
-          </Link>
-          <Link href="#pricing" className="text-sm font-medium hover:text-primary">
-            Pricing
-          </Link>
-        </nav>
         <div className="flex items-center gap-4">
           <Link href="/login">
-            <Button variant="outline">Log In</Button>
-          </Link>
-          <Link href="/register" className="hidden md:block">
-            <Button>Sign Up</Button>
+            <Button className="bg-[#2BE82A] text-black hover:bg-[#2BE82A]/90">
+              Login
+            </Button>
           </Link>
         </div>
       </header>
-      <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+
+      <section className="py-20 md:py-28">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6 leading-tight">
+              Smart Financial{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#2BE82A] to-[#98E49B]">
+                Management
+              </span>{" "}
+              for Schools
+            </h1>
+            <p className="text-xl text-zinc-400 mb-8 max-w-2xl mx-auto">
+              Simplify fee collection, track transactions, and manage your
+              school's finances with our comprehensive solution.
+            </p>
+            <div className="mt-10">
+              <Link href="/login">
+                <Button className="h-12 px-8 bg-[#2BE82A] text-black hover:bg-[#2BE82A]/90 text-lg">
+                  Get Started <ChevronRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-20">
+            <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+              <div className="flex justify-between items-start">
+                <h3 className="text-2xl font-bold">$125.43</h3>
+                <div className="bg-zinc-800 p-2 rounded-full">
+                  <TrendingUp className="h-5 w-5 text-[#2BE82A]" />
+                </div>
+              </div>
+              <p className="text-zinc-400 mt-2">Average Transaction</p>
+              <div className="mt-4 flex items-center text-[#2BE82A]">
+                <span>+8.92</span>
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </div>
+            </div>
+            <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+              <div className="flex justify-between items-start">
+                <h3 className="text-2xl font-bold">567</h3>
+                <div className="bg-zinc-800 p-2 rounded-full">
+                  <BarChart3 className="h-5 w-5 text-[#2BE82A]" />
+                </div>
+              </div>
+              <p className="text-zinc-400 mt-2">Monthly Transactions</p>
+              <div className="mt-4 flex items-center text-[#2BE82A]">
+                <span>+5.23%</span>
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </div>
+            </div>
+            <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+              <div className="flex justify-between items-start">
+                <h3 className="text-2xl font-bold">$816,756</h3>
+                <div className="bg-zinc-800 p-2 rounded-full">
+                  <LineChart className="h-5 w-5 text-[#2BE82A]" />
+                </div>
+              </div>
+              <p className="text-zinc-400 mt-2">Total Net Worth</p>
+              <div className="mt-4 flex items-center text-[#2BE82A]">
+                <span>90-Day Target</span>
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 border-t border-zinc-800">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Take Control of Your{" "}
+              <span className="text-[#2BE82A]">Financial Health</span>
+            </h2>
+            <p className="text-zinc-400">
+              Our platform provides tools to analyze and improve your school's
+              financial performance.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-8 rounded-xl border border-zinc-700">
+              <div className="bg-[#2BE82A]/10 p-3 rounded-full inline-flex mb-4">
+                <Shield className="h-6 w-6 text-[#2BE82A]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">
+                Secure Transactions
+              </h3>
+              <p className="text-zinc-400">
+                End-to-end encryption and industry-standard security protocols
+                to protect all financial data.
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-8 rounded-xl border border-zinc-700">
+              <div className="bg-[#2BE82A]/10 p-3 rounded-full inline-flex mb-4">
+                <BarChart3 className="h-6 w-6 text-[#2BE82A]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Detailed Analytics</h3>
+              <p className="text-zinc-400">
+                Track payment trends, view financial reports, and make
+                data-driven decisions.
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-8 rounded-xl border border-zinc-700">
+              <div className="bg-[#2BE82A]/10 p-3 rounded-full inline-flex mb-4">
+                <PieChart className="h-6 w-6 text-[#2BE82A]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Financial Planning</h3>
+              <p className="text-zinc-400">
+                Set targets, create budgets, and monitor your school's financial
+                health in real-time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Increase your relative return by{" "}
+                <span className="text-[#2BE82A]">3.5%</span>
+              </h2>
+              <p className="text-zinc-400 mb-8">
+                Our platform helps educational institutions optimize their
+                payment processes, reduce costs, and increase operational
+                efficiency.
+              </p>
               <div className="space-y-4">
-                <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-                  Introducing
+                <div className="flex items-center gap-3">
+                  <div className="h-2 w-2 rounded-full bg-white"></div>
+                  <p>Age 32 - Early adoption benefits</p>
                 </div>
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Secure Payment Gateway for Schools
-                </h1>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Simplify fee collection, track payments, and manage transactions with our comprehensive payment
-                  solution.
-                </p>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Link href="/register">
-                    <Button size="lg" className="h-12">
-                      Get Started
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/login">
-                    <Button size="lg" variant="outline" className="h-12">
-                      Log In
-                    </Button>
-                  </Link>
+                <div className="flex items-center gap-3">
+                  <div className="h-2 w-2 rounded-full bg-[#2BE82A]"></div>
+                  <p>Age 42 - Peak operational efficiency</p>
                 </div>
-              </div>
-              <div className="mx-auto w-full max-w-[500px] aspect-video rounded-xl bg-muted p-4 lg:p-8 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-xl"></div>
-                <div className="relative z-10 h-full flex flex-col justify-center items-center">
-                  <CreditCard className="h-16 w-16 text-primary mb-4" />
-                  <div className="text-center">
-                    <h3 className="text-xl font-bold mb-2">Secure Payments</h3>
-                    <p className="text-muted-foreground">Process transactions with confidence</p>
-                  </div>
+                <div className="flex items-center gap-3">
+                  <div className="h-2 w-2 rounded-full bg-[#98E49B]"></div>
+                  <p>Age 52 - Long-term growth trajectory</p>
                 </div>
               </div>
             </div>
+            <div className="relative h-[400px] bg-gradient-to-tr from-zinc-900 to-black rounded-xl border border-zinc-800 p-8">
+              <div className="absolute bottom-0 left-0 right-0 h-[200px]">
+                <div className="absolute bottom-0 left-0 right-0 h-[50px] bg-gradient-to-r from-[#2BE82A]/20 to-[#2BE82A]/5 z-10 rounded-bl-xl"></div>
+                <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-r from-[#2BE82A]/30 to-[#2BE82A]/10 z-20 rounded-bl-xl"></div>
+                <div className="absolute bottom-0 left-0 right-0 h-[150px] bg-gradient-to-r from-[#2BE82A]/40 to-[#2BE82A]/20 z-30 rounded-bl-xl"></div>
+              </div>
+              <div className="absolute top-8 right-8 text-right">
+                <div className="text-sm text-zinc-400">$4M</div>
+                <div className="text-sm text-zinc-400 mt-6">$3M</div>
+                <div className="text-sm text-zinc-400 mt-6">$2M</div>
+                <div className="text-sm text-zinc-400 mt-6">$1M</div>
+                <div className="text-sm text-zinc-400 mt-6">$0</div>
+              </div>
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-muted/10">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-                  Features
-                </div>
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-                  Everything you need to manage payments
-                </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
-                  Our platform provides a comprehensive solution for schools to manage fee collection and track
-                  payments.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3">
-              <div className="rounded-xl border border-muted bg-card p-6">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                  <Shield className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold">Secure Transactions</h3>
-                <p className="text-muted-foreground">
-                  End-to-end encryption and compliance with industry standards to keep payment data safe.
-                </p>
-              </div>
-              <div className="rounded-xl border border-muted bg-card p-6">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                  <Zap className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold">Fast Processing</h3>
-                <p className="text-muted-foreground">
-                  Quick payment processing with real-time status updates and instant notifications.
-                </p>
-              </div>
-              <div className="rounded-xl border border-muted bg-card p-6">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                  <BarChart3 className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold">Detailed Analytics</h3>
-                <p className="text-muted-foreground">
-                  Comprehensive reporting and analytics to track payment trends and manage finances.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-                  How It Works
-                </div>
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-                  Simple and efficient payment process
-                </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
-                  Our platform makes it easy to collect and manage payments with a streamlined process.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl gap-6 py-12 lg:grid-cols-3">
-              <div className="flex flex-col items-center text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  1
-                </div>
-                <div className="mt-4 space-y-2">
-                  <h3 className="text-xl font-bold">Create Payment</h3>
-                  <p className="text-muted-foreground">Generate a payment request with student details and amount.</p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  2
-                </div>
-                <div className="mt-4 space-y-2">
-                  <h3 className="text-xl font-bold">Process Payment</h3>
-                  <p className="text-muted-foreground">
-                    Students or parents complete the payment through our secure gateway.
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  3
-                </div>
-                <div className="mt-4 space-y-2">
-                  <h3 className="text-xl font-bold">Track & Manage</h3>
-                  <p className="text-muted-foreground">
-                    Monitor transactions and generate reports through the dashboard.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="pricing" className="w-full py-12 md:py-24 lg:py-32 bg-muted/10">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-                  Pricing
-                </div>
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Simple, transparent pricing</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
-                  Choose the plan that works best for your school.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl gap-6 py-12 lg:grid-cols-2">
-              <div className="rounded-xl border border-muted bg-card p-6">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold">Standard</h3>
-                  <p className="text-muted-foreground">For small to medium schools</p>
-                </div>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold">₹999</span>
-                  <span className="text-muted-foreground">/month</span>
-                </div>
-                <ul className="mb-6 space-y-2">
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    <span>Up to 500 transactions per month</span>
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    <span>Basic reporting</span>
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    <span>Email support</span>
-                  </li>
-                </ul>
-                <Button className="w-full">Get Started</Button>
-              </div>
-              <div className="rounded-xl border border-primary bg-card p-6">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold">Premium</h3>
-                  <p className="text-muted-foreground">For large schools and institutions</p>
-                </div>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold">₹2499</span>
-                  <span className="text-muted-foreground">/month</span>
-                </div>
-                <ul className="mb-6 space-y-2">
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    <span>Unlimited transactions</span>
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    <span>Advanced analytics</span>
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    <span>Priority support</span>
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    <span>Custom integrations</span>
-                  </li>
-                </ul>
-                <Button className="w-full">Get Started</Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-                  Ready to simplify your payment process?
-                </h2>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed">
-                  Join thousands of schools already using our platform.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Link href="/register">
-                  <Button size="lg" className="h-12">
-                    Get Started
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link href="/login">
-                  <Button size="lg" variant="outline" className="h-12">
-                    Log In
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-      <footer className="w-full border-t border-muted py-6">
-        <div className="container flex flex-col items-center justify-between gap-4 px-4 md:flex-row md:px-6">
-          <div className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5 text-primary" />
-            <span className="font-semibold">Payment Gateway</span>
-          </div>
-          <p className="text-center text-sm text-muted-foreground md:text-left">
-            © {new Date().getFullYear()} Payment Gateway. All rights reserved.
-          </p>
-          <div className="flex gap-4">
-            <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
-              Terms
+      <section className="py-20 border-t border-zinc-800">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Ready to Transform Your School's Financial Management?
+            </h2>
+            <p className="text-zinc-400 mb-8">
+              Join hundreds of educational institutions already benefiting from
+              our platform.
+            </p>
+            <Link href="/login">
+              <Button className="h-12 px-8 bg-[#2BE82A] text-black hover:bg-[#2BE82A]/90 text-lg">
+                Get Started Today
+              </Button>
             </Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
-              Privacy
-            </Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
-              Contact
-            </Link>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-zinc-800 py-12">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center gap-2 mb-4 md:mb-0">
+              <CreditCard className="h-6 w-6 text-[#2BE82A]" />
+              <span className="font-bold text-xl">Edviron Finance</span>
+            </div>
+            <div className="text-zinc-400 text-sm">
+              &copy; {new Date().getFullYear()} Edviron. All rights reserved.
+            </div>
           </div>
         </div>
       </footer>
     </div>
-  )
-}
-
-function CheckIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  )
+  );
 }

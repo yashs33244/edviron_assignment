@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navigation } from "@/components/ui/navigation";
 import "./globals.css";
 import ReactQueryProvider from "@/components/providers/ReactQueryProvider";
+import { AuthProvider } from "@/lib/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,29 +23,31 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="min-h-screen flex flex-col bg-background">
-              <header className="border-b bg-card">
-                <div className="container flex h-16 items-center justify-between">
-                  <div className="font-bold text-lg">
-                    Edviron Payment System
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="min-h-screen flex flex-col bg-background">
+                <header className="border-b bg-card">
+                  <div className="container flex h-16 items-center justify-between">
+                    <div className="font-bold text-lg">
+                      Edviron Payment System
+                    </div>
+                    <Navigation />
                   </div>
-                  <Navigation />
-                </div>
-              </header>
-              <main className="flex-1 container py-6">{children}</main>
-              <footer className="border-t py-4">
-                <div className="container text-center text-sm text-muted-foreground">
-                  © {new Date().getFullYear()} Edviron. All rights reserved.
-                </div>
-              </footer>
-            </div>
-          </ThemeProvider>
+                </header>
+                <main className="flex-1 container py-6">{children}</main>
+                <footer className="border-t py-4">
+                  <div className="container text-center text-sm text-muted-foreground">
+                    © {new Date().getFullYear()} Edviron. All rights reserved.
+                  </div>
+                </footer>
+              </div>
+            </ThemeProvider>
+          </AuthProvider>
         </ReactQueryProvider>
       </body>
     </html>
