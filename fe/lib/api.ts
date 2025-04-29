@@ -1,8 +1,11 @@
 import axios from "axios"
-import jwt from "jsonwebtoken"  // Browser will use jsrsasign or similar package
-// Don't import jsonwebtoken on client side
+// Import jsonwebtoken conditionally based on environment
+const jwt = typeof window === 'undefined' 
+  ? require('jsonwebtoken')  // Server-side only
+  : null  // Client-side will not use this
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
-const PG_API_URL = process.env.NEXT_PUBLIC_PG_API_URL || "https://dev-vanilla.edviron.com/erp" 
+const PG_API_URL = process.env.NEXT_PUBLIC_PG_API_URL || "https://dev-vanilla.edviron.com/erp"
 const PG_KEY = process.env.NEXT_PUBLIC_PG_KEY || "edvtest01"
 
 const api = axios.create({
@@ -12,39 +15,80 @@ const api = axios.create({
   },
 })
 
-// Add a request interceptor to include the auth token in all requests
-api.interceptors.request.use(
-  (config) => {
-    // Only run on client side
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem("token")
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`
-      }
-    }
-    return config
-  },
-  (error) => Promise.reject(error),
-)
+// Add JWT token to requests if it exists
+api.interceptors.request.use((config) => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null
+  
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  
+  return config
+})
 
-// Auth API
+// Authentication APIs
 export const login = async (email: string, password: string) => {
   try {
-    const response = await api.post("/api/auth/login", { email, password });
-    return response.data; // This will contain token, user or needsVerification
+    const response = await api.post("/api/auth/login", { email, password })
+    return response.data
   } catch (error) {
-    throw error;
+    throw error
   }
 }
 
-export const register = async (name: string, email: string, password: string) => {
-  const response = await api.post("/api/auth/register", { name, email, password })
-  return response.data
+export const register = async (userData: any) => {
+  try {
+    const response = await api.post("/api/auth/register", userData)
+    return response.data
+  } catch (error) {
+    throw error
+  }
 }
 
-export const getProfile = async () => {
-  const response = await api.get("/api/auth/profile")
-  return response.data
+export const verifyOTP = async (email: string, otp: string) => {
+  try {
+    const response = await api.post("/api/auth/verify-otp", { email, otp })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const resendOTP = async (email: string) => {
+  try {
+    const response = await api.post("/api/auth/resend-otp", { email })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const forgotPassword = async (email: string) => {
+  try {
+    const response = await api.post("/api/auth/forgot-password", { email })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const resetPassword = async (token: string, password: string) => {
+  try {
+    const response = await api.post("/api/auth/reset-password", { token, password })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+// User API
+export const getUserProfile = async () => {
+  try {
+    const response = await api.get("/api/auth/profile")
+    return response.data
+  } catch (error) {
+    throw error
+  }
 }
 
 // Transactions API
@@ -287,30 +331,8 @@ export const createPayment = async (paymentData: {
   }
 }
 
-// Password reset
-export const forgotPassword = async (email: string) => {
-  const response = await api.post("/api/auth/forgot-password", { email });
-  return response.data;
-};
-
-export const resetPassword = async (token: string, password: string) => {
-  const response = await api.post("/api/auth/reset-password", { token, password });
-  return response.data;
-};
-
 export const verifyResetToken = async (token: string) => {
   const response = await api.get(`/api/auth/verify-reset-token/${token}`);
-  return response.data;
-};
-
-// OTP verification
-export const verifyOTP = async (email: string, otp: string) => {
-  const response = await api.post("/api/auth/verify-otp", { email, otp });
-  return response.data;
-};
-
-export const resendOTP = async (email: string) => {
-  const response = await api.post("/api/auth/resend-otp", { email });
   return response.data;
 };
 

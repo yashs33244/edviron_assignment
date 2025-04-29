@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
-import { login as apiLogin, getProfile } from "@/lib/api";
+import { login as apiLogin, getUserProfile } from "@/lib/api";
 import React from "react"; // Add React import
 
 interface User {
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const userData = await getProfile();
+          const userData = await getUserProfile();
           setUser(userData.data);
         } catch (error) {
           localStorage.removeItem("token");
