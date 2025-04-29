@@ -1,46 +1,31 @@
 #!/bin/bash
 
-# This script builds and pushes Docker images to DockerHub
+# Exit on any error
+set -e
 
-# Set username
-DOCKER_USERNAME="yashs3324"
+echo "Starting build and push process with Bun runtime..."
 
-# Version tag (use current date and time if not provided)
-VERSION=${1:-$(date +"%Y%m%d%H%M")}
+# Make script executable
+chmod +x ./build_and_push.sh
 
-echo "Building and pushing Docker images with version: $VERSION"
+# Build the backend image
+echo "Building backend image with Bun..."
+docker build -t yashs3324/edviron-backend:latest ./backend
 
-# Build backend image
-echo "Building backend image..."
-docker build -t $DOCKER_USERNAME/edviron-backend:$VERSION -f be/Dockerfile.prod be/
+# Build the frontend image
+echo "Building frontend image with Bun..."
+docker build -t yashs3324/edviron-frontend:latest ./fe
 
-# Build frontend image (if Dockerfile exists)
-if [ -f "fe/Dockerfile.prod" ]; then
-  echo "Building frontend image..."
-  docker build -t $DOCKER_USERNAME/edviron-frontend:$VERSION -f fe/Dockerfile.prod fe/
-else
-  echo "Frontend Dockerfile not found, skipping..."
-fi
+# Login to Docker Hub
+echo "Logging in to Docker Hub..."
+echo "Please enter your Docker Hub password when prompted:"
+docker login -u yashs3324
 
-# Tag as latest
-docker tag $DOCKER_USERNAME/edviron-backend:$VERSION $DOCKER_USERNAME/edviron-backend:latest
-if [ -f "fe/Dockerfile.prod" ]; then
-  docker tag $DOCKER_USERNAME/edviron-frontend:$VERSION $DOCKER_USERNAME/edviron-frontend:latest
-fi
+# Push the images to Docker Hub
+echo "Pushing backend image to Docker Hub..."
+docker push yashs3324/edviron-backend:latest
 
-# Login to DockerHub
-echo "Logging in to DockerHub..."
-docker login -u $DOCKER_USERNAME
+echo "Pushing frontend image to Docker Hub..."
+docker push yashs3324/edviron-frontend:latest
 
-# Push images
-echo "Pushing backend images..."
-docker push $DOCKER_USERNAME/edviron-backend:$VERSION
-docker push $DOCKER_USERNAME/edviron-backend:latest
-
-if [ -f "fe/Dockerfile.prod" ]; then
-  echo "Pushing frontend images..."
-  docker push $DOCKER_USERNAME/edviron-frontend:$VERSION
-  docker push $DOCKER_USERNAME/edviron-frontend:latest
-fi
-
-echo "Build and push completed successfully!" 
+echo "Build and push process completed successfully!" 
