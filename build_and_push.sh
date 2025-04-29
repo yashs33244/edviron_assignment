@@ -12,6 +12,7 @@ chmod +x ./build_and_push.sh
 echo "Building backend image with Bun..."
 docker build -t yashs3324/edviron-backend:latest ./backend
 
+
 # Build the frontend image
 echo "Building frontend image with Bun..."
 docker build -t yashs3324/edviron-frontend:latest ./fe
