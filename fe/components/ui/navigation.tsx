@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Home, FileText, LogIn } from "lucide-react";
+import { Home, LogIn } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
 export function Navigation() {
@@ -13,12 +13,11 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: "Home", path: "/", icon: <Home className="h-5 w-5" /> },
     {
-      name: "Transaction Status",
-      path: "/transaction-status",
-      icon: <FileText className="h-5 w-5" />,
-      requiresAuth: true,
+      name: "Home",
+      path: "/",
+      icon: <Home className="h-5 w-5" />,
+      requiresAuth: false,
     },
   ];
 
@@ -39,7 +38,7 @@ export function Navigation() {
       {navItems.map((item) => (
         <button
           key={item.path}
-          onClick={() => handleClick(item.path, item.requiresAuth || false)}
+          onClick={() => handleClick(item.path, item.requiresAuth)}
           className={`flex items-center p-2 rounded-md transition-colors ${
             isActive(item.path)
               ? "bg-primary text-primary-foreground"

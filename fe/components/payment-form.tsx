@@ -10,14 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 // Default school ID from the environment
 const DEFAULT_SCHOOL_ID = "65b0e6293e9f76a9694d84b4";
@@ -115,87 +107,79 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
   };
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Create Payment</CardTitle>
-        <CardDescription>
-          Enter the details to create a new payment request.
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
-          <input
-            type="hidden"
-            id="school_id"
-            name="school_id"
-            value={formData.school_id}
-          />
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount (₹)</Label>
-            <Input
-              id="amount"
-              name="amount"
-              type="number"
-              min="1"
-              step="1"
-              placeholder="Enter amount"
-              value={formData.amount}
-              onChange={handleChange}
-              required
-              className="bg-muted"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="student_name">Student Name</Label>
-            <Input
-              id="student_name"
-              name="student_name"
-              placeholder="Enter student name"
-              value={formData.student_name}
-              onChange={handleChange}
-              required
-              className="bg-muted"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="student_id">Student ID</Label>
-            <Input
-              id="student_id"
-              name="student_id"
-              placeholder="Enter student ID"
-              value={formData.student_id}
-              onChange={handleChange}
-              required
-              className="bg-muted"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="student_email">Student Email</Label>
-            <Input
-              id="student_email"
-              name="student_email"
-              type="email"
-              placeholder="Enter student email"
-              value={formData.student_email}
-              onChange={handleChange}
-              required
-              className="bg-muted"
-            />
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-end">
-          <Button type="submit" disabled={isLoading} className="w-full">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              "Create Payment"
-            )}
-          </Button>
-        </CardFooter>
-      </form>
-    </Card>
+    <form onSubmit={handleSubmit} className="space-y-4 p-4">
+      <input
+        type="hidden"
+        id="school_id"
+        name="school_id"
+        value={formData.school_id}
+      />
+      <div className="space-y-2">
+        <Label htmlFor="amount">Amount (₹)</Label>
+        <Input
+          id="amount"
+          name="amount"
+          type="number"
+          min="1"
+          step="1"
+          placeholder="Enter amount"
+          value={formData.amount}
+          onChange={handleChange}
+          required
+          className="bg-muted rounded-xl border-2"
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="student_name">Student Name</Label>
+        <Input
+          id="student_name"
+          name="student_name"
+          placeholder="Enter student name"
+          value={formData.student_name}
+          onChange={handleChange}
+          required
+          className="bg-muted rounded-xl border-2"
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="student_id">Student ID</Label>
+        <Input
+          id="student_id"
+          name="student_id"
+          placeholder="Enter student ID"
+          value={formData.student_id}
+          onChange={handleChange}
+          required
+          className="bg-muted rounded-xl border-2"
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="student_email">Student Email</Label>
+        <Input
+          id="student_email"
+          name="student_email"
+          type="email"
+          placeholder="Enter student email"
+          value={formData.student_email}
+          onChange={handleChange}
+          required
+          className="bg-muted rounded-xl border-2"
+        />
+      </div>
+      <Button
+        type="submit"
+        disabled={isLoading}
+        className="w-full bg-primary text-black hover:bg-primary/90"
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Processing...
+          </>
+        ) : (
+          "Create Payment"
+        )}
+      </Button>
+    </form>
   );
 }

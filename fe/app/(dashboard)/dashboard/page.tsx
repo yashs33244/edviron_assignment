@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactions, getUserTransactions } from "@/lib/api";
 import {
@@ -10,12 +11,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { CreditCard, TrendingUp, AlertTriangle } from "lucide-react";
+import { CreditCard, TrendingUp, AlertTriangle, Plus } from "lucide-react";
 import { PaymentForm } from "@/components/payment-form";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function DashboardPage() {
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+
   const { data: allTransactionsData, isLoading: isLoadingAll } = useQuery({
     queryKey: ["transactions-summary"],
     queryFn: async () => {
@@ -64,11 +75,29 @@ export default function DashboardPage() {
             Overview of your payment transactions
           </p>
         </div>
-        <PaymentForm />
+        <Dialog
+          open={isPaymentDialogOpen}
+          onOpenChange={setIsPaymentDialogOpen}
+        >
+          <DialogTrigger asChild>
+            <Button className="bg-primary text-black hover:bg-primary/90">
+              <Plus className="mr-2 h-4 w-4" /> Create Payment
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Create New Payment</DialogTitle>
+              <DialogDescription>
+                Enter payment details to generate a new payment link
+              </DialogDescription>
+            </DialogHeader>
+            <PaymentForm onSuccess={() => setIsPaymentDialogOpen(false)} />
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="bg-card">
+        <Card className="bg-card border-2 rounded-2xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">
               Total Transactions
@@ -85,33 +114,33 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card">
+        <Card className="bg-primary text-primary-foreground border-2 rounded-2xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Amount</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <TrendingUp className="h-4 w-4 text-primary-foreground/80" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {isLoadingAll ? "Loading..." : `₹${totalAmount.toLocaleString()}`}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-primary-foreground/80">
               Success rate: {successRate.toFixed(1)}%
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-card">
+        <Card className="bg-white text-black border-2 rounded-2xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">
               Failed Transactions
             </CardTitle>
-            <AlertTriangle className="h-4 w-4 text-destructive" />
+            <AlertTriangle className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {isLoadingAll ? "Loading..." : failedTransactions}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-black/70">
               {failedTransactions > 0
                 ? "Action required"
                 : "No failed transactions"}
@@ -121,7 +150,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card className="bg-card">
+        <Card className="bg-card border-2 rounded-2xl">
           <CardHeader className="flex justify-between items-center">
             <div>
               <CardTitle>Your Recent Transactions</CardTitle>
@@ -171,7 +200,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card">
+        <Card className="bg-card border-2 rounded-2xl">
           <CardHeader>
             <CardTitle>Recent System Transactions</CardTitle>
             <CardDescription>Latest payment transactions</CardDescription>
