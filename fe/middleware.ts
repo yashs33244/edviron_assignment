@@ -46,12 +46,12 @@ export function middleware(request: NextRequest) {
 
   // If user is authenticated and trying to access auth pages, redirect to dashboard
   if (isAuthenticated && (pathname === '/login' || pathname === '/register')) {
-    return NextResponse.redirect(new URL('/dashboard/dashboard', request.url));
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   return NextResponse.next();
 }
-
+``
 // Configure which paths the middleware should run on
 export const config = {
   matcher: [
