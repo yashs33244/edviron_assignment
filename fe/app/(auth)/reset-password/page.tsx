@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CreditCard, AlertTriangle, Check, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { resetPassword, verifyResetToken } from "@/lib/api";
 
-export default function ResetPasswordPage() {
+// Client component that uses useSearchParams
+function ResetPasswordForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -233,5 +234,25 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Main page component with Suspense
+export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen flex-col items-center justify-center bg-black p-4">
+          <div className="w-full max-w-md space-y-8 text-center">
+            <CreditCard className="h-12 w-12 text-primary mx-auto" />
+            <h1 className="text-3xl font-bold">Loading</h1>
+            <p className="text-muted-foreground">Please wait a moment...</p>
+            <div className="animate-pulse h-6 bg-muted rounded w-32 mx-auto"></div>
+          </div>
+        </div>
+      }
+    >
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
