@@ -16,8 +16,8 @@ services:
       - MONGODB_URI=mongodb+srv://yash:12345678%40123@cluster0.tnfs0tz.mongodb.net/mydb?retryWrites=true&w=majority
       - JWT_SECRET=dfgdhfgjkgfds
       - PORT=4000
-      - CLIENT_URL=http://localhost:3000
-      - FRONTEND_URL=http://localhost:3000
+      - CLIENT_URL=https://edviron.yashprojects.online
+      - FRONTEND_URL=https://edviron.yashprojects.online
     restart: unless-stopped
     networks:
       - edviron-network
@@ -31,7 +31,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:4000
+      - NEXT_PUBLIC_API_URL=https://edbe.yashprojects.online
       - NEXT_PUBLIC_PG_API_URL=https://dev-vanilla.edviron.com/erp
       - NEXT_PUBLIC_PG_KEY=edvtest01
     depends_on:
