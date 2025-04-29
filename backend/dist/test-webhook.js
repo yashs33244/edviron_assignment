@@ -16,6 +16,7 @@ const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
 // Load environment variables
 dotenv_1.default.config();
+const API_URL = process.env.API_URL || "https://edbe.yashprojects.online";
 // Create a webhook simulator
 function simulateWebhook() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -51,7 +52,7 @@ function simulateWebhook() {
             };
             console.log('Sending webhook payload:', JSON.stringify(webhookPayload, null, 2));
             // Post to webhook endpoint
-            const response = yield axios_1.default.post('http://localhost:4000/api/payments/webhook', webhookPayload, {
+            const response = yield axios_1.default.post(`${API_URL}/api/payments/webhook`, webhookPayload, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
