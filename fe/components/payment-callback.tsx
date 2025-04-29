@@ -214,7 +214,7 @@ export default function PaymentCallback() {
 
   const handleGoHome = () => {
     addLog("Navigating to home page");
-    router.push("/");
+    router.push("/dashboard");
   };
 
   return (

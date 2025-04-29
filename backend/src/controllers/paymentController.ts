@@ -52,12 +52,12 @@ export const createPayment = async (req: Request, res: Response) => {
         studentName: student_info.name,
         studentId: student_info.id,
         studentEmail: student_info.email,
-        amount,
-        school_id,
-        callback_url,
+      amount,
+      school_id,
+      callback_url,
         userId // Pass the user ID
-      });
-      
+    });
+
       if (paymentResult.success) {
         return res.status(200).json({
           success: true,
@@ -65,7 +65,7 @@ export const createPayment = async (req: Request, res: Response) => {
           data: paymentResult.data
         });
       } else {
-        return res.status(400).json({
+      return res.status(400).json({
           success: false,
           message: paymentResult.error || "Failed to create payment request"
         });
@@ -592,16 +592,16 @@ export const getAllTransactions = async (req: Request, res: Response) => {
       });
 
       return {
-        collect_id: transaction.id,
+      collect_id: transaction.id,
         order_id: transaction.order_id,
-        school_id: transaction.school_id,
+      school_id: transaction.school_id,
         gateway: order?.gateway_name || 'Unknown',
         order_amount: transaction.amount,
         transaction_amount: transaction.amount,
         status: transaction.status,
         custom_order_id: order?.custom_order_id,
         student_info: order?.student_info,
-        created_at: transaction.createdAt,
+      created_at: transaction.createdAt,
         payment_time: transaction.payment_time,
       };
     }));
@@ -637,7 +637,7 @@ export const getAllTransactions = async (req: Request, res: Response) => {
 export const getTransactionsBySchool = async (req: Request, res: Response) => {
   try {
     const { schoolId } = req.params;
-    
+
     // Get pagination parameters
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -693,16 +693,16 @@ export const getTransactionsBySchool = async (req: Request, res: Response) => {
       });
 
       return {
-        collect_id: transaction.id,
+      collect_id: transaction.id,
         order_id: transaction.order_id,
-        school_id: transaction.school_id,
+      school_id: transaction.school_id,
         gateway: order?.gateway_name || 'Unknown',
         order_amount: transaction.amount,
         transaction_amount: transaction.amount,
         status: transaction.status,
         custom_order_id: order?.custom_order_id,
         student_info: order?.student_info,
-        created_at: transaction.createdAt,
+      created_at: transaction.createdAt,
         payment_time: transaction.payment_time,
       };
     }));

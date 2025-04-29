@@ -78,10 +78,10 @@ export const createCollectRequest = async ({
           school_id: schoolId,
           trustee_id: studentId, // Assuming trustee_id is the studentId
           student_info: {
-            name: studentName,
-            id: studentId,
-            email: studentEmail,
-          },
+              name: studentName,
+              id: studentId,
+              email: studentEmail,
+            },
           gateway_name: 'Edviron Payment Gateway',
           custom_order_id: customOrderId,
           collect_request_id: response.data.collect_request_id,

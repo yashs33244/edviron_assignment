@@ -14,9 +14,19 @@ import {
   CreditCard,
   TrendingUp,
   Shield,
+  Download,
+  BadgeCheck,
+  Wallet,
+  School,
+  UserCircle,
 } from "lucide-react";
+import { ButtonLink } from "@/components/ui/button-link";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import { TextReveal } from "@/components/magicui/text-reveal";
+import { NumberTicker } from "@/components/magicui/number-ticker";
+import { TracingBeam } from "@/components/magicui/tracing-beam";
 
-export default function LandingPage() {
+export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -28,8 +38,12 @@ export default function LandingPage() {
       {/* Header/Navigation */}
       <header className="container mx-auto px-4 py-6 flex items-center justify-between">
         <div className="flex items-center">
-          <CreditCard className="h-10 w-10 text-primary mr-2" />
-          <span className="text-white font-bold text-2xl">PayGate</span>
+          <img
+            src="/just_logo_2.png"
+            alt="Edviron Logo"
+            className="h-10 w-10 mr-2"
+          />
+          <span className="text-white font-bold text-2xl">Edviron</span>
         </div>
         <nav className="hidden md:flex items-center space-x-8">
           <Link
@@ -62,375 +76,347 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20 md:py-32 flex flex-col md:flex-row items-center">
-        <motion.div
-          className="md:w-1/2 mb-10 md:mb-0 md:pr-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-            Increase your relative return by{" "}
-            <span className="text-primary">3.5%</span>
-          </h1>
-          <p className="text-lg text-gray-300 mb-8">
-            Track your financial journey with our advanced dashboard. Get
-            real-time insights into your investments, savings, and cash flow.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href="/register"
-              className="primary-button inline-flex items-center justify-center"
-            >
-              Get Started
-              <ChevronRight className="ml-2 h-5 w-5" />
-            </Link>
-            <Link
-              href="#dashboard"
-              className="secondary-button inline-flex items-center justify-center"
-            >
-              View Demo
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-        </motion.div>
-        <motion.div
-          className="md:w-1/2 relative"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isVisible ? 1 : 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="relative h-[400px] md:h-[500px] w-full animate-float">
-            <div className="absolute top-0 right-0 bg-dashboard-black rounded-3xl p-6 w-[300px] md:w-[350px] shadow-xl">
-              <h3 className="text-white text-xl font-bold mb-4">Net Worth</h3>
-              <p className="text-4xl font-extrabold text-white mb-2 animate-count-up">
-                $816,756,000
+      <section className="relative pb-20 pt-32 md:pt-40">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            <div className="flex flex-col items-start gap-8">
+              <div className="inline-flex items-center rounded-full border border-border bg-background/50 px-3 py-1 text-sm backdrop-blur-sm">
+                <span className="mr-1 rounded-full bg-[#28E82A] px-1.5 py-0.5 text-xs font-medium text-[#202020]">
+                  New
+                </span>
+                <span className="text-foreground/80">
+                  UPI Payments Now Available!
+                </span>
+                <Link
+                  href="/features/upi"
+                  className="ml-2 text-[#28E82A] hover:underline"
+                >
+                  Learn more →
+                </Link>
+              </div>
+
+              <TextReveal
+                text="Simplify School Fee Collections and Financial Management"
+                className="max-w-xl"
+                textClassName="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl"
+              />
+
+              <p className="max-w-xl text-lg text-foreground/70">
+                A comprehensive school fee management system that empowers
+                schools to collect, track, and manage payments efficiently with
+                advanced analytics and automation.
               </p>
-              <p className="text-primary flex items-center text-lg">
-                <TrendingUp className="mr-2 h-5 w-5" />
-                +4,299
-              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <HoverBorderGradient
+                  className="border-transparent bg-[#202020] text-white"
+                  gradientClassName="from-[#2BE82A] to-[#9BE49B]"
+                >
+                  <Link href="/signup" className="px-6 py-3">
+                    Get Started
+                  </Link>
+                </HoverBorderGradient>
+                <ButtonLink
+                  href="/demo"
+                  variant="outline"
+                  className="group relative"
+                >
+                  <span>Book a Demo</span>
+                  <span className="ml-2 transition-transform group-hover:translate-x-1">
+                    →
+                  </span>
+                </ButtonLink>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-[#28E82A]" />
+                  <span className="text-sm text-foreground/70">
+                    No setup fees
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-[#28E82A]" />
+                  <span className="text-sm text-foreground/70">
+                    24/7 Customer Support
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-[#28E82A]" />
+                  <span className="text-sm text-foreground/70">
+                    Cancel anytime
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="absolute bottom-0 left-0 bg-dashboard-black rounded-3xl p-6 w-[300px] md:w-[350px] shadow-xl">
-              <h3 className="text-white text-xl font-bold mb-4">Investments</h3>
-              <p className="text-4xl font-extrabold text-white mb-2 animate-count-up">
-                $179,918,000
-              </p>
-              <p className="text-xs text-gray-400">Target: $200,500,000</p>
+
+            <div className="relative">
+              <div className="relative overflow-hidden rounded-xl border border-border bg-background/50 p-1 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50">
+                <Image
+                  src="/dashboard.png"
+                  alt="Edviron Dashboard"
+                  width={600}
+                  height={400}
+                  className="rounded-lg object-cover"
+                />
+
+                <div className="absolute -top-8 -left-8 h-16 w-16 rounded-full bg-[#28E82A]/30 blur-xl" />
+                <div className="absolute -bottom-8 -right-8 h-16 w-16 rounded-full bg-[#28E82A]/30 blur-xl" />
+              </div>
+
+              <div className="absolute -top-4 -right-4 flex items-center gap-2 rounded-full border border-border bg-background p-2 shadow-lg">
+                <div className="rounded-full bg-[#28E82A] p-1">
+                  <BadgeCheck className="h-4 w-4 text-[#202020]" />
+                </div>
+                <span className="pr-2 text-xs font-medium">
+                  Trusted by 500+ schools
+                </span>
+              </div>
+
+              <div className="absolute -bottom-4 -left-4 flex items-center gap-2 rounded-full border border-border bg-background p-2 shadow-lg">
+                <div className="rounded-full bg-[#28E82A] p-1">
+                  <Download className="h-4 w-4 text-[#202020]" />
+                </div>
+                <span className="pr-2 text-xs font-medium">99.9% uptime</span>
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="bg-background py-16">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            <div className="flex flex-col items-center text-center">
+              <NumberTicker
+                value={500}
+                suffix="+"
+                className="text-4xl font-bold"
+              />
+              <span className="text-sm text-foreground/70">Schools</span>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <NumberTicker
+                value={200000}
+                suffix="+"
+                className="text-4xl font-bold"
+              />
+              <span className="text-sm text-foreground/70">Students</span>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <NumberTicker
+                value={95}
+                suffix="%"
+                className="text-4xl font-bold"
+              />
+              <span className="text-sm text-foreground/70">
+                Collection Rate
+              </span>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <NumberTicker
+                value={100}
+                prefix="₹"
+                suffix="Cr+"
+                className="text-4xl font-bold"
+              />
+              <span className="text-sm text-foreground/70">Processed</span>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="bg-black py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Powerful Features
+      <section id="features" className="py-20">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+              Features Designed for Schools
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Track, manage and optimize your finances with our comprehensive
-              tools
+            <p className="mx-auto max-w-3xl text-foreground/70">
+              Streamline your school's fee collection process with our
+              comprehensive suite of tools designed to save time and reduce
+              administrative burden.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                className="feature-card"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="bg-primary/10 p-3 rounded-full w-fit mb-4">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-400">{feature.description}</p>
-              </motion.div>
-            ))}
+
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {/* Feature 1 */}
+            <div className="rounded-xl border border-border bg-card p-6 transition-all hover:shadow-md">
+              <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+                <CreditCard className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Multi-channel Payments</h3>
+              <p className="text-foreground/70">
+                Accept payments via UPI, cards, net banking, and offline
+                methods. Give parents the flexibility they need.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="rounded-xl border border-border bg-card p-6 transition-all hover:shadow-md">
+              <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+                <BarChart3 className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Advanced Analytics</h3>
+              <p className="text-foreground/70">
+                Gain insights into collection patterns, defaulters, and
+                financial health with our comprehensive dashboards.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="rounded-xl border border-border bg-card p-6 transition-all hover:shadow-md">
+              <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+                <School className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold">
+                Fee Structure Management
+              </h3>
+              <p className="text-foreground/70">
+                Create and manage complex fee structures with multiple
+                components, discounts, and scholarships.
+              </p>
+            </div>
+
+            {/* Feature 4 */}
+            <div className="rounded-xl border border-border bg-card p-6 transition-all hover:shadow-md">
+              <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+                <UserCircle className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Parent Portal</h3>
+              <p className="text-foreground/70">
+                Provide parents with a dedicated portal to view fee details,
+                payment history, and make payments online.
+              </p>
+            </div>
+
+            {/* Feature 5 */}
+            <div className="rounded-xl border border-border bg-card p-6 transition-all hover:shadow-md">
+              <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+                <Wallet className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Automated Reminders</h3>
+              <p className="text-foreground/70">
+                Send automated payment reminders via SMS, email, and WhatsApp to
+                increase collection rates.
+              </p>
+            </div>
+
+            {/* Feature 6 */}
+            <div className="rounded-xl border border-border bg-card p-6 transition-all hover:shadow-md">
+              <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+                <BadgeCheck className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Instant Reconciliation</h3>
+              <p className="text-foreground/70">
+                Automatically reconcile payments with student records and
+                generate digital receipts instantly.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Dashboard Preview */}
-      <section
-        id="dashboard"
-        className="py-20 bg-gradient-to-b from-black to-[#111]"
-      >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Interactive Dashboard
+      {/* How It Works Section */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+              How Edviron Works
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Get a 360° view of your financial health with our beautiful and
-              intuitive dashboard
+            <p className="mx-auto max-w-3xl text-foreground/70">
+              A simple yet powerful workflow designed to simplify school fee
+              management
             </p>
           </div>
-          <motion.div
-            className="bg-dashboard-black rounded-3xl p-6 md:p-8 shadow-2xl mx-auto max-w-5xl"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-1/2">
-                <div className="bg-dashboard-black rounded-3xl p-4 border border-gray-800 mb-6">
-                  <h3 className="text-white text-lg font-bold mb-2">
-                    Increase your relative return by
-                  </h3>
-                  <div className="text-5xl font-extrabold text-white mb-4">
-                    3.5%
-                  </div>
-                  <div className="h-[150px] bg-dashboard-black relative overflow-hidden rounded-xl">
-                    {/* Chart visualization */}
-                    <div className="absolute bottom-0 left-0 right-0 h-3/4">
-                      <div className="absolute bottom-0 left-0 w-full h-1/4 bg-primary opacity-80 rounded-bl-xl"></div>
-                      <div className="absolute bottom-0 left-0 w-3/4 h-2/4 bg-primary/60 rounded-bl-xl"></div>
-                      <div className="absolute bottom-0 left-0 w-1/2 h-3/4 bg-primary/40 rounded-bl-xl"></div>
-                      <div className="absolute bottom-0 left-0 w-1/4 h-full bg-primary/20 rounded-bl-xl"></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-primary rounded-3xl p-4">
-                    <div className="text-2xl font-bold text-black mb-1">
-                      $125.43
-                    </div>
-                    <div className="text-black/80 flex items-center text-sm">
-                      <TrendingUp className="mr-1 h-4 w-4" />
-                      +$8.92
-                    </div>
-                    <div className="text-black/70 text-sm mt-2">
-                      Share's price rising
-                    </div>
-                  </div>
-                  <div className="bg-white rounded-3xl p-4">
-                    <div className="text-2xl font-bold text-black mb-1">
-                      567
-                    </div>
-                    <div className="text-primary flex items-center text-sm">
-                      <TrendingUp className="mr-1 h-4 w-4" />
-                      +5.237%
-                    </div>
-                    <div className="text-black/70 text-sm mt-2">
-                      Points changes
-                    </div>
-                  </div>
-                </div>
+
+          <TracingBeam className="py-8">
+            <div className="ml-2 md:ml-8 space-y-16">
+              <div className="relative pb-8">
+                <h3 className="text-xl font-bold mb-4">1. Setup Your School</h3>
+                <p className="max-w-xl">
+                  Configure your school's fee structure, academic year, student
+                  data, and payment preferences through our intuitive dashboard.
+                </p>
               </div>
-              <div className="md:w-1/2 space-y-4">
-                <div className="bg-dashboard-dark rounded-3xl p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="bg-primary/20 p-2 rounded-full mr-3">
-                      <BarChart3 className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="text-white font-bold text-lg">
-                      Savings Analytics
-                    </h3>
-                  </div>
-                  <div className="bg-primary rounded-3xl p-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div className="text-sm text-black/80">Cash</div>
-                        <div className="text-3xl font-extrabold text-black">
-                          816,754
-                        </div>
-                      </div>
-                      <div className="text-sm font-medium bg-black/10 px-2 py-1 rounded-full text-black">
-                        USD
-                      </div>
-                    </div>
-                    <div className="mt-2">
-                      <div className="text-3xl font-bold text-black">+38%</div>
-                      <div className="text-sm text-black/80">
-                        grow since last day
-                      </div>
-                    </div>
-                    <div className="mt-4 flex justify-between">
-                      <div className="h-8 w-8 bg-black/10 rounded-full"></div>
-                      <div className="h-10 w-10 bg-black/10 rounded-full"></div>
-                      <div className="h-12 w-12 bg-black/10 rounded-full"></div>
-                      <div className="h-14 w-14 bg-black/10 rounded-full"></div>
-                      <div className="h-16 w-16 bg-black/20 rounded-full"></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-100/10 backdrop-blur-sm rounded-3xl p-4">
-                    <div className="text-sm text-white/60 mb-1">Business</div>
-                    <div className="text-2xl font-bold text-white">520,470</div>
-                    <div className="text-xl font-bold text-primary mt-2">
-                      +17%
-                    </div>
-                  </div>
-                  <div className="bg-gray-100/10 backdrop-blur-sm rounded-3xl p-4">
-                    <div className="text-sm text-white/60 mb-1">Credit</div>
-                    <div className="text-2xl font-bold text-white">520,345</div>
-                    <div className="text-xl font-bold text-primary mt-2">
-                      +15%
-                    </div>
-                  </div>
-                </div>
+
+              <div className="relative pb-8">
+                <h3 className="text-xl font-bold mb-4">
+                  2. Parents Receive Notifications
+                </h3>
+                <p className="max-w-xl">
+                  Parents get automated fee reminders via SMS, email, or
+                  WhatsApp with secure payment links for online payments.
+                </p>
+              </div>
+
+              <div className="relative pb-8">
+                <h3 className="text-xl font-bold mb-4">
+                  3. Multiple Payment Options
+                </h3>
+                <p className="max-w-xl">
+                  Parents can pay using UPI, cards, net banking, or offline
+                  methods at their convenience.
+                </p>
+              </div>
+
+              <div className="relative pb-8">
+                <h3 className="text-xl font-bold mb-4">
+                  4. Instant Reconciliation
+                </h3>
+                <p className="max-w-xl">
+                  Payments are automatically reconciled in real-time, and
+                  digital receipts are sent to parents instantly.
+                </p>
+              </div>
+
+              <div className="relative">
+                <h3 className="text-xl font-bold mb-4">
+                  5. Comprehensive Reports
+                </h3>
+                <p className="max-w-xl">
+                  Access detailed reports and analytics to track collection
+                  progress, identify defaulters, and make informed financial
+                  decisions.
+                </p>
               </div>
             </div>
-          </motion.div>
+          </TracingBeam>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 bg-[#111]">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              What Our Clients Say
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Hear from our satisfied users who have transformed their financial
-              lives
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                className="testimonial-card"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
+      {/* CTA Section */}
+      <section className="bg-[#202020] py-16">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
+            <div>
+              <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
+                Ready to modernize your fee collection?
+              </h2>
+              <p className="max-w-2xl text-white/70">
+                Join 500+ schools already using Edviron to streamline their fee
+                management process.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              <HoverBorderGradient
+                className="border-transparent bg-white text-[#202020]"
+                gradientClassName="from-[#2BE82A] to-[#9BE49B]"
               >
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mr-3">
-                    <span className="text-primary font-bold">
-                      {testimonial.name.charAt(0)}
-                    </span>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold">
-                      {testimonial.name}
-                    </h4>
-                    <p className="text-gray-400 text-sm">{testimonial.title}</p>
-                  </div>
-                </div>
-                <div className="flex mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${
-                        i < testimonial.rating
-                          ? "text-primary"
-                          : "text-gray-600"
-                      }`}
-                      fill={i < testimonial.rating ? "#2BE82A" : "none"}
-                    />
-                  ))}
-                </div>
-                <p className="text-gray-300">{testimonial.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section
-        id="pricing"
-        className="py-20 bg-gradient-to-b from-[#111] to-black"
-      >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Simple, Transparent Pricing
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Choose the plan that fits your needs
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {plans.map((plan, index) => (
-              <motion.div
-                key={index}
-                className={`rounded-3xl p-6 ${
-                  plan.popular
-                    ? "border-2 border-primary relative"
-                    : "border border-gray-800"
-                }`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-primary text-black text-xs font-bold px-3 py-1 rounded-full">
-                      MOST POPULAR
-                    </span>
-                  </div>
-                )}
-                <h3 className="text-2xl font-bold text-white mb-2">
-                  {plan.name}
-                </h3>
-                <div className="mb-4">
-                  <span className="text-4xl font-extrabold text-white">
-                    ${plan.price}
-                  </span>
-                  <span className="text-gray-400">/month</span>
-                </div>
-                <p className="text-gray-400 mb-6">{plan.description}</p>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-300">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  className={`w-full py-3 rounded-full font-medium ${
-                    plan.popular
-                      ? "bg-primary text-black"
-                      : "bg-white text-black"
-                  }`}
-                >
+                <Link href="/signup" className="px-6 py-3">
                   Get Started
-                </button>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-primary py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-black mb-6">
-            Ready to transform your finances?
-          </h2>
-          <p className="text-black/80 text-lg max-w-2xl mx-auto mb-8">
-            Join thousands of users who are already managing their finances
-            better with our platform.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/register"
-              className="bg-black text-white font-medium rounded-full px-8 py-3 inline-flex items-center justify-center"
-            >
-              Get Started Now
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-            <Link
-              href="#features"
-              className="bg-transparent border-2 border-black text-black font-medium rounded-full px-8 py-3"
-            >
-              Learn More
-            </Link>
+                </Link>
+              </HoverBorderGradient>
+              <ButtonLink
+                href="/demo"
+                variant="outline"
+                className="border-white text-white hover:bg-white/10"
+              >
+                Book a Demo
+              </ButtonLink>
+            </div>
           </div>
         </div>
       </section>

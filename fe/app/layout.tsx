@@ -6,6 +6,9 @@ import { Navigation } from "@/components/ui/navigation";
 import "./globals.css";
 import ReactQueryProvider from "@/components/providers/ReactQueryProvider";
 import { AuthProvider } from "@/lib/auth";
+import { Inter } from "next/font/google";
+import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/footer";
 
 const gilroy = localFont({
   src: [
@@ -63,9 +66,12 @@ const gilroy = localFont({
   variable: "--font-gilroy",
 });
 
+const inter = Inter({ subsets: ["latin"] });
+
 export const metadata: Metadata = {
-  title: "Edviron Payment System",
-  description: "Process and manage payments for your school",
+  title: "Edviron - School Fee Management System",
+  description:
+    "Simplify school fee collections and financial management with Edviron",
 };
 
 export default function RootLayout({
@@ -84,7 +90,9 @@ export default function RootLayout({
               enableSystem={false}
               disableTransitionOnChange
             >
-              {children}
+              <div className="min-h-screen flex flex-col">
+                <main className="flex-grow">{children}</main>
+              </div>
             </ThemeProvider>
           </AuthProvider>
         </ReactQueryProvider>

@@ -49,8 +49,12 @@ export function Sidebar() {
     <>
       <div className="md:hidden flex items-center justify-between p-4 bg-black border-b border-muted">
         <div className="flex items-center space-x-2">
-          <CreditCard className="h-6 w-6 text-primary" />
-          <span className="font-bold">Payment Gateway</span>
+          <img
+            src="/just_logo_2.png"
+            alt="Edviron Logo"
+            className="h-12 w-12 "
+          />
+          <span className="font-bold text-2xl">Dashboard</span>
         </div>
         <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -65,8 +69,12 @@ export function Sidebar() {
       >
         <div className="flex flex-col h-full p-4">
           <div className="flex items-center space-x-2 mb-8 mt-2">
-            <CreditCard className="h-6 w-6 text-primary" />
-            <span className="font-bold">Payment Gateway</span>
+            <img
+              src="/just_logo_2.png"
+              alt="Edviron Logo"
+              className="h-12 w-12"
+            />
+            <span className="font-bold text-2xl">Dashboard</span>
           </div>
 
           <nav className="space-y-2 flex-1">
