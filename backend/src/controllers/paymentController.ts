@@ -763,7 +763,7 @@ export const getUserTransactions = async (req: Request, res: Response) => {
       select: { id: true }
     });
     
-    const orderIds = userOrders.map(order => order.id);
+    const orderIds = userOrders.map((order: any) => order.id);
     
     if (orderIds.length === 0) {
       return res.status(200).json({

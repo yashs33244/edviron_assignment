@@ -11,6 +11,9 @@ RUN bun install
 # Copy application code (with proper .dockerignore this will be efficient)
 COPY . .
 
+# Generate Prisma client
+RUN bunx prisma generate
+
 # Set environment variables
 ENV PG_KEY=edvtest01 \
     PG_API_KEY= \
