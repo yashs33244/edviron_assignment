@@ -1,40 +1,15 @@
-FROM oven/bun:1 as builder
-
-WORKDIR /app
-
-# Install OpenSSL
-RUN apt-get update -y && apt-get install -y openssl
-
-# Copy package.json first to leverage Docker caching
-COPY package.json ./
-
-# Install all dependencies including devDependencies for build steps
-RUN bun install
-
-# Copy application code
-COPY . .
-
-# Generate Prisma client and build the TypeScript code
-RUN bun prisma generate && bun run build
-
-# Production stage
 FROM oven/bun:1
 
 WORKDIR /app
 
-# Install OpenSSL in the final image
-RUN apt-get update -y && apt-get install -y openssl
-
-# Copy package.json
+# Copy package.json first to leverage Docker caching
 COPY package.json ./
 
-# Install only production dependencies
-RUN bun install --production
+# Install dependencies
+RUN bun install
 
-# Copy built app from builder stage
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/generated ./generated
+# Copy application code (with proper .dockerignore this will be efficient)
+COPY . .
 
 # Define build-time arguments with default values
 ARG PG_KEY=edvtest01
@@ -60,4 +35,4 @@ ENV PG_KEY=$PG_KEY \
 EXPOSE $PORT
 
 # Start the application
-CMD ["bun", "start"] 
+CMD ["node", "dist/index.js"] 
