@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 // Load environment variables
 dotenv.config();
-
+const API_URL = process.env.API_URL || "https://edbe.yashprojects.online";
 // Create a webhook simulator
 async function simulateWebhook() {
   try {
@@ -44,7 +44,7 @@ async function simulateWebhook() {
 
     // Post to webhook endpoint
     const response = await axios.post(
-      'http://localhost:4000/api/payments/webhook',
+      `${API_URL}/api/payments/webhook`,
       webhookPayload,
       {
         headers: {

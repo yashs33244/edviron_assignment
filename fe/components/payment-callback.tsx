@@ -51,7 +51,7 @@ export default function PaymentCallback() {
   const notifyWebhook = async (paymentData: any) => {
     try {
       const API_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+        process.env.NEXT_PUBLIC_API_URL || "https://edbe.yashprojects.online";
       addLog(
         `Notifying webhook about successful payment: ${JSON.stringify(
           paymentData
