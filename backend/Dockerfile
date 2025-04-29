@@ -8,17 +8,22 @@ WORKDIR /app
 # Copy package.json first to leverage Docker caching
 COPY package.json ./
 
-# Install dependencies and explicitly add bcryptjs type definitions
-RUN bun install && bun add -d @types/bcryptjs@3.0.0
+# Install dependencies with npm (bun seems to have issues with type definitions)
+RUN apt-get update -y && apt-get install -y npm
+RUN npm install
+RUN npm install -D @types/bcryptjs@3.0.0
 
-# Copy application code (with proper .dockerignore this will be efficient)
+# Copy application code
 COPY . .
 
+# Create types directory and add bcryptjs.d.ts if it doesn't exist
+RUN mkdir -p types && echo 'declare module "bcryptjs";' > types/bcryptjs.d.ts
+
 # Generate Prisma client
-RUN bunx prisma generate
+RUN npx prisma generate
 
 # Build TypeScript
-RUN bun run build
+RUN npm run build
 
 # Define build-time arguments with default values
 ARG PG_KEY=edvtest01
@@ -44,4 +49,4 @@ ENV PG_KEY=$PG_KEY \
 EXPOSE $PORT
 
 # Start the application
-CMD ["bun", "dist/index.js"] 
+CMD ["node", "dist/index.js"] 
