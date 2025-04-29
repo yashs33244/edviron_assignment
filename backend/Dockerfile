@@ -8,8 +8,8 @@ WORKDIR /app
 # Copy package.json first to leverage Docker caching
 COPY package.json ./
 
-# Install dependencies
-RUN bun install
+# Install dependencies and explicitly add bcryptjs type definitions
+RUN bun install && bun add -d @types/bcryptjs@3.0.0
 
 # Copy application code (with proper .dockerignore this will be efficient)
 COPY . .
