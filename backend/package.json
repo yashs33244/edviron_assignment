@@ -12,7 +12,11 @@
     "seed": "ts-node src/seed.ts",
     "clear-orders": "ts-node src/scripts/clearOrders.ts"
   },
-  "keywords": ["payment", "api", "gateway"],
+  "keywords": [
+    "payment",
+    "api",
+    "gateway"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -24,6 +28,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
+    "nodemailer": "^6.10.1",
     "prisma": "^5.11.0"
   },
   "devDependencies": {
@@ -33,6 +38,7 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.10.4",
+    "@types/nodemailer": "^6.4.17",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

@@ -29,11 +29,6 @@ const navItems = [
     icon: User,
   },
   {
-    title: "All Transactions",
-    href: "/transactions",
-    icon: CreditCard,
-  },
-  {
     title: "School Transactions",
     href: "/transactions/school",
     icon: School,

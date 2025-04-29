@@ -29,8 +29,12 @@ api.interceptors.request.use(
 
 // Auth API
 export const login = async (email: string, password: string) => {
-  const response = await api.post("/api/auth/login", { email, password })
-  return response.data
+  try {
+    const response = await api.post("/api/auth/login", { email, password });
+    return response.data; // This will contain token, user or needsVerification
+  } catch (error) {
+    throw error;
+  }
 }
 
 export const register = async (name: string, email: string, password: string) => {
@@ -50,7 +54,7 @@ export const getTransactions = async (page = 1, limit = 10, filters: any = {}) =
     limit: limit.toString(),
     ...filters,
   })
-  const response = await api.get(`/api/payments/transactions?${params}`)
+  const response = await api.get(`/api/payments/user-transactions?${params}`)
   return response.data
 }
 
@@ -282,5 +286,32 @@ export const createPayment = async (paymentData: {
     throw new Error(errorMessage)
   }
 }
+
+// Password reset
+export const forgotPassword = async (email: string) => {
+  const response = await api.post("/api/auth/forgot-password", { email });
+  return response.data;
+};
+
+export const resetPassword = async (token: string, password: string) => {
+  const response = await api.post("/api/auth/reset-password", { token, password });
+  return response.data;
+};
+
+export const verifyResetToken = async (token: string) => {
+  const response = await api.get(`/api/auth/verify-reset-token/${token}`);
+  return response.data;
+};
+
+// OTP verification
+export const verifyOTP = async (email: string, otp: string) => {
+  const response = await api.post("/api/auth/verify-otp", { email, otp });
+  return response.data;
+};
+
+export const resendOTP = async (email: string) => {
+  const response = await api.post("/api/auth/resend-otp", { email });
+  return response.data;
+};
 
 export default api

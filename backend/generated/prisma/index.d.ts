@@ -43,10 +43,20 @@ export type WebhookLog = $Result.DefaultSelection<Prisma.$WebhookLogPayload>
  * 
  */
 export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
+/**
+ * Model PasswordReset
+ * 
+ */
+export type PasswordReset = $Result.DefaultSelection<Prisma.$PasswordResetPayload>
+/**
+ * Model PasswordResetAttempt
+ * 
+ */
+export type PasswordResetAttempt = $Result.DefaultSelection<Prisma.$PasswordResetAttemptPayload>
 
 /**
  * ##  Prisma Client ʲˢ
- *
+ * 
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
@@ -55,7 +65,7 @@ export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
  * const users = await prisma.user.findMany()
  * ```
  *
- *
+ * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
 export class PrismaClient<
@@ -67,7 +77,7 @@ export class PrismaClient<
 
     /**
    * ##  Prisma Client ʲˢ
-   *
+   * 
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
@@ -76,12 +86,12 @@ export class PrismaClient<
    * const users = await prisma.user.findMany()
    * ```
    *
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
    */
 
   constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
-  $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
+  $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): void;
 
   /**
    * Connect with the database
@@ -132,9 +142,7 @@ export class PrismaClient<
    */
   $runCommandRaw(command: Prisma.InputJsonObject): Prisma.PrismaPromise<Prisma.JsonObject>
 
-  $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
-    extArgs: ExtArgs
-  }>>
+  $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb, ExtArgs>
 
       /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -144,7 +152,7 @@ export class PrismaClient<
     * const users = await prisma.user.findMany()
     * ```
     */
-  get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+  get user(): Prisma.UserDelegate<ExtArgs>;
 
   /**
    * `prisma.order`: Exposes CRUD operations for the **Order** model.
@@ -154,7 +162,7 @@ export class PrismaClient<
     * const orders = await prisma.order.findMany()
     * ```
     */
-  get order(): Prisma.OrderDelegate<ExtArgs, ClientOptions>;
+  get order(): Prisma.OrderDelegate<ExtArgs>;
 
   /**
    * `prisma.orderStatus`: Exposes CRUD operations for the **OrderStatus** model.
@@ -164,7 +172,7 @@ export class PrismaClient<
     * const orderStatuses = await prisma.orderStatus.findMany()
     * ```
     */
-  get orderStatus(): Prisma.OrderStatusDelegate<ExtArgs, ClientOptions>;
+  get orderStatus(): Prisma.OrderStatusDelegate<ExtArgs>;
 
   /**
    * `prisma.webhookLog`: Exposes CRUD operations for the **WebhookLog** model.
@@ -174,7 +182,7 @@ export class PrismaClient<
     * const webhookLogs = await prisma.webhookLog.findMany()
     * ```
     */
-  get webhookLog(): Prisma.WebhookLogDelegate<ExtArgs, ClientOptions>;
+  get webhookLog(): Prisma.WebhookLogDelegate<ExtArgs>;
 
   /**
    * `prisma.transaction`: Exposes CRUD operations for the **Transaction** model.
@@ -184,7 +192,27 @@ export class PrismaClient<
     * const transactions = await prisma.transaction.findMany()
     * ```
     */
-  get transaction(): Prisma.TransactionDelegate<ExtArgs, ClientOptions>;
+  get transaction(): Prisma.TransactionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.passwordReset`: Exposes CRUD operations for the **PasswordReset** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PasswordResets
+    * const passwordResets = await prisma.passwordReset.findMany()
+    * ```
+    */
+  get passwordReset(): Prisma.PasswordResetDelegate<ExtArgs>;
+
+  /**
+   * `prisma.passwordResetAttempt`: Exposes CRUD operations for the **PasswordResetAttempt** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PasswordResetAttempts
+    * const passwordResetAttempts = await prisma.passwordResetAttempt.findMany()
+    * ```
+    */
+  get passwordResetAttempt(): Prisma.PasswordResetAttemptDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -205,6 +233,7 @@ export namespace Prisma {
   export import PrismaClientRustPanicError = runtime.PrismaClientRustPanicError
   export import PrismaClientInitializationError = runtime.PrismaClientInitializationError
   export import PrismaClientValidationError = runtime.PrismaClientValidationError
+  export import NotFoundError = runtime.NotFoundError
 
   /**
    * Re-export of sql-template-tag
@@ -225,7 +254,7 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Metrics
+   * Metrics 
    */
   export type Metrics = runtime.Metrics
   export type Metric<T> = runtime.Metric<T>
@@ -243,14 +272,14 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.6.0
-   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+   * Prisma Client JS version: 5.22.0
+   * Query Engine version: 605197351a3c8bdd595af2d2a9bc3025bca48ea2
    */
   export type PrismaVersion = {
     client: string
   }
 
-  export const prismaVersion: PrismaVersion
+  export const prismaVersion: PrismaVersion 
 
   /**
    * Utility Types
@@ -266,15 +295,15 @@ export namespace Prisma {
 
   /**
    * Types of the values used to represent different kinds of `null` values when working with JSON fields.
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   namespace NullTypes {
     /**
     * Type of `Prisma.DbNull`.
-    *
+    * 
     * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
-    *
+    * 
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class DbNull {
@@ -284,9 +313,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.JsonNull`.
-    *
+    * 
     * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
-    *
+    * 
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class JsonNull {
@@ -296,9 +325,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.AnyNull`.
-    *
+    * 
     * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
-    *
+    * 
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class AnyNull {
@@ -309,21 +338,21 @@ export namespace Prisma {
 
   /**
    * Helper for filtering JSON entries that have `null` on the database (empty on the db)
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const DbNull: NullTypes.DbNull
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const JsonNull: NullTypes.JsonNull
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const AnyNull: NullTypes.AnyNull
@@ -511,7 +540,7 @@ export namespace Prisma {
   type AtLeast<O extends object, K extends string> = NoExpand<
     O extends unknown
     ? | (K extends keyof O ? { [P in K]: O[P] } & O : O)
-      | {[P in keyof O as P extends K ? P : never]-?: O[P]} & O
+      | {[P in keyof O as P extends K ? K : never]-?: O[P]} & O
     : never>;
 
   type _Strict<U, _U = U> = U extends unknown ? U & OptionalFlat<_Record<Exclude<Keys<_U>, keyof U>, never>> : never;
@@ -629,7 +658,9 @@ export namespace Prisma {
     Order: 'Order',
     OrderStatus: 'OrderStatus',
     WebhookLog: 'WebhookLog',
-    Transaction: 'Transaction'
+    Transaction: 'Transaction',
+    PasswordReset: 'PasswordReset',
+    PasswordResetAttempt: 'PasswordResetAttempt'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -639,16 +670,13 @@ export namespace Prisma {
     db?: Datasource
   }
 
-  interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
-    returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
+  interface TypeMapCb extends $Utils.Fn<{extArgs: $Extensions.InternalArgs, clientOptions: PrismaClientOptions }, $Utils.Record<string, any>> {
+    returns: Prisma.TypeMap<this['params']['extArgs'], this['params']['clientOptions']>
   }
 
-  export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> = {
-    globalOmitOptions: {
-      omit: GlobalOmitOptions
-    }
+  export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "order" | "orderStatus" | "webhookLog" | "transaction"
+      modelProps: "user" | "order" | "orderStatus" | "webhookLog" | "transaction" | "passwordReset" | "passwordResetAttempt"
       txIsolationLevel: never
     }
     model: {
@@ -1022,6 +1050,154 @@ export namespace Prisma {
           }
         }
       }
+      PasswordReset: {
+        payload: Prisma.$PasswordResetPayload<ExtArgs>
+        fields: Prisma.PasswordResetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PasswordResetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PasswordResetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          findFirst: {
+            args: Prisma.PasswordResetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PasswordResetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          findMany: {
+            args: Prisma.PasswordResetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>[]
+          }
+          create: {
+            args: Prisma.PasswordResetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          createMany: {
+            args: Prisma.PasswordResetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PasswordResetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          update: {
+            args: Prisma.PasswordResetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          deleteMany: {
+            args: Prisma.PasswordResetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PasswordResetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PasswordResetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          aggregate: {
+            args: Prisma.PasswordResetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePasswordReset>
+          }
+          groupBy: {
+            args: Prisma.PasswordResetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.PasswordResetFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.PasswordResetAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.PasswordResetCountArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetCountAggregateOutputType> | number
+          }
+        }
+      }
+      PasswordResetAttempt: {
+        payload: Prisma.$PasswordResetAttemptPayload<ExtArgs>
+        fields: Prisma.PasswordResetAttemptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PasswordResetAttemptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetAttemptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PasswordResetAttemptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetAttemptPayload>
+          }
+          findFirst: {
+            args: Prisma.PasswordResetAttemptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetAttemptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PasswordResetAttemptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetAttemptPayload>
+          }
+          findMany: {
+            args: Prisma.PasswordResetAttemptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetAttemptPayload>[]
+          }
+          create: {
+            args: Prisma.PasswordResetAttemptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetAttemptPayload>
+          }
+          createMany: {
+            args: Prisma.PasswordResetAttemptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PasswordResetAttemptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetAttemptPayload>
+          }
+          update: {
+            args: Prisma.PasswordResetAttemptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetAttemptPayload>
+          }
+          deleteMany: {
+            args: Prisma.PasswordResetAttemptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PasswordResetAttemptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PasswordResetAttemptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetAttemptPayload>
+          }
+          aggregate: {
+            args: Prisma.PasswordResetAttemptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePasswordResetAttempt>
+          }
+          groupBy: {
+            args: Prisma.PasswordResetAttemptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetAttemptGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.PasswordResetAttemptFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.PasswordResetAttemptAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.PasswordResetAttemptCountArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetAttemptCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1076,29 +1252,8 @@ export namespace Prisma {
       maxWait?: number
       timeout?: number
     }
-    /**
-     * Global configuration for omitting model fields by default.
-     * 
-     * @example
-     * ```
-     * const prisma = new PrismaClient({
-     *   omit: {
-     *     user: {
-     *       password: true
-     *     }
-     *   }
-     * })
-     * ```
-     */
-    omit?: Prisma.GlobalOmitConfig
   }
-  export type GlobalOmitConfig = {
-    user?: UserOmit
-    order?: OrderOmit
-    orderStatus?: OrderStatusOmit
-    webhookLog?: WebhookLogOmit
-    transaction?: TransactionOmit
-  }
+
 
   /* Types for Logging */
   export type LogLevel = 'info' | 'query' | 'warn' | 'error'
@@ -1139,7 +1294,6 @@ export namespace Prisma {
     | 'createManyAndReturn'
     | 'update'
     | 'updateMany'
-    | 'updateManyAndReturn'
     | 'upsert'
     | 'delete'
     | 'deleteMany'
@@ -1237,14 +1391,12 @@ export namespace Prisma {
   }, ExtArgs["result"]["studentInfo"]>
 
 
-
   export type StudentInfoSelectScalar = {
     name?: boolean
     id?: boolean
     email?: boolean
   }
 
-  export type StudentInfoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"name" | "id" | "email", ExtArgs["result"]["studentInfo"]>
 
   export type $StudentInfoPayload = {
     name: "StudentInfo"
@@ -1265,7 +1417,7 @@ export namespace Prisma {
 
   /**
    * Fields of the StudentInfo model
-   */
+   */ 
   interface StudentInfoFieldRefs {
     readonly name: FieldRef<"StudentInfo", 'String'>
     readonly id: FieldRef<"StudentInfo", 'String'>
@@ -1282,10 +1434,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the StudentInfo
      */
     select?: StudentInfoSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the StudentInfo
-     */
-    omit?: StudentInfoOmit<ExtArgs> | null
   }
 
 
@@ -1305,6 +1453,9 @@ export namespace Prisma {
     password: string | null
     name: string | null
     role: string | null
+    isVerified: boolean | null
+    otp: string | null
+    otpExpiry: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1315,6 +1466,9 @@ export namespace Prisma {
     password: string | null
     name: string | null
     role: string | null
+    isVerified: boolean | null
+    otp: string | null
+    otpExpiry: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1325,6 +1479,9 @@ export namespace Prisma {
     password: number
     name: number
     role: number
+    isVerified: number
+    otp: number
+    otpExpiry: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1337,6 +1494,9 @@ export namespace Prisma {
     password?: true
     name?: true
     role?: true
+    isVerified?: true
+    otp?: true
+    otpExpiry?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1347,6 +1507,9 @@ export namespace Prisma {
     password?: true
     name?: true
     role?: true
+    isVerified?: true
+    otp?: true
+    otpExpiry?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1357,6 +1520,9 @@ export namespace Prisma {
     password?: true
     name?: true
     role?: true
+    isVerified?: true
+    otp?: true
+    otpExpiry?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1440,6 +1606,9 @@ export namespace Prisma {
     password: string
     name: string
     role: string
+    isVerified: boolean
+    otp: string | null
+    otpExpiry: Date | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1467,12 +1636,14 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     role?: boolean
+    isVerified?: boolean
+    otp?: boolean
+    otpExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     orders?: boolean | User$ordersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
-
 
 
   export type UserSelectScalar = {
@@ -1481,11 +1652,13 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     role?: boolean
+    isVerified?: boolean
+    otp?: boolean
+    otpExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orders?: boolean | User$ordersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1502,6 +1675,9 @@ export namespace Prisma {
       password: string
       name: string
       role: string
+      isVerified: boolean
+      otp: string | null
+      otpExpiry: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -1510,12 +1686,12 @@ export namespace Prisma {
 
   type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
 
-  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: UserCountAggregateInputType | true
     }
 
-  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
     /**
      * Find zero or one User that matches the filter.
@@ -1528,10 +1704,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one User that matches the filter or throw an error with `error.code='P2025'`
+     * Find one User that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
      * @example
@@ -1542,7 +1718,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first User that matches the filter.
@@ -1557,7 +1733,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first User that matches the filter or
@@ -1573,7 +1749,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more Users that matches the filter.
@@ -1591,7 +1767,7 @@ export namespace Prisma {
      * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a User.
@@ -1605,7 +1781,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many Users.
@@ -1633,7 +1809,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one User.
@@ -1650,7 +1826,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more Users.
@@ -1702,14 +1878,14 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
     /**
      * Find zero or more Users that matches the filter.
      * @param {UserFindRawArgs} args - Select which filters you would like to apply.
      * @example
      * const user = await prisma.user.findRaw({
-     *   filter: { age: { $gt: 25 } }
+     *   filter: { age: { $gt: 25 } } 
      * })
      */
     findRaw(args?: UserFindRawArgs): Prisma.PrismaPromise<JsonObject>
@@ -1865,9 +2041,9 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1895,13 +2071,16 @@ export namespace Prisma {
 
   /**
    * Fields of the User model
-   */
+   */ 
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'String'>
+    readonly isVerified: FieldRef<"User", 'Boolean'>
+    readonly otp: FieldRef<"User", 'String'>
+    readonly otpExpiry: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -1916,10 +2095,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -1939,10 +2114,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -1960,10 +2131,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2013,10 +2180,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2065,10 +2228,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2112,10 +2271,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2144,10 +2299,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2173,10 +2324,6 @@ export namespace Prisma {
      * Filter which Users to update
      */
     where?: UserWhereInput
-    /**
-     * Limit how many Users to update.
-     */
-    limit?: number
   }
 
   /**
@@ -2187,10 +2334,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2218,10 +2361,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2239,10 +2378,6 @@ export namespace Prisma {
      * Filter which Users to delete
      */
     where?: UserWhereInput
-    /**
-     * Limit how many Users to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -2282,10 +2417,6 @@ export namespace Prisma {
      */
     select?: OrderSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
@@ -2305,10 +2436,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2518,7 +2645,6 @@ export namespace Prisma {
   }, ExtArgs["result"]["order"]>
 
 
-
   export type OrderSelectScalar = {
     id?: boolean
     school_id?: boolean
@@ -2531,7 +2657,6 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "school_id" | "trustee_id" | "student_info" | "gateway_name" | "custom_order_id" | "collect_request_id" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     orderStatus?: boolean | Order$orderStatusArgs<ExtArgs>
@@ -2561,12 +2686,12 @@ export namespace Prisma {
 
   type OrderGetPayload<S extends boolean | null | undefined | OrderDefaultArgs> = $Result.GetResult<Prisma.$OrderPayload, S>
 
-  type OrderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type OrderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<OrderFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: OrderCountAggregateInputType | true
     }
 
-  export interface OrderDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface OrderDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Order'], meta: { name: 'Order' } }
     /**
      * Find zero or one Order that matches the filter.
@@ -2579,10 +2704,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends OrderFindUniqueArgs>(args: SelectSubset<T, OrderFindUniqueArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends OrderFindUniqueArgs>(args: SelectSubset<T, OrderFindUniqueArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Order that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Order that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {OrderFindUniqueOrThrowArgs} args - Arguments to find a Order
      * @example
@@ -2593,7 +2718,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends OrderFindUniqueOrThrowArgs>(args: SelectSubset<T, OrderFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends OrderFindUniqueOrThrowArgs>(args: SelectSubset<T, OrderFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first Order that matches the filter.
@@ -2608,7 +2733,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends OrderFindFirstArgs>(args?: SelectSubset<T, OrderFindFirstArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends OrderFindFirstArgs>(args?: SelectSubset<T, OrderFindFirstArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first Order that matches the filter or
@@ -2624,7 +2749,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends OrderFindFirstOrThrowArgs>(args?: SelectSubset<T, OrderFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends OrderFindFirstOrThrowArgs>(args?: SelectSubset<T, OrderFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more Orders that matches the filter.
@@ -2642,7 +2767,7 @@ export namespace Prisma {
      * const orderWithIdOnly = await prisma.order.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends OrderFindManyArgs>(args?: SelectSubset<T, OrderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends OrderFindManyArgs>(args?: SelectSubset<T, OrderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a Order.
@@ -2656,7 +2781,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends OrderCreateArgs>(args: SelectSubset<T, OrderCreateArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends OrderCreateArgs>(args: SelectSubset<T, OrderCreateArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many Orders.
@@ -2684,7 +2809,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends OrderDeleteArgs>(args: SelectSubset<T, OrderDeleteArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends OrderDeleteArgs>(args: SelectSubset<T, OrderDeleteArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one Order.
@@ -2701,7 +2826,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends OrderUpdateArgs>(args: SelectSubset<T, OrderUpdateArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends OrderUpdateArgs>(args: SelectSubset<T, OrderUpdateArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more Orders.
@@ -2753,14 +2878,14 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends OrderUpsertArgs>(args: SelectSubset<T, OrderUpsertArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends OrderUpsertArgs>(args: SelectSubset<T, OrderUpsertArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
     /**
      * Find zero or more Orders that matches the filter.
      * @param {OrderFindRawArgs} args - Select which filters you would like to apply.
      * @example
      * const order = await prisma.order.findRaw({
-     *   filter: { age: { $gt: 25 } }
+     *   filter: { age: { $gt: 25 } } 
      * })
      */
     findRaw(args?: OrderFindRawArgs): Prisma.PrismaPromise<JsonObject>
@@ -2916,10 +3041,10 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__OrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__OrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    orderStatus<T extends Order$orderStatusArgs<ExtArgs> = {}>(args?: Subset<T, Order$orderStatusArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    orderStatus<T extends Order$orderStatusArgs<ExtArgs> = {}>(args?: Subset<T, Order$orderStatusArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2947,7 +3072,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Order model
-   */
+   */ 
   interface OrderFieldRefs {
     readonly id: FieldRef<"Order", 'String'>
     readonly school_id: FieldRef<"Order", 'String'>
@@ -2971,10 +3096,6 @@ export namespace Prisma {
      */
     select?: OrderSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
@@ -2993,10 +3114,6 @@ export namespace Prisma {
      */
     select?: OrderSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
@@ -3014,10 +3131,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Order
      */
     select?: OrderSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3067,10 +3180,6 @@ export namespace Prisma {
      */
     select?: OrderSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
@@ -3119,10 +3228,6 @@ export namespace Prisma {
      */
     select?: OrderSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
@@ -3166,10 +3271,6 @@ export namespace Prisma {
      */
     select?: OrderSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
@@ -3198,10 +3299,6 @@ export namespace Prisma {
      */
     select?: OrderSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
@@ -3227,10 +3324,6 @@ export namespace Prisma {
      * Filter which Orders to update
      */
     where?: OrderWhereInput
-    /**
-     * Limit how many Orders to update.
-     */
-    limit?: number
   }
 
   /**
@@ -3241,10 +3334,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Order
      */
     select?: OrderSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3272,10 +3361,6 @@ export namespace Prisma {
      */
     select?: OrderSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
@@ -3293,10 +3378,6 @@ export namespace Prisma {
      * Filter which Orders to delete
      */
     where?: OrderWhereInput
-    /**
-     * Limit how many Orders to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -3336,10 +3417,6 @@ export namespace Prisma {
      */
     select?: OrderStatusSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderStatusInclude<ExtArgs> | null
@@ -3354,10 +3431,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Order
      */
     select?: OrderSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3635,7 +3708,6 @@ export namespace Prisma {
   }, ExtArgs["result"]["orderStatus"]>
 
 
-
   export type OrderStatusSelectScalar = {
     id?: boolean
     collect_id?: boolean
@@ -3652,7 +3724,6 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type OrderStatusOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "collect_id" | "order_amount" | "transaction_amount" | "payment_mode" | "payment_details" | "bank_reference" | "payment_message" | "status" | "error_message" | "payment_time" | "createdAt" | "updatedAt", ExtArgs["result"]["orderStatus"]>
   export type OrderStatusInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }
@@ -3682,12 +3753,12 @@ export namespace Prisma {
 
   type OrderStatusGetPayload<S extends boolean | null | undefined | OrderStatusDefaultArgs> = $Result.GetResult<Prisma.$OrderStatusPayload, S>
 
-  type OrderStatusCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrderStatusFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type OrderStatusCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<OrderStatusFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: OrderStatusCountAggregateInputType | true
     }
 
-  export interface OrderStatusDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface OrderStatusDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OrderStatus'], meta: { name: 'OrderStatus' } }
     /**
      * Find zero or one OrderStatus that matches the filter.
@@ -3700,10 +3771,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends OrderStatusFindUniqueArgs>(args: SelectSubset<T, OrderStatusFindUniqueArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends OrderStatusFindUniqueArgs>(args: SelectSubset<T, OrderStatusFindUniqueArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one OrderStatus that matches the filter or throw an error with `error.code='P2025'`
+     * Find one OrderStatus that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {OrderStatusFindUniqueOrThrowArgs} args - Arguments to find a OrderStatus
      * @example
@@ -3714,7 +3785,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends OrderStatusFindUniqueOrThrowArgs>(args: SelectSubset<T, OrderStatusFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends OrderStatusFindUniqueOrThrowArgs>(args: SelectSubset<T, OrderStatusFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first OrderStatus that matches the filter.
@@ -3729,7 +3800,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends OrderStatusFindFirstArgs>(args?: SelectSubset<T, OrderStatusFindFirstArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends OrderStatusFindFirstArgs>(args?: SelectSubset<T, OrderStatusFindFirstArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first OrderStatus that matches the filter or
@@ -3745,7 +3816,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends OrderStatusFindFirstOrThrowArgs>(args?: SelectSubset<T, OrderStatusFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends OrderStatusFindFirstOrThrowArgs>(args?: SelectSubset<T, OrderStatusFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more OrderStatuses that matches the filter.
@@ -3763,7 +3834,7 @@ export namespace Prisma {
      * const orderStatusWithIdOnly = await prisma.orderStatus.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends OrderStatusFindManyArgs>(args?: SelectSubset<T, OrderStatusFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends OrderStatusFindManyArgs>(args?: SelectSubset<T, OrderStatusFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a OrderStatus.
@@ -3777,7 +3848,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends OrderStatusCreateArgs>(args: SelectSubset<T, OrderStatusCreateArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends OrderStatusCreateArgs>(args: SelectSubset<T, OrderStatusCreateArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many OrderStatuses.
@@ -3805,7 +3876,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends OrderStatusDeleteArgs>(args: SelectSubset<T, OrderStatusDeleteArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends OrderStatusDeleteArgs>(args: SelectSubset<T, OrderStatusDeleteArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one OrderStatus.
@@ -3822,7 +3893,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends OrderStatusUpdateArgs>(args: SelectSubset<T, OrderStatusUpdateArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends OrderStatusUpdateArgs>(args: SelectSubset<T, OrderStatusUpdateArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more OrderStatuses.
@@ -3874,14 +3945,14 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends OrderStatusUpsertArgs>(args: SelectSubset<T, OrderStatusUpsertArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends OrderStatusUpsertArgs>(args: SelectSubset<T, OrderStatusUpsertArgs<ExtArgs>>): Prisma__OrderStatusClient<$Result.GetResult<Prisma.$OrderStatusPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
     /**
      * Find zero or more OrderStatuses that matches the filter.
      * @param {OrderStatusFindRawArgs} args - Select which filters you would like to apply.
      * @example
      * const orderStatus = await prisma.orderStatus.findRaw({
-     *   filter: { age: { $gt: 25 } }
+     *   filter: { age: { $gt: 25 } } 
      * })
      */
     findRaw(args?: OrderStatusFindRawArgs): Prisma.PrismaPromise<JsonObject>
@@ -4037,9 +4108,9 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__OrderStatusClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__OrderStatusClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4067,7 +4138,7 @@ export namespace Prisma {
 
   /**
    * Fields of the OrderStatus model
-   */
+   */ 
   interface OrderStatusFieldRefs {
     readonly id: FieldRef<"OrderStatus", 'String'>
     readonly collect_id: FieldRef<"OrderStatus", 'String'>
@@ -4095,10 +4166,6 @@ export namespace Prisma {
      */
     select?: OrderStatusSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderStatusInclude<ExtArgs> | null
@@ -4117,10 +4184,6 @@ export namespace Prisma {
      */
     select?: OrderStatusSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderStatusInclude<ExtArgs> | null
@@ -4138,10 +4201,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the OrderStatus
      */
     select?: OrderStatusSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -4191,10 +4250,6 @@ export namespace Prisma {
      */
     select?: OrderStatusSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderStatusInclude<ExtArgs> | null
@@ -4243,10 +4298,6 @@ export namespace Prisma {
      */
     select?: OrderStatusSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderStatusInclude<ExtArgs> | null
@@ -4290,10 +4341,6 @@ export namespace Prisma {
      */
     select?: OrderStatusSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderStatusInclude<ExtArgs> | null
@@ -4322,10 +4369,6 @@ export namespace Prisma {
      */
     select?: OrderStatusSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderStatusInclude<ExtArgs> | null
@@ -4351,10 +4394,6 @@ export namespace Prisma {
      * Filter which OrderStatuses to update
      */
     where?: OrderStatusWhereInput
-    /**
-     * Limit how many OrderStatuses to update.
-     */
-    limit?: number
   }
 
   /**
@@ -4365,10 +4404,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the OrderStatus
      */
     select?: OrderStatusSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -4396,10 +4431,6 @@ export namespace Prisma {
      */
     select?: OrderStatusSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: OrderStatusInclude<ExtArgs> | null
@@ -4417,10 +4448,6 @@ export namespace Prisma {
      * Filter which OrderStatuses to delete
      */
     where?: OrderStatusWhereInput
-    /**
-     * Limit how many OrderStatuses to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -4459,10 +4486,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the OrderStatus
      */
     select?: OrderStatusSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrderStatus
-     */
-    omit?: OrderStatusOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -4625,7 +4648,6 @@ export namespace Prisma {
   }, ExtArgs["result"]["webhookLog"]>
 
 
-
   export type WebhookLogSelectScalar = {
     id?: boolean
     payload?: boolean
@@ -4633,7 +4655,6 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type WebhookLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "payload" | "status" | "createdAt", ExtArgs["result"]["webhookLog"]>
 
   export type $WebhookLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "WebhookLog"
@@ -4649,12 +4670,12 @@ export namespace Prisma {
 
   type WebhookLogGetPayload<S extends boolean | null | undefined | WebhookLogDefaultArgs> = $Result.GetResult<Prisma.$WebhookLogPayload, S>
 
-  type WebhookLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<WebhookLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type WebhookLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<WebhookLogFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: WebhookLogCountAggregateInputType | true
     }
 
-  export interface WebhookLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface WebhookLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WebhookLog'], meta: { name: 'WebhookLog' } }
     /**
      * Find zero or one WebhookLog that matches the filter.
@@ -4667,10 +4688,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends WebhookLogFindUniqueArgs>(args: SelectSubset<T, WebhookLogFindUniqueArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends WebhookLogFindUniqueArgs>(args: SelectSubset<T, WebhookLogFindUniqueArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one WebhookLog that matches the filter or throw an error with `error.code='P2025'`
+     * Find one WebhookLog that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {WebhookLogFindUniqueOrThrowArgs} args - Arguments to find a WebhookLog
      * @example
@@ -4681,7 +4702,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends WebhookLogFindUniqueOrThrowArgs>(args: SelectSubset<T, WebhookLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends WebhookLogFindUniqueOrThrowArgs>(args: SelectSubset<T, WebhookLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first WebhookLog that matches the filter.
@@ -4696,7 +4717,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends WebhookLogFindFirstArgs>(args?: SelectSubset<T, WebhookLogFindFirstArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends WebhookLogFindFirstArgs>(args?: SelectSubset<T, WebhookLogFindFirstArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first WebhookLog that matches the filter or
@@ -4712,7 +4733,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends WebhookLogFindFirstOrThrowArgs>(args?: SelectSubset<T, WebhookLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends WebhookLogFindFirstOrThrowArgs>(args?: SelectSubset<T, WebhookLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more WebhookLogs that matches the filter.
@@ -4730,7 +4751,7 @@ export namespace Prisma {
      * const webhookLogWithIdOnly = await prisma.webhookLog.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends WebhookLogFindManyArgs>(args?: SelectSubset<T, WebhookLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends WebhookLogFindManyArgs>(args?: SelectSubset<T, WebhookLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a WebhookLog.
@@ -4744,7 +4765,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends WebhookLogCreateArgs>(args: SelectSubset<T, WebhookLogCreateArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends WebhookLogCreateArgs>(args: SelectSubset<T, WebhookLogCreateArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many WebhookLogs.
@@ -4772,7 +4793,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends WebhookLogDeleteArgs>(args: SelectSubset<T, WebhookLogDeleteArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends WebhookLogDeleteArgs>(args: SelectSubset<T, WebhookLogDeleteArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one WebhookLog.
@@ -4789,7 +4810,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends WebhookLogUpdateArgs>(args: SelectSubset<T, WebhookLogUpdateArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends WebhookLogUpdateArgs>(args: SelectSubset<T, WebhookLogUpdateArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more WebhookLogs.
@@ -4841,14 +4862,14 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends WebhookLogUpsertArgs>(args: SelectSubset<T, WebhookLogUpsertArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends WebhookLogUpsertArgs>(args: SelectSubset<T, WebhookLogUpsertArgs<ExtArgs>>): Prisma__WebhookLogClient<$Result.GetResult<Prisma.$WebhookLogPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
     /**
      * Find zero or more WebhookLogs that matches the filter.
      * @param {WebhookLogFindRawArgs} args - Select which filters you would like to apply.
      * @example
      * const webhookLog = await prisma.webhookLog.findRaw({
-     *   filter: { age: { $gt: 25 } }
+     *   filter: { age: { $gt: 25 } } 
      * })
      */
     findRaw(args?: WebhookLogFindRawArgs): Prisma.PrismaPromise<JsonObject>
@@ -5004,7 +5025,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__WebhookLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__WebhookLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5033,7 +5054,7 @@ export namespace Prisma {
 
   /**
    * Fields of the WebhookLog model
-   */
+   */ 
   interface WebhookLogFieldRefs {
     readonly id: FieldRef<"WebhookLog", 'String'>
     readonly payload: FieldRef<"WebhookLog", 'Json'>
@@ -5052,10 +5073,6 @@ export namespace Prisma {
      */
     select?: WebhookLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
-    /**
      * Filter, which WebhookLog to fetch.
      */
     where: WebhookLogWhereUniqueInput
@@ -5070,10 +5087,6 @@ export namespace Prisma {
      */
     select?: WebhookLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
-    /**
      * Filter, which WebhookLog to fetch.
      */
     where: WebhookLogWhereUniqueInput
@@ -5087,10 +5100,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the WebhookLog
      */
     select?: WebhookLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
     /**
      * Filter, which WebhookLog to fetch.
      */
@@ -5136,10 +5145,6 @@ export namespace Prisma {
      */
     select?: WebhookLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
-    /**
      * Filter, which WebhookLog to fetch.
      */
     where?: WebhookLogWhereInput
@@ -5184,10 +5189,6 @@ export namespace Prisma {
      */
     select?: WebhookLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
-    /**
      * Filter, which WebhookLogs to fetch.
      */
     where?: WebhookLogWhereInput
@@ -5227,10 +5228,6 @@ export namespace Prisma {
      */
     select?: WebhookLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
-    /**
      * The data needed to create a WebhookLog.
      */
     data: XOR<WebhookLogCreateInput, WebhookLogUncheckedCreateInput>
@@ -5255,10 +5252,6 @@ export namespace Prisma {
      */
     select?: WebhookLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
-    /**
      * The data needed to update a WebhookLog.
      */
     data: XOR<WebhookLogUpdateInput, WebhookLogUncheckedUpdateInput>
@@ -5280,10 +5273,6 @@ export namespace Prisma {
      * Filter which WebhookLogs to update
      */
     where?: WebhookLogWhereInput
-    /**
-     * Limit how many WebhookLogs to update.
-     */
-    limit?: number
   }
 
   /**
@@ -5294,10 +5283,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the WebhookLog
      */
     select?: WebhookLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
     /**
      * The filter to search for the WebhookLog to update in case it exists.
      */
@@ -5321,10 +5306,6 @@ export namespace Prisma {
      */
     select?: WebhookLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
-    /**
      * Filter which WebhookLog to delete.
      */
     where: WebhookLogWhereUniqueInput
@@ -5338,10 +5319,6 @@ export namespace Prisma {
      * Filter which WebhookLogs to delete
      */
     where?: WebhookLogWhereInput
-    /**
-     * Limit how many WebhookLogs to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -5380,10 +5357,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the WebhookLog
      */
     select?: WebhookLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WebhookLog
-     */
-    omit?: WebhookLogOmit<ExtArgs> | null
   }
 
 
@@ -5660,7 +5633,6 @@ export namespace Prisma {
   }, ExtArgs["result"]["transaction"]>
 
 
-
   export type TransactionSelectScalar = {
     id?: boolean
     order_id?: boolean
@@ -5678,7 +5650,6 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "order_id" | "school_id" | "student_id" | "amount" | "payment_mode" | "payment_details" | "bank_reference" | "payment_message" | "status" | "error_message" | "payment_time" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
 
   export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Transaction"
@@ -5704,12 +5675,12 @@ export namespace Prisma {
 
   type TransactionGetPayload<S extends boolean | null | undefined | TransactionDefaultArgs> = $Result.GetResult<Prisma.$TransactionPayload, S>
 
-  type TransactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<TransactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type TransactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<TransactionFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: TransactionCountAggregateInputType | true
     }
 
-  export interface TransactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface TransactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Transaction'], meta: { name: 'Transaction' } }
     /**
      * Find zero or one Transaction that matches the filter.
@@ -5722,10 +5693,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends TransactionFindUniqueArgs>(args: SelectSubset<T, TransactionFindUniqueArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends TransactionFindUniqueArgs>(args: SelectSubset<T, TransactionFindUniqueArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Transaction that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Transaction that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {TransactionFindUniqueOrThrowArgs} args - Arguments to find a Transaction
      * @example
@@ -5736,7 +5707,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends TransactionFindUniqueOrThrowArgs>(args: SelectSubset<T, TransactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends TransactionFindUniqueOrThrowArgs>(args: SelectSubset<T, TransactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first Transaction that matches the filter.
@@ -5751,7 +5722,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends TransactionFindFirstArgs>(args?: SelectSubset<T, TransactionFindFirstArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends TransactionFindFirstArgs>(args?: SelectSubset<T, TransactionFindFirstArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first Transaction that matches the filter or
@@ -5767,7 +5738,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends TransactionFindFirstOrThrowArgs>(args?: SelectSubset<T, TransactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends TransactionFindFirstOrThrowArgs>(args?: SelectSubset<T, TransactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more Transactions that matches the filter.
@@ -5785,7 +5756,7 @@ export namespace Prisma {
      * const transactionWithIdOnly = await prisma.transaction.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends TransactionFindManyArgs>(args?: SelectSubset<T, TransactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends TransactionFindManyArgs>(args?: SelectSubset<T, TransactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a Transaction.
@@ -5799,7 +5770,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends TransactionCreateArgs>(args: SelectSubset<T, TransactionCreateArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends TransactionCreateArgs>(args: SelectSubset<T, TransactionCreateArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many Transactions.
@@ -5827,7 +5798,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends TransactionDeleteArgs>(args: SelectSubset<T, TransactionDeleteArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends TransactionDeleteArgs>(args: SelectSubset<T, TransactionDeleteArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one Transaction.
@@ -5844,7 +5815,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends TransactionUpdateArgs>(args: SelectSubset<T, TransactionUpdateArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends TransactionUpdateArgs>(args: SelectSubset<T, TransactionUpdateArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more Transactions.
@@ -5896,14 +5867,14 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends TransactionUpsertArgs>(args: SelectSubset<T, TransactionUpsertArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends TransactionUpsertArgs>(args: SelectSubset<T, TransactionUpsertArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
     /**
      * Find zero or more Transactions that matches the filter.
      * @param {TransactionFindRawArgs} args - Select which filters you would like to apply.
      * @example
      * const transaction = await prisma.transaction.findRaw({
-     *   filter: { age: { $gt: 25 } }
+     *   filter: { age: { $gt: 25 } } 
      * })
      */
     findRaw(args?: TransactionFindRawArgs): Prisma.PrismaPromise<JsonObject>
@@ -6059,7 +6030,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6088,7 +6059,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Transaction model
-   */
+   */ 
   interface TransactionFieldRefs {
     readonly id: FieldRef<"Transaction", 'String'>
     readonly order_id: FieldRef<"Transaction", 'String'>
@@ -6117,10 +6088,6 @@ export namespace Prisma {
      */
     select?: TransactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
-    /**
      * Filter, which Transaction to fetch.
      */
     where: TransactionWhereUniqueInput
@@ -6135,10 +6102,6 @@ export namespace Prisma {
      */
     select?: TransactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
-    /**
      * Filter, which Transaction to fetch.
      */
     where: TransactionWhereUniqueInput
@@ -6152,10 +6115,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Transaction
      */
     select?: TransactionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
     /**
      * Filter, which Transaction to fetch.
      */
@@ -6201,10 +6160,6 @@ export namespace Prisma {
      */
     select?: TransactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
-    /**
      * Filter, which Transaction to fetch.
      */
     where?: TransactionWhereInput
@@ -6249,10 +6204,6 @@ export namespace Prisma {
      */
     select?: TransactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
-    /**
      * Filter, which Transactions to fetch.
      */
     where?: TransactionWhereInput
@@ -6292,10 +6243,6 @@ export namespace Prisma {
      */
     select?: TransactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
-    /**
      * The data needed to create a Transaction.
      */
     data: XOR<TransactionCreateInput, TransactionUncheckedCreateInput>
@@ -6320,10 +6267,6 @@ export namespace Prisma {
      */
     select?: TransactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
-    /**
      * The data needed to update a Transaction.
      */
     data: XOR<TransactionUpdateInput, TransactionUncheckedUpdateInput>
@@ -6345,10 +6288,6 @@ export namespace Prisma {
      * Filter which Transactions to update
      */
     where?: TransactionWhereInput
-    /**
-     * Limit how many Transactions to update.
-     */
-    limit?: number
   }
 
   /**
@@ -6359,10 +6298,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Transaction
      */
     select?: TransactionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
     /**
      * The filter to search for the Transaction to update in case it exists.
      */
@@ -6386,10 +6321,6 @@ export namespace Prisma {
      */
     select?: TransactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
-    /**
      * Filter which Transaction to delete.
      */
     where: TransactionWhereUniqueInput
@@ -6403,10 +6334,6 @@ export namespace Prisma {
      * Filter which Transactions to delete
      */
     where?: TransactionWhereInput
-    /**
-     * Limit how many Transactions to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -6445,10 +6372,1804 @@ export namespace Prisma {
      * Select specific fields to fetch from the Transaction
      */
     select?: TransactionSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PasswordReset
+   */
+
+  export type AggregatePasswordReset = {
+    _count: PasswordResetCountAggregateOutputType | null
+    _min: PasswordResetMinAggregateOutputType | null
+    _max: PasswordResetMaxAggregateOutputType | null
+  }
+
+  export type PasswordResetMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    token: string | null
+    expiresAt: Date | null
+    used: boolean | null
+    createdAt: Date | null
+  }
+
+  export type PasswordResetMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    token: string | null
+    expiresAt: Date | null
+    used: boolean | null
+    createdAt: Date | null
+  }
+
+  export type PasswordResetCountAggregateOutputType = {
+    id: number
+    userId: number
+    token: number
+    expiresAt: number
+    used: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PasswordResetMinAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    expiresAt?: true
+    used?: true
+    createdAt?: true
+  }
+
+  export type PasswordResetMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    expiresAt?: true
+    used?: true
+    createdAt?: true
+  }
+
+  export type PasswordResetCountAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    expiresAt?: true
+    used?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PasswordResetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Omit specific fields from the Transaction
+     * Filter which PasswordReset to aggregate.
      */
-    omit?: TransactionOmit<ExtArgs> | null
+    where?: PasswordResetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResets to fetch.
+     */
+    orderBy?: PasswordResetOrderByWithRelationInput | PasswordResetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PasswordResetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PasswordResets
+    **/
+    _count?: true | PasswordResetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PasswordResetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PasswordResetMaxAggregateInputType
+  }
+
+  export type GetPasswordResetAggregateType<T extends PasswordResetAggregateArgs> = {
+        [P in keyof T & keyof AggregatePasswordReset]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePasswordReset[P]>
+      : GetScalarType<T[P], AggregatePasswordReset[P]>
+  }
+
+
+
+
+  export type PasswordResetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PasswordResetWhereInput
+    orderBy?: PasswordResetOrderByWithAggregationInput | PasswordResetOrderByWithAggregationInput[]
+    by: PasswordResetScalarFieldEnum[] | PasswordResetScalarFieldEnum
+    having?: PasswordResetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PasswordResetCountAggregateInputType | true
+    _min?: PasswordResetMinAggregateInputType
+    _max?: PasswordResetMaxAggregateInputType
+  }
+
+  export type PasswordResetGroupByOutputType = {
+    id: string
+    userId: string
+    token: string
+    expiresAt: Date
+    used: boolean
+    createdAt: Date
+    _count: PasswordResetCountAggregateOutputType | null
+    _min: PasswordResetMinAggregateOutputType | null
+    _max: PasswordResetMaxAggregateOutputType | null
+  }
+
+  type GetPasswordResetGroupByPayload<T extends PasswordResetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PasswordResetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PasswordResetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PasswordResetGroupByOutputType[P]>
+            : GetScalarType<T[P], PasswordResetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PasswordResetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    used?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["passwordReset"]>
+
+
+  export type PasswordResetSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    used?: boolean
+    createdAt?: boolean
+  }
+
+
+  export type $PasswordResetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PasswordReset"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      token: string
+      expiresAt: Date
+      used: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["passwordReset"]>
+    composites: {}
+  }
+
+  type PasswordResetGetPayload<S extends boolean | null | undefined | PasswordResetDefaultArgs> = $Result.GetResult<Prisma.$PasswordResetPayload, S>
+
+  type PasswordResetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PasswordResetFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PasswordResetCountAggregateInputType | true
+    }
+
+  export interface PasswordResetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PasswordReset'], meta: { name: 'PasswordReset' } }
+    /**
+     * Find zero or one PasswordReset that matches the filter.
+     * @param {PasswordResetFindUniqueArgs} args - Arguments to find a PasswordReset
+     * @example
+     * // Get one PasswordReset
+     * const passwordReset = await prisma.passwordReset.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PasswordResetFindUniqueArgs>(args: SelectSubset<T, PasswordResetFindUniqueArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PasswordReset that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PasswordResetFindUniqueOrThrowArgs} args - Arguments to find a PasswordReset
+     * @example
+     * // Get one PasswordReset
+     * const passwordReset = await prisma.passwordReset.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PasswordResetFindUniqueOrThrowArgs>(args: SelectSubset<T, PasswordResetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PasswordReset that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetFindFirstArgs} args - Arguments to find a PasswordReset
+     * @example
+     * // Get one PasswordReset
+     * const passwordReset = await prisma.passwordReset.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PasswordResetFindFirstArgs>(args?: SelectSubset<T, PasswordResetFindFirstArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PasswordReset that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetFindFirstOrThrowArgs} args - Arguments to find a PasswordReset
+     * @example
+     * // Get one PasswordReset
+     * const passwordReset = await prisma.passwordReset.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PasswordResetFindFirstOrThrowArgs>(args?: SelectSubset<T, PasswordResetFindFirstOrThrowArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PasswordResets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PasswordResets
+     * const passwordResets = await prisma.passwordReset.findMany()
+     * 
+     * // Get first 10 PasswordResets
+     * const passwordResets = await prisma.passwordReset.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const passwordResetWithIdOnly = await prisma.passwordReset.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PasswordResetFindManyArgs>(args?: SelectSubset<T, PasswordResetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PasswordReset.
+     * @param {PasswordResetCreateArgs} args - Arguments to create a PasswordReset.
+     * @example
+     * // Create one PasswordReset
+     * const PasswordReset = await prisma.passwordReset.create({
+     *   data: {
+     *     // ... data to create a PasswordReset
+     *   }
+     * })
+     * 
+     */
+    create<T extends PasswordResetCreateArgs>(args: SelectSubset<T, PasswordResetCreateArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PasswordResets.
+     * @param {PasswordResetCreateManyArgs} args - Arguments to create many PasswordResets.
+     * @example
+     * // Create many PasswordResets
+     * const passwordReset = await prisma.passwordReset.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PasswordResetCreateManyArgs>(args?: SelectSubset<T, PasswordResetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PasswordReset.
+     * @param {PasswordResetDeleteArgs} args - Arguments to delete one PasswordReset.
+     * @example
+     * // Delete one PasswordReset
+     * const PasswordReset = await prisma.passwordReset.delete({
+     *   where: {
+     *     // ... filter to delete one PasswordReset
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PasswordResetDeleteArgs>(args: SelectSubset<T, PasswordResetDeleteArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PasswordReset.
+     * @param {PasswordResetUpdateArgs} args - Arguments to update one PasswordReset.
+     * @example
+     * // Update one PasswordReset
+     * const passwordReset = await prisma.passwordReset.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PasswordResetUpdateArgs>(args: SelectSubset<T, PasswordResetUpdateArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PasswordResets.
+     * @param {PasswordResetDeleteManyArgs} args - Arguments to filter PasswordResets to delete.
+     * @example
+     * // Delete a few PasswordResets
+     * const { count } = await prisma.passwordReset.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PasswordResetDeleteManyArgs>(args?: SelectSubset<T, PasswordResetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PasswordResets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PasswordResets
+     * const passwordReset = await prisma.passwordReset.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PasswordResetUpdateManyArgs>(args: SelectSubset<T, PasswordResetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PasswordReset.
+     * @param {PasswordResetUpsertArgs} args - Arguments to update or create a PasswordReset.
+     * @example
+     * // Update or create a PasswordReset
+     * const passwordReset = await prisma.passwordReset.upsert({
+     *   create: {
+     *     // ... data to create a PasswordReset
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PasswordReset we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PasswordResetUpsertArgs>(args: SelectSubset<T, PasswordResetUpsertArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+    /**
+     * Find zero or more PasswordResets that matches the filter.
+     * @param {PasswordResetFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const passwordReset = await prisma.passwordReset.findRaw({
+     *   filter: { age: { $gt: 25 } } 
+     * })
+     */
+    findRaw(args?: PasswordResetFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a PasswordReset.
+     * @param {PasswordResetAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const passwordReset = await prisma.passwordReset.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: PasswordResetAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of PasswordResets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetCountArgs} args - Arguments to filter PasswordResets to count.
+     * @example
+     * // Count the number of PasswordResets
+     * const count = await prisma.passwordReset.count({
+     *   where: {
+     *     // ... the filter for the PasswordResets we want to count
+     *   }
+     * })
+    **/
+    count<T extends PasswordResetCountArgs>(
+      args?: Subset<T, PasswordResetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PasswordResetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PasswordReset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PasswordResetAggregateArgs>(args: Subset<T, PasswordResetAggregateArgs>): Prisma.PrismaPromise<GetPasswordResetAggregateType<T>>
+
+    /**
+     * Group by PasswordReset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PasswordResetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PasswordResetGroupByArgs['orderBy'] }
+        : { orderBy?: PasswordResetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PasswordResetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPasswordResetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PasswordReset model
+   */
+  readonly fields: PasswordResetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PasswordReset.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PasswordResetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PasswordReset model
+   */ 
+  interface PasswordResetFieldRefs {
+    readonly id: FieldRef<"PasswordReset", 'String'>
+    readonly userId: FieldRef<"PasswordReset", 'String'>
+    readonly token: FieldRef<"PasswordReset", 'String'>
+    readonly expiresAt: FieldRef<"PasswordReset", 'DateTime'>
+    readonly used: FieldRef<"PasswordReset", 'Boolean'>
+    readonly createdAt: FieldRef<"PasswordReset", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PasswordReset findUnique
+   */
+  export type PasswordResetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordReset to fetch.
+     */
+    where: PasswordResetWhereUniqueInput
+  }
+
+  /**
+   * PasswordReset findUniqueOrThrow
+   */
+  export type PasswordResetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordReset to fetch.
+     */
+    where: PasswordResetWhereUniqueInput
+  }
+
+  /**
+   * PasswordReset findFirst
+   */
+  export type PasswordResetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordReset to fetch.
+     */
+    where?: PasswordResetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResets to fetch.
+     */
+    orderBy?: PasswordResetOrderByWithRelationInput | PasswordResetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResets.
+     */
+    cursor?: PasswordResetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResets.
+     */
+    distinct?: PasswordResetScalarFieldEnum | PasswordResetScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordReset findFirstOrThrow
+   */
+  export type PasswordResetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordReset to fetch.
+     */
+    where?: PasswordResetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResets to fetch.
+     */
+    orderBy?: PasswordResetOrderByWithRelationInput | PasswordResetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResets.
+     */
+    cursor?: PasswordResetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResets.
+     */
+    distinct?: PasswordResetScalarFieldEnum | PasswordResetScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordReset findMany
+   */
+  export type PasswordResetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordResets to fetch.
+     */
+    where?: PasswordResetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResets to fetch.
+     */
+    orderBy?: PasswordResetOrderByWithRelationInput | PasswordResetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PasswordResets.
+     */
+    cursor?: PasswordResetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResets.
+     */
+    skip?: number
+    distinct?: PasswordResetScalarFieldEnum | PasswordResetScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordReset create
+   */
+  export type PasswordResetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * The data needed to create a PasswordReset.
+     */
+    data: XOR<PasswordResetCreateInput, PasswordResetUncheckedCreateInput>
+  }
+
+  /**
+   * PasswordReset createMany
+   */
+  export type PasswordResetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PasswordResets.
+     */
+    data: PasswordResetCreateManyInput | PasswordResetCreateManyInput[]
+  }
+
+  /**
+   * PasswordReset update
+   */
+  export type PasswordResetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * The data needed to update a PasswordReset.
+     */
+    data: XOR<PasswordResetUpdateInput, PasswordResetUncheckedUpdateInput>
+    /**
+     * Choose, which PasswordReset to update.
+     */
+    where: PasswordResetWhereUniqueInput
+  }
+
+  /**
+   * PasswordReset updateMany
+   */
+  export type PasswordResetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PasswordResets.
+     */
+    data: XOR<PasswordResetUpdateManyMutationInput, PasswordResetUncheckedUpdateManyInput>
+    /**
+     * Filter which PasswordResets to update
+     */
+    where?: PasswordResetWhereInput
+  }
+
+  /**
+   * PasswordReset upsert
+   */
+  export type PasswordResetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * The filter to search for the PasswordReset to update in case it exists.
+     */
+    where: PasswordResetWhereUniqueInput
+    /**
+     * In case the PasswordReset found by the `where` argument doesn't exist, create a new PasswordReset with this data.
+     */
+    create: XOR<PasswordResetCreateInput, PasswordResetUncheckedCreateInput>
+    /**
+     * In case the PasswordReset was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PasswordResetUpdateInput, PasswordResetUncheckedUpdateInput>
+  }
+
+  /**
+   * PasswordReset delete
+   */
+  export type PasswordResetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Filter which PasswordReset to delete.
+     */
+    where: PasswordResetWhereUniqueInput
+  }
+
+  /**
+   * PasswordReset deleteMany
+   */
+  export type PasswordResetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PasswordResets to delete
+     */
+    where?: PasswordResetWhereInput
+  }
+
+  /**
+   * PasswordReset findRaw
+   */
+  export type PasswordResetFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * PasswordReset aggregateRaw
+   */
+  export type PasswordResetAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * PasswordReset without action
+   */
+  export type PasswordResetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PasswordResetAttempt
+   */
+
+  export type AggregatePasswordResetAttempt = {
+    _count: PasswordResetAttemptCountAggregateOutputType | null
+    _avg: PasswordResetAttemptAvgAggregateOutputType | null
+    _sum: PasswordResetAttemptSumAggregateOutputType | null
+    _min: PasswordResetAttemptMinAggregateOutputType | null
+    _max: PasswordResetAttemptMaxAggregateOutputType | null
+  }
+
+  export type PasswordResetAttemptAvgAggregateOutputType = {
+    attemptCount: number | null
+  }
+
+  export type PasswordResetAttemptSumAggregateOutputType = {
+    attemptCount: number | null
+  }
+
+  export type PasswordResetAttemptMinAggregateOutputType = {
+    id: string | null
+    email: string | null
+    attemptCount: number | null
+    lastAttemptAt: Date | null
+  }
+
+  export type PasswordResetAttemptMaxAggregateOutputType = {
+    id: string | null
+    email: string | null
+    attemptCount: number | null
+    lastAttemptAt: Date | null
+  }
+
+  export type PasswordResetAttemptCountAggregateOutputType = {
+    id: number
+    email: number
+    attemptCount: number
+    lastAttemptAt: number
+    _all: number
+  }
+
+
+  export type PasswordResetAttemptAvgAggregateInputType = {
+    attemptCount?: true
+  }
+
+  export type PasswordResetAttemptSumAggregateInputType = {
+    attemptCount?: true
+  }
+
+  export type PasswordResetAttemptMinAggregateInputType = {
+    id?: true
+    email?: true
+    attemptCount?: true
+    lastAttemptAt?: true
+  }
+
+  export type PasswordResetAttemptMaxAggregateInputType = {
+    id?: true
+    email?: true
+    attemptCount?: true
+    lastAttemptAt?: true
+  }
+
+  export type PasswordResetAttemptCountAggregateInputType = {
+    id?: true
+    email?: true
+    attemptCount?: true
+    lastAttemptAt?: true
+    _all?: true
+  }
+
+  export type PasswordResetAttemptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PasswordResetAttempt to aggregate.
+     */
+    where?: PasswordResetAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetAttempts to fetch.
+     */
+    orderBy?: PasswordResetAttemptOrderByWithRelationInput | PasswordResetAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PasswordResetAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PasswordResetAttempts
+    **/
+    _count?: true | PasswordResetAttemptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PasswordResetAttemptAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PasswordResetAttemptSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PasswordResetAttemptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PasswordResetAttemptMaxAggregateInputType
+  }
+
+  export type GetPasswordResetAttemptAggregateType<T extends PasswordResetAttemptAggregateArgs> = {
+        [P in keyof T & keyof AggregatePasswordResetAttempt]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePasswordResetAttempt[P]>
+      : GetScalarType<T[P], AggregatePasswordResetAttempt[P]>
+  }
+
+
+
+
+  export type PasswordResetAttemptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PasswordResetAttemptWhereInput
+    orderBy?: PasswordResetAttemptOrderByWithAggregationInput | PasswordResetAttemptOrderByWithAggregationInput[]
+    by: PasswordResetAttemptScalarFieldEnum[] | PasswordResetAttemptScalarFieldEnum
+    having?: PasswordResetAttemptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PasswordResetAttemptCountAggregateInputType | true
+    _avg?: PasswordResetAttemptAvgAggregateInputType
+    _sum?: PasswordResetAttemptSumAggregateInputType
+    _min?: PasswordResetAttemptMinAggregateInputType
+    _max?: PasswordResetAttemptMaxAggregateInputType
+  }
+
+  export type PasswordResetAttemptGroupByOutputType = {
+    id: string
+    email: string
+    attemptCount: number
+    lastAttemptAt: Date
+    _count: PasswordResetAttemptCountAggregateOutputType | null
+    _avg: PasswordResetAttemptAvgAggregateOutputType | null
+    _sum: PasswordResetAttemptSumAggregateOutputType | null
+    _min: PasswordResetAttemptMinAggregateOutputType | null
+    _max: PasswordResetAttemptMaxAggregateOutputType | null
+  }
+
+  type GetPasswordResetAttemptGroupByPayload<T extends PasswordResetAttemptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PasswordResetAttemptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PasswordResetAttemptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PasswordResetAttemptGroupByOutputType[P]>
+            : GetScalarType<T[P], PasswordResetAttemptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PasswordResetAttemptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    attemptCount?: boolean
+    lastAttemptAt?: boolean
+  }, ExtArgs["result"]["passwordResetAttempt"]>
+
+
+  export type PasswordResetAttemptSelectScalar = {
+    id?: boolean
+    email?: boolean
+    attemptCount?: boolean
+    lastAttemptAt?: boolean
+  }
+
+
+  export type $PasswordResetAttemptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PasswordResetAttempt"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      email: string
+      attemptCount: number
+      lastAttemptAt: Date
+    }, ExtArgs["result"]["passwordResetAttempt"]>
+    composites: {}
+  }
+
+  type PasswordResetAttemptGetPayload<S extends boolean | null | undefined | PasswordResetAttemptDefaultArgs> = $Result.GetResult<Prisma.$PasswordResetAttemptPayload, S>
+
+  type PasswordResetAttemptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PasswordResetAttemptFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PasswordResetAttemptCountAggregateInputType | true
+    }
+
+  export interface PasswordResetAttemptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PasswordResetAttempt'], meta: { name: 'PasswordResetAttempt' } }
+    /**
+     * Find zero or one PasswordResetAttempt that matches the filter.
+     * @param {PasswordResetAttemptFindUniqueArgs} args - Arguments to find a PasswordResetAttempt
+     * @example
+     * // Get one PasswordResetAttempt
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PasswordResetAttemptFindUniqueArgs>(args: SelectSubset<T, PasswordResetAttemptFindUniqueArgs<ExtArgs>>): Prisma__PasswordResetAttemptClient<$Result.GetResult<Prisma.$PasswordResetAttemptPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PasswordResetAttempt that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PasswordResetAttemptFindUniqueOrThrowArgs} args - Arguments to find a PasswordResetAttempt
+     * @example
+     * // Get one PasswordResetAttempt
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PasswordResetAttemptFindUniqueOrThrowArgs>(args: SelectSubset<T, PasswordResetAttemptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PasswordResetAttemptClient<$Result.GetResult<Prisma.$PasswordResetAttemptPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PasswordResetAttempt that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetAttemptFindFirstArgs} args - Arguments to find a PasswordResetAttempt
+     * @example
+     * // Get one PasswordResetAttempt
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PasswordResetAttemptFindFirstArgs>(args?: SelectSubset<T, PasswordResetAttemptFindFirstArgs<ExtArgs>>): Prisma__PasswordResetAttemptClient<$Result.GetResult<Prisma.$PasswordResetAttemptPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PasswordResetAttempt that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetAttemptFindFirstOrThrowArgs} args - Arguments to find a PasswordResetAttempt
+     * @example
+     * // Get one PasswordResetAttempt
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PasswordResetAttemptFindFirstOrThrowArgs>(args?: SelectSubset<T, PasswordResetAttemptFindFirstOrThrowArgs<ExtArgs>>): Prisma__PasswordResetAttemptClient<$Result.GetResult<Prisma.$PasswordResetAttemptPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PasswordResetAttempts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetAttemptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PasswordResetAttempts
+     * const passwordResetAttempts = await prisma.passwordResetAttempt.findMany()
+     * 
+     * // Get first 10 PasswordResetAttempts
+     * const passwordResetAttempts = await prisma.passwordResetAttempt.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const passwordResetAttemptWithIdOnly = await prisma.passwordResetAttempt.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PasswordResetAttemptFindManyArgs>(args?: SelectSubset<T, PasswordResetAttemptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetAttemptPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PasswordResetAttempt.
+     * @param {PasswordResetAttemptCreateArgs} args - Arguments to create a PasswordResetAttempt.
+     * @example
+     * // Create one PasswordResetAttempt
+     * const PasswordResetAttempt = await prisma.passwordResetAttempt.create({
+     *   data: {
+     *     // ... data to create a PasswordResetAttempt
+     *   }
+     * })
+     * 
+     */
+    create<T extends PasswordResetAttemptCreateArgs>(args: SelectSubset<T, PasswordResetAttemptCreateArgs<ExtArgs>>): Prisma__PasswordResetAttemptClient<$Result.GetResult<Prisma.$PasswordResetAttemptPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PasswordResetAttempts.
+     * @param {PasswordResetAttemptCreateManyArgs} args - Arguments to create many PasswordResetAttempts.
+     * @example
+     * // Create many PasswordResetAttempts
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PasswordResetAttemptCreateManyArgs>(args?: SelectSubset<T, PasswordResetAttemptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PasswordResetAttempt.
+     * @param {PasswordResetAttemptDeleteArgs} args - Arguments to delete one PasswordResetAttempt.
+     * @example
+     * // Delete one PasswordResetAttempt
+     * const PasswordResetAttempt = await prisma.passwordResetAttempt.delete({
+     *   where: {
+     *     // ... filter to delete one PasswordResetAttempt
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PasswordResetAttemptDeleteArgs>(args: SelectSubset<T, PasswordResetAttemptDeleteArgs<ExtArgs>>): Prisma__PasswordResetAttemptClient<$Result.GetResult<Prisma.$PasswordResetAttemptPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PasswordResetAttempt.
+     * @param {PasswordResetAttemptUpdateArgs} args - Arguments to update one PasswordResetAttempt.
+     * @example
+     * // Update one PasswordResetAttempt
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PasswordResetAttemptUpdateArgs>(args: SelectSubset<T, PasswordResetAttemptUpdateArgs<ExtArgs>>): Prisma__PasswordResetAttemptClient<$Result.GetResult<Prisma.$PasswordResetAttemptPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PasswordResetAttempts.
+     * @param {PasswordResetAttemptDeleteManyArgs} args - Arguments to filter PasswordResetAttempts to delete.
+     * @example
+     * // Delete a few PasswordResetAttempts
+     * const { count } = await prisma.passwordResetAttempt.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PasswordResetAttemptDeleteManyArgs>(args?: SelectSubset<T, PasswordResetAttemptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PasswordResetAttempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetAttemptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PasswordResetAttempts
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PasswordResetAttemptUpdateManyArgs>(args: SelectSubset<T, PasswordResetAttemptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PasswordResetAttempt.
+     * @param {PasswordResetAttemptUpsertArgs} args - Arguments to update or create a PasswordResetAttempt.
+     * @example
+     * // Update or create a PasswordResetAttempt
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.upsert({
+     *   create: {
+     *     // ... data to create a PasswordResetAttempt
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PasswordResetAttempt we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PasswordResetAttemptUpsertArgs>(args: SelectSubset<T, PasswordResetAttemptUpsertArgs<ExtArgs>>): Prisma__PasswordResetAttemptClient<$Result.GetResult<Prisma.$PasswordResetAttemptPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+    /**
+     * Find zero or more PasswordResetAttempts that matches the filter.
+     * @param {PasswordResetAttemptFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.findRaw({
+     *   filter: { age: { $gt: 25 } } 
+     * })
+     */
+    findRaw(args?: PasswordResetAttemptFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a PasswordResetAttempt.
+     * @param {PasswordResetAttemptAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const passwordResetAttempt = await prisma.passwordResetAttempt.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: PasswordResetAttemptAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of PasswordResetAttempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetAttemptCountArgs} args - Arguments to filter PasswordResetAttempts to count.
+     * @example
+     * // Count the number of PasswordResetAttempts
+     * const count = await prisma.passwordResetAttempt.count({
+     *   where: {
+     *     // ... the filter for the PasswordResetAttempts we want to count
+     *   }
+     * })
+    **/
+    count<T extends PasswordResetAttemptCountArgs>(
+      args?: Subset<T, PasswordResetAttemptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PasswordResetAttemptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PasswordResetAttempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetAttemptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PasswordResetAttemptAggregateArgs>(args: Subset<T, PasswordResetAttemptAggregateArgs>): Prisma.PrismaPromise<GetPasswordResetAttemptAggregateType<T>>
+
+    /**
+     * Group by PasswordResetAttempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetAttemptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PasswordResetAttemptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PasswordResetAttemptGroupByArgs['orderBy'] }
+        : { orderBy?: PasswordResetAttemptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PasswordResetAttemptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPasswordResetAttemptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PasswordResetAttempt model
+   */
+  readonly fields: PasswordResetAttemptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PasswordResetAttempt.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PasswordResetAttemptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PasswordResetAttempt model
+   */ 
+  interface PasswordResetAttemptFieldRefs {
+    readonly id: FieldRef<"PasswordResetAttempt", 'String'>
+    readonly email: FieldRef<"PasswordResetAttempt", 'String'>
+    readonly attemptCount: FieldRef<"PasswordResetAttempt", 'Int'>
+    readonly lastAttemptAt: FieldRef<"PasswordResetAttempt", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PasswordResetAttempt findUnique
+   */
+  export type PasswordResetAttemptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetAttempt to fetch.
+     */
+    where: PasswordResetAttemptWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetAttempt findUniqueOrThrow
+   */
+  export type PasswordResetAttemptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetAttempt to fetch.
+     */
+    where: PasswordResetAttemptWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetAttempt findFirst
+   */
+  export type PasswordResetAttemptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetAttempt to fetch.
+     */
+    where?: PasswordResetAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetAttempts to fetch.
+     */
+    orderBy?: PasswordResetAttemptOrderByWithRelationInput | PasswordResetAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResetAttempts.
+     */
+    cursor?: PasswordResetAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResetAttempts.
+     */
+    distinct?: PasswordResetAttemptScalarFieldEnum | PasswordResetAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordResetAttempt findFirstOrThrow
+   */
+  export type PasswordResetAttemptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetAttempt to fetch.
+     */
+    where?: PasswordResetAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetAttempts to fetch.
+     */
+    orderBy?: PasswordResetAttemptOrderByWithRelationInput | PasswordResetAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResetAttempts.
+     */
+    cursor?: PasswordResetAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResetAttempts.
+     */
+    distinct?: PasswordResetAttemptScalarFieldEnum | PasswordResetAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordResetAttempt findMany
+   */
+  export type PasswordResetAttemptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetAttempts to fetch.
+     */
+    where?: PasswordResetAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetAttempts to fetch.
+     */
+    orderBy?: PasswordResetAttemptOrderByWithRelationInput | PasswordResetAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PasswordResetAttempts.
+     */
+    cursor?: PasswordResetAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetAttempts.
+     */
+    skip?: number
+    distinct?: PasswordResetAttemptScalarFieldEnum | PasswordResetAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordResetAttempt create
+   */
+  export type PasswordResetAttemptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
+    /**
+     * The data needed to create a PasswordResetAttempt.
+     */
+    data: XOR<PasswordResetAttemptCreateInput, PasswordResetAttemptUncheckedCreateInput>
+  }
+
+  /**
+   * PasswordResetAttempt createMany
+   */
+  export type PasswordResetAttemptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PasswordResetAttempts.
+     */
+    data: PasswordResetAttemptCreateManyInput | PasswordResetAttemptCreateManyInput[]
+  }
+
+  /**
+   * PasswordResetAttempt update
+   */
+  export type PasswordResetAttemptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
+    /**
+     * The data needed to update a PasswordResetAttempt.
+     */
+    data: XOR<PasswordResetAttemptUpdateInput, PasswordResetAttemptUncheckedUpdateInput>
+    /**
+     * Choose, which PasswordResetAttempt to update.
+     */
+    where: PasswordResetAttemptWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetAttempt updateMany
+   */
+  export type PasswordResetAttemptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PasswordResetAttempts.
+     */
+    data: XOR<PasswordResetAttemptUpdateManyMutationInput, PasswordResetAttemptUncheckedUpdateManyInput>
+    /**
+     * Filter which PasswordResetAttempts to update
+     */
+    where?: PasswordResetAttemptWhereInput
+  }
+
+  /**
+   * PasswordResetAttempt upsert
+   */
+  export type PasswordResetAttemptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
+    /**
+     * The filter to search for the PasswordResetAttempt to update in case it exists.
+     */
+    where: PasswordResetAttemptWhereUniqueInput
+    /**
+     * In case the PasswordResetAttempt found by the `where` argument doesn't exist, create a new PasswordResetAttempt with this data.
+     */
+    create: XOR<PasswordResetAttemptCreateInput, PasswordResetAttemptUncheckedCreateInput>
+    /**
+     * In case the PasswordResetAttempt was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PasswordResetAttemptUpdateInput, PasswordResetAttemptUncheckedUpdateInput>
+  }
+
+  /**
+   * PasswordResetAttempt delete
+   */
+  export type PasswordResetAttemptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
+    /**
+     * Filter which PasswordResetAttempt to delete.
+     */
+    where: PasswordResetAttemptWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetAttempt deleteMany
+   */
+  export type PasswordResetAttemptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PasswordResetAttempts to delete
+     */
+    where?: PasswordResetAttemptWhereInput
+  }
+
+  /**
+   * PasswordResetAttempt findRaw
+   */
+  export type PasswordResetAttemptFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * PasswordResetAttempt aggregateRaw
+   */
+  export type PasswordResetAttemptAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * PasswordResetAttempt without action
+   */
+  export type PasswordResetAttemptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetAttempt
+     */
+    select?: PasswordResetAttemptSelect<ExtArgs> | null
   }
 
 
@@ -6462,6 +8183,9 @@ export namespace Prisma {
     password: 'password',
     name: 'name',
     role: 'role',
+    isVerified: 'isVerified',
+    otp: 'otp',
+    otpExpiry: 'otpExpiry',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -6533,6 +8257,28 @@ export namespace Prisma {
   export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
+  export const PasswordResetScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    token: 'token',
+    expiresAt: 'expiresAt',
+    used: 'used',
+    createdAt: 'createdAt'
+  };
+
+  export type PasswordResetScalarFieldEnum = (typeof PasswordResetScalarFieldEnum)[keyof typeof PasswordResetScalarFieldEnum]
+
+
+  export const PasswordResetAttemptScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    attemptCount: 'attemptCount',
+    lastAttemptAt: 'lastAttemptAt'
+  };
+
+  export type PasswordResetAttemptScalarFieldEnum = (typeof PasswordResetAttemptScalarFieldEnum)[keyof typeof PasswordResetAttemptScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -6550,7 +8296,7 @@ export namespace Prisma {
 
 
   /**
-   * Field references
+   * Field references 
    */
 
 
@@ -6565,6 +8311,13 @@ export namespace Prisma {
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -6629,6 +8382,9 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     role?: StringFilter<"User"> | string
+    isVerified?: BoolFilter<"User"> | boolean
+    otp?: StringNullableFilter<"User"> | string | null
+    otpExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     orders?: OrderListRelationFilter
@@ -6640,6 +8396,9 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    isVerified?: SortOrder
+    otp?: SortOrder
+    otpExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     orders?: OrderOrderByRelationAggregateInput
@@ -6654,6 +8413,9 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     role?: StringFilter<"User"> | string
+    isVerified?: BoolFilter<"User"> | boolean
+    otp?: StringNullableFilter<"User"> | string | null
+    otpExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     orders?: OrderListRelationFilter
@@ -6665,6 +8427,9 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    isVerified?: SortOrder
+    otp?: SortOrder
+    otpExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -6681,6 +8446,9 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     name?: StringWithAggregatesFilter<"User"> | string
     role?: StringWithAggregatesFilter<"User"> | string
+    isVerified?: BoolWithAggregatesFilter<"User"> | boolean
+    otp?: StringNullableWithAggregatesFilter<"User"> | string | null
+    otpExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -6699,8 +8467,8 @@ export namespace Prisma {
     userId?: StringFilter<"Order"> | string
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    orderStatus?: XOR<OrderStatusNullableScalarRelationFilter, OrderStatusWhereInput> | null
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    orderStatus?: XOR<OrderStatusNullableRelationFilter, OrderStatusWhereInput> | null
   }
 
   export type OrderOrderByWithRelationInput = {
@@ -6732,8 +8500,8 @@ export namespace Prisma {
     userId?: StringFilter<"Order"> | string
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    orderStatus?: XOR<OrderStatusNullableScalarRelationFilter, OrderStatusWhereInput> | null
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    orderStatus?: XOR<OrderStatusNullableRelationFilter, OrderStatusWhereInput> | null
   }, "id" | "custom_order_id">
 
   export type OrderOrderByWithAggregationInput = {
@@ -6783,7 +8551,7 @@ export namespace Prisma {
     payment_time?: DateTimeNullableFilter<"OrderStatus"> | Date | string | null
     createdAt?: DateTimeFilter<"OrderStatus"> | Date | string
     updatedAt?: DateTimeFilter<"OrderStatus"> | Date | string
-    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    order?: XOR<OrderRelationFilter, OrderWhereInput>
   }
 
   export type OrderStatusOrderByWithRelationInput = {
@@ -6820,7 +8588,7 @@ export namespace Prisma {
     payment_time?: DateTimeNullableFilter<"OrderStatus"> | Date | string | null
     createdAt?: DateTimeFilter<"OrderStatus"> | Date | string
     updatedAt?: DateTimeFilter<"OrderStatus"> | Date | string
-    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    order?: XOR<OrderRelationFilter, OrderWhereInput>
   }, "id" | "collect_id">
 
   export type OrderStatusOrderByWithAggregationInput = {
@@ -7009,12 +8777,121 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   }
 
+  export type PasswordResetWhereInput = {
+    AND?: PasswordResetWhereInput | PasswordResetWhereInput[]
+    OR?: PasswordResetWhereInput[]
+    NOT?: PasswordResetWhereInput | PasswordResetWhereInput[]
+    id?: StringFilter<"PasswordReset"> | string
+    userId?: StringFilter<"PasswordReset"> | string
+    token?: StringFilter<"PasswordReset"> | string
+    expiresAt?: DateTimeFilter<"PasswordReset"> | Date | string
+    used?: BoolFilter<"PasswordReset"> | boolean
+    createdAt?: DateTimeFilter<"PasswordReset"> | Date | string
+  }
+
+  export type PasswordResetOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PasswordResetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    AND?: PasswordResetWhereInput | PasswordResetWhereInput[]
+    OR?: PasswordResetWhereInput[]
+    NOT?: PasswordResetWhereInput | PasswordResetWhereInput[]
+    userId?: StringFilter<"PasswordReset"> | string
+    expiresAt?: DateTimeFilter<"PasswordReset"> | Date | string
+    used?: BoolFilter<"PasswordReset"> | boolean
+    createdAt?: DateTimeFilter<"PasswordReset"> | Date | string
+  }, "id" | "token">
+
+  export type PasswordResetOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+    _count?: PasswordResetCountOrderByAggregateInput
+    _max?: PasswordResetMaxOrderByAggregateInput
+    _min?: PasswordResetMinOrderByAggregateInput
+  }
+
+  export type PasswordResetScalarWhereWithAggregatesInput = {
+    AND?: PasswordResetScalarWhereWithAggregatesInput | PasswordResetScalarWhereWithAggregatesInput[]
+    OR?: PasswordResetScalarWhereWithAggregatesInput[]
+    NOT?: PasswordResetScalarWhereWithAggregatesInput | PasswordResetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PasswordReset"> | string
+    userId?: StringWithAggregatesFilter<"PasswordReset"> | string
+    token?: StringWithAggregatesFilter<"PasswordReset"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"PasswordReset"> | Date | string
+    used?: BoolWithAggregatesFilter<"PasswordReset"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PasswordReset"> | Date | string
+  }
+
+  export type PasswordResetAttemptWhereInput = {
+    AND?: PasswordResetAttemptWhereInput | PasswordResetAttemptWhereInput[]
+    OR?: PasswordResetAttemptWhereInput[]
+    NOT?: PasswordResetAttemptWhereInput | PasswordResetAttemptWhereInput[]
+    id?: StringFilter<"PasswordResetAttempt"> | string
+    email?: StringFilter<"PasswordResetAttempt"> | string
+    attemptCount?: IntFilter<"PasswordResetAttempt"> | number
+    lastAttemptAt?: DateTimeFilter<"PasswordResetAttempt"> | Date | string
+  }
+
+  export type PasswordResetAttemptOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrder
+  }
+
+  export type PasswordResetAttemptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    AND?: PasswordResetAttemptWhereInput | PasswordResetAttemptWhereInput[]
+    OR?: PasswordResetAttemptWhereInput[]
+    NOT?: PasswordResetAttemptWhereInput | PasswordResetAttemptWhereInput[]
+    attemptCount?: IntFilter<"PasswordResetAttempt"> | number
+    lastAttemptAt?: DateTimeFilter<"PasswordResetAttempt"> | Date | string
+  }, "id" | "email">
+
+  export type PasswordResetAttemptOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrder
+    _count?: PasswordResetAttemptCountOrderByAggregateInput
+    _avg?: PasswordResetAttemptAvgOrderByAggregateInput
+    _max?: PasswordResetAttemptMaxOrderByAggregateInput
+    _min?: PasswordResetAttemptMinOrderByAggregateInput
+    _sum?: PasswordResetAttemptSumOrderByAggregateInput
+  }
+
+  export type PasswordResetAttemptScalarWhereWithAggregatesInput = {
+    AND?: PasswordResetAttemptScalarWhereWithAggregatesInput | PasswordResetAttemptScalarWhereWithAggregatesInput[]
+    OR?: PasswordResetAttemptScalarWhereWithAggregatesInput[]
+    NOT?: PasswordResetAttemptScalarWhereWithAggregatesInput | PasswordResetAttemptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PasswordResetAttempt"> | string
+    email?: StringWithAggregatesFilter<"PasswordResetAttempt"> | string
+    attemptCount?: IntWithAggregatesFilter<"PasswordResetAttempt"> | number
+    lastAttemptAt?: DateTimeWithAggregatesFilter<"PasswordResetAttempt"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
     password: string
     name: string
     role?: string
+    isVerified?: boolean
+    otp?: string | null
+    otpExpiry?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     orders?: OrderCreateNestedManyWithoutUserInput
@@ -7026,6 +8903,9 @@ export namespace Prisma {
     password: string
     name: string
     role?: string
+    isVerified?: boolean
+    otp?: string | null
+    otpExpiry?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
@@ -7036,6 +8916,9 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    otp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orders?: OrderUpdateManyWithoutUserNestedInput
@@ -7046,6 +8929,9 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    otp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
@@ -7057,6 +8943,9 @@ export namespace Prisma {
     password: string
     name: string
     role?: string
+    isVerified?: boolean
+    otp?: string | null
+    otpExpiry?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7066,6 +8955,9 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    otp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7075,6 +8967,9 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    otp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7436,6 +9331,110 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PasswordResetCreateInput = {
+    id?: string
+    userId: string
+    token: string
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetUncheckedCreateInput = {
+    id?: string
+    userId: string
+    token: string
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetCreateManyInput = {
+    id?: string
+    userId: string
+    token: string
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetUpdateManyMutationInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetAttemptCreateInput = {
+    id?: string
+    email: string
+    attemptCount?: number
+    lastAttemptAt: Date | string
+  }
+
+  export type PasswordResetAttemptUncheckedCreateInput = {
+    id?: string
+    email: string
+    attemptCount?: number
+    lastAttemptAt: Date | string
+  }
+
+  export type PasswordResetAttemptUpdateInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    attemptCount?: IntFieldUpdateOperationsInput | number
+    lastAttemptAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetAttemptUncheckedUpdateInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    attemptCount?: IntFieldUpdateOperationsInput | number
+    lastAttemptAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetAttemptCreateManyInput = {
+    id?: string
+    email: string
+    attemptCount?: number
+    lastAttemptAt: Date | string
+  }
+
+  export type PasswordResetAttemptUpdateManyMutationInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    attemptCount?: IntFieldUpdateOperationsInput | number
+    lastAttemptAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetAttemptUncheckedUpdateManyInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    attemptCount?: IntFieldUpdateOperationsInput | number
+    lastAttemptAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7449,6 +9448,39 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+    isSet?: boolean
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -7478,6 +9510,9 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    isVerified?: SortOrder
+    otp?: SortOrder
+    otpExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7488,6 +9523,9 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    isVerified?: SortOrder
+    otp?: SortOrder
+    otpExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7498,6 +9536,9 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    isVerified?: SortOrder
+    otp?: SortOrder
+    otpExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7518,6 +9559,48 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+    isSet?: boolean
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+    isSet?: boolean
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -7546,28 +9629,12 @@ export namespace Prisma {
     email: string
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-    isSet?: boolean
-  }
-
-  export type UserScalarRelationFilter = {
+  export type UserRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
   }
 
-  export type OrderStatusNullableScalarRelationFilter = {
+  export type OrderStatusNullableRelationFilter = {
     is?: OrderStatusWhereInput | null
     isNot?: OrderStatusWhereInput | null
   }
@@ -7614,25 +9681,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-    isSet?: boolean
-  }
-
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -7644,19 +9692,7 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-    isSet?: boolean
-  }
-
-  export type OrderScalarRelationFilter = {
+  export type OrderRelationFilter = {
     is?: OrderWhereInput
     isNot?: OrderWhereInput
   }
@@ -7734,22 +9770,7 @@ export namespace Prisma {
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
   }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-    isSet?: boolean
-  }
-  export type JsonFilter<$PrismaModel = never> =
+  export type JsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
         Required<JsonFilterBase<$PrismaModel>>
@@ -7779,7 +9800,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
   }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+  export type JsonWithAggregatesFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
         Required<JsonWithAggregatesFilterBase<$PrismaModel>>
@@ -7853,6 +9874,89 @@ export namespace Prisma {
     amount?: SortOrder
   }
 
+  export type PasswordResetCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PasswordResetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PasswordResetMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type PasswordResetAttemptCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrder
+  }
+
+  export type PasswordResetAttemptAvgOrderByAggregateInput = {
+    attemptCount?: SortOrder
+  }
+
+  export type PasswordResetAttemptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrder
+  }
+
+  export type PasswordResetAttemptMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrder
+  }
+
+  export type PasswordResetAttemptSumOrderByAggregateInput = {
+    attemptCount?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type OrderCreateNestedManyWithoutUserInput = {
     create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
@@ -7869,6 +9973,20 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+    unset?: boolean
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+    unset?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -7936,11 +10054,6 @@ export namespace Prisma {
     update?: StudentInfoUpdateInput
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-    unset?: boolean
-  }
-
   export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
     create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
@@ -7983,17 +10096,20 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-    unset?: boolean
-  }
-
   export type OrderUpdateOneRequiredWithoutOrderStatusNestedInput = {
     create?: XOR<OrderCreateWithoutOrderStatusInput, OrderUncheckedCreateWithoutOrderStatusInput>
     connectOrCreate?: OrderCreateOrConnectWithoutOrderStatusInput
     upsert?: OrderUpsertWithoutOrderStatusInput
     connect?: OrderWhereUniqueInput
     update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutOrderStatusInput, OrderUpdateWithoutOrderStatusInput>, OrderUncheckedUpdateWithoutOrderStatusInput>
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8008,6 +10124,38 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+    isSet?: boolean
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -8049,42 +10197,12 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type StudentInfoWhereInput = {
-    AND?: StudentInfoWhereInput | StudentInfoWhereInput[]
-    OR?: StudentInfoWhereInput[]
-    NOT?: StudentInfoWhereInput | StudentInfoWhereInput[]
-    name?: StringFilter<"StudentInfo"> | string
-    id?: StringFilter<"StudentInfo"> | string
-    email?: StringFilter<"StudentInfo"> | string
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-    isSet?: boolean
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -8117,6 +10235,44 @@ export namespace Prisma {
     isSet?: boolean
   }
 
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+    isSet?: boolean
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type StudentInfoWhereInput = {
+    AND?: StudentInfoWhereInput | StudentInfoWhereInput[]
+    OR?: StudentInfoWhereInput[]
+    NOT?: StudentInfoWhereInput | StudentInfoWhereInput[]
+    name?: StringFilter<"StudentInfo"> | string
+    id?: StringFilter<"StudentInfo"> | string
+    email?: StringFilter<"StudentInfo"> | string
+  }
+
   export type NestedFloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -8126,18 +10282,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-    isSet?: boolean
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -8155,22 +10299,7 @@ export namespace Prisma {
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
   }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-    isSet?: boolean
-  }
-  export type NestedJsonFilter<$PrismaModel = never> =
+  export type NestedJsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
         Required<NestedJsonFilterBase<$PrismaModel>>
@@ -8180,6 +10309,22 @@ export namespace Prisma {
   export type NestedJsonFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type OrderCreateWithoutUserInput = {
@@ -8254,6 +10399,9 @@ export namespace Prisma {
     password: string
     name: string
     role?: string
+    isVerified?: boolean
+    otp?: string | null
+    otpExpiry?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8264,6 +10412,9 @@ export namespace Prisma {
     password: string
     name: string
     role?: string
+    isVerified?: boolean
+    otp?: string | null
+    otpExpiry?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8330,6 +10481,9 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    otp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8339,6 +10493,9 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    otp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8496,6 +10653,46 @@ export namespace Prisma {
   }
 
 
+
+  /**
+   * Aliases for legacy arg types
+   */
+    /**
+     * @deprecated Use UserCountOutputTypeDefaultArgs instead
+     */
+    export type UserCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use StudentInfoDefaultArgs instead
+     */
+    export type StudentInfoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = StudentInfoDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use UserDefaultArgs instead
+     */
+    export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use OrderDefaultArgs instead
+     */
+    export type OrderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = OrderDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use OrderStatusDefaultArgs instead
+     */
+    export type OrderStatusArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = OrderStatusDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use WebhookLogDefaultArgs instead
+     */
+    export type WebhookLogArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WebhookLogDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use TransactionDefaultArgs instead
+     */
+    export type TransactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TransactionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PasswordResetDefaultArgs instead
+     */
+    export type PasswordResetArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PasswordResetDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PasswordResetAttemptDefaultArgs instead
+     */
+    export type PasswordResetAttemptArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PasswordResetAttemptDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

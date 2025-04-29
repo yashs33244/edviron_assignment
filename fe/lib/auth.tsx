@@ -16,12 +16,13 @@ interface User {
   name: string;
   email: string;
   role: string;
+  isVerified?: boolean;
 }
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -54,9 +55,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       const response = await apiLogin(email, password);
-      localStorage.setItem("token", response.data.token);
-      setUser(response.data.user);
-      router.push("/dashboard");
+
+      // Check if the user needs verification
+      if (response.needsVerification) {
+        return response; // Return the response for verification handling
+      }
+
+      // Handle normal login flow
+      if (response.token) {
+        // Store token in localStorage for client-side access
+        localStorage.setItem("token", response.token);
+
+        // Store token in a cookie for middleware access
+        document.cookie = `token=${response.token}; path=/; max-age=${
+          60 * 60 * 24 * 7
+        }`; // 7 days
+
+        setUser(response.user);
+
+        // Explicitly navigate to dashboard with a slight delay to ensure state updates
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 100);
+      }
+
+      return response;
     } catch (error) {
       throw error;
     } finally {
@@ -65,9 +88,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = () => {
+    // Clear localStorage
     localStorage.removeItem("token");
+
+    // Clear the cookie
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
     setUser(null);
-    router.push("/login");
+    router.push("/");
   };
 
   // Using React.createElement instead of JSX
