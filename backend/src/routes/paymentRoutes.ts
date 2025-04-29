@@ -5,7 +5,8 @@ import {
   getAllTransactions,
   getTransactionsBySchool,
   getTransactionStatus,
-  checkTransactionStatus
+  checkTransactionStatus,
+  getUserTransactions
 } from '../controllers/paymentController';
 import { protect } from '../middlewares/auth';
 
@@ -22,6 +23,9 @@ router.get('/check-status/:collectRequestId', protect as any, checkTransactionSt
 
 // Get all transactions route (protected)
 router.get('/transactions', protect as any, getAllTransactions as any);
+
+// Get user's transactions route (protected)
+router.get('/user-transactions', protect as any, getUserTransactions as any);
 
 // Get transactions by school route (protected)
 router.get('/transactions/school/:schoolId', protect as any, getTransactionsBySchool as any);

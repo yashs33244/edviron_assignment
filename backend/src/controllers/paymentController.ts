@@ -10,6 +10,7 @@ const PG_KEY = process.env.PG_KEY || 'edvtest01';
 const DEFAULT_TRUSTEE_ID = process.env.TRUSTEE_ID || '65b0e552dd31950a9b41c5ba';
 const PG_API_URL = process.env.PG_API_URL || 'https://dev-vanilla.edviron.com/erp';
 const API_KEY = process.env.API_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2LCJpYXQiOjE3MTE2MjIyNzAsImV4cCI6MTc0MzE3OTg3MH0.Rye77Dp59GGxwCmwWekJHRj6edXWJnff9finjMhxKuw';
+const DEFAULT_USER_ID = process.env.DEFAULT_USER_ID || '65b0e552dd31950a9b41c5fa'; // Default user ID for system operations
 
 /**
  * Create a new payment request
@@ -43,92 +44,30 @@ export const createPayment = async (req: Request, res: Response) => {
     console.log(`[Payment Controller] Creating payment for school: ${school_id}, amount: ${amount}`);
     
     try {
-      // Create a new order in the database using Prisma
-      const order = await prisma.order.create({
-        data: {
-          school_id,
-          trustee_id: DEFAULT_TRUSTEE_ID,
-          student_info: student_info,
-          gateway_name: "Edviron Payment Gateway",
-          custom_order_id: custom_order_id || undefined
-        }
+      // Get the user ID from the authenticated request
+      const userId = (req as any).user?.id || DEFAULT_USER_ID;
+      
+      // Use the payment service
+      const paymentResult = await createCollectRequest({
+        studentName: student_info.name,
+        studentId: student_info.id,
+        studentEmail: student_info.email,
+        amount,
+        school_id,
+        callback_url,
+        userId // Pass the user ID
       });
       
-      console.log(`[Payment Controller] Order created in database with ID: ${order.id}`);
-      
-      // Create JWT payload for signing
-      const jwtPayload = {
-        school_id,
-        amount,
-        callback_url
-      };
-      
-      // Sign the JWT using the PG key
-      const sign = jwt.sign(jwtPayload, PG_KEY);
-      console.log(`[Payment Controller] Generated JWT signature`);
-
-      // Create collect request at payment gateway
-      const collectRequestData = {
-        school_id,
-      amount,
-      callback_url,
-        sign
-      };
-
-      console.log(`[Payment Controller] Sending collect request to payment gateway:`, collectRequestData);
-
-      const paymentResponse = await axios.post(
-        `${PG_API_URL}/create-collect-request`,
-        collectRequestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${API_KEY}`
-          }
-        }
-      );
-
-      console.log(`[Payment Controller] Payment gateway response:`, paymentResponse.data);
-      
-      if (paymentResponse.data?.collect_request_id && paymentResponse.data?.collect_request_url) {
-        // Update order with collect_request_id
-        await prisma.order.update({
-          where: { id: order.id },
-      data: {
-            collect_request_id: paymentResponse.data.collect_request_id
-          }
-        });
-        
-        console.log(`[Payment Controller] Order updated with collect_request_id: ${paymentResponse.data.collect_request_id}`);
-        
+      if (paymentResult.success) {
         return res.status(200).json({
           success: true,
           message: "Payment request created successfully",
-          data: {
-            collect_request_id: paymentResponse.data.collect_request_id,
-            collect_request_url: paymentResponse.data.collect_request_url,
-            custom_order_id: order.custom_order_id,
-            orderId: order.id,
-            sign: paymentResponse.data.sign
-          }
-    });
-      } else {
-        // Payment creation failed, update order status
-    await prisma.orderStatus.create({
-      data: {
-        collect_id: order.id,
-            status: "failed",
-            order_amount: parseFloat(amount) || 0,
-        transaction_amount: 0,
-            error_message: "Failed to create payment request: Invalid response from payment gateway"
-          }
+          data: paymentResult.data
         });
-        
-        console.error(`[Payment Controller] Payment creation failed: Invalid response from payment gateway`);
-        
+      } else {
         return res.status(400).json({
           success: false,
-          message: "Failed to create payment request: Invalid response from payment gateway"
+          message: paymentResult.error || "Failed to create payment request"
         });
       }
     } catch (dbError: any) {
@@ -213,6 +152,12 @@ export const processWebhook = async (req: Request, res: Response) => {
             custom_order_id: custom_order_id !== 'NA' ? custom_order_id : `ORD-${Date.now()}`,
             collect_request_id,
             student_info: { name: 'Unknown', id: 'Unknown', email: 'Unknown' },
+            // Add required user relation
+            user: {
+              connect: {
+                id: DEFAULT_USER_ID
+              }
+            }
           },
           include: { orderStatus: true },
         });
@@ -222,34 +167,72 @@ export const processWebhook = async (req: Request, res: Response) => {
       const paymentStatus = status?.toString()?.toUpperCase() === 'SUCCESS' ? 'success' : 
                            (status?.toString()?.toUpperCase() === 'FAILURE' || status?.toString()?.toUpperCase() === 'FAILED') ? 'failed' : 'pending';
 
-      if (order.orderStatus) {
+      // Update OrderStatus
+      if (order && order.orderStatus) {
         // Update existing order status
-          await prisma.orderStatus.update({
+        await prisma.orderStatus.update({
           where: { id: order.orderStatus.id },
-            data: {
-              order_amount: parseFloat(amount?.toString() || '0') || order.orderStatus.order_amount,
-              transaction_amount: parseFloat(transaction_amount?.toString() || '0') || order.orderStatus.transaction_amount,
+          data: {
+            order_amount: parseFloat(amount?.toString() || '0') || order.orderStatus.order_amount,
+            transaction_amount: parseFloat(transaction_amount?.toString() || '0') || order.orderStatus.transaction_amount,
             status: paymentStatus,
-              payment_mode: details?.payment_mode || order.orderStatus.payment_mode,
+            payment_mode: details?.payment_mode || order.orderStatus.payment_mode,
+            payment_details: JSON.stringify(details || {}),
+            bank_reference: details?.bank_ref || order.orderStatus.bank_reference,
+            payment_time: new Date(),
+          }
+        });
+      } else if (order) {
+        // Create new order status
+        await prisma.orderStatus.create({
+          data: {
+            collect_id: order.id,
+            order_amount: parseFloat(amount?.toString() || '0') || 0,
+            transaction_amount: parseFloat(transaction_amount?.toString() || '0') || 0,
+            status: paymentStatus,
+            payment_mode: details?.payment_mode,
+            payment_details: JSON.stringify(details || {}),
+            bank_reference: details?.bank_ref,
+            payment_time: new Date(),
+          }
+        });
+      }
+      
+      // Update or create Transaction record
+      if (order) {
+        const existingTransaction = await prisma.transaction.findFirst({
+          where: { order_id: order.id }
+        });
+        
+        if (existingTransaction) {
+          // Update existing transaction
+          await prisma.transaction.update({
+            where: { id: existingTransaction.id },
+            data: {
+              amount: parseFloat(amount?.toString() || '0') || existingTransaction.amount,
+              status: paymentStatus,
+              payment_mode: details?.payment_mode || existingTransaction.payment_mode,
               payment_details: JSON.stringify(details || {}),
-              bank_reference: details?.bank_ref || order.orderStatus.bank_reference,
+              bank_reference: details?.bank_ref || existingTransaction.bank_reference,
               payment_time: new Date(),
             }
           });
         } else {
-        // Create new order status
-          await prisma.orderStatus.create({
+          // Create new transaction record
+          await prisma.transaction.create({
             data: {
-              collect_id: order.id,
-              order_amount: parseFloat(amount?.toString() || '0') || 0,
-              transaction_amount: parseFloat(transaction_amount?.toString() || '0') || 0,
-            status: paymentStatus,
+              order_id: order.id,
+              school_id: order.school_id,
+              student_id: order.student_info.id,
+              amount: parseFloat(amount?.toString() || '0') || 0,
+              status: paymentStatus,
               payment_mode: details?.payment_mode,
               payment_details: JSON.stringify(details || {}),
               bank_reference: details?.bank_ref,
               payment_time: new Date(),
             }
           });
+        }
       }
 
       res.status(200).json({
@@ -389,6 +372,37 @@ export const checkTransactionStatus = async (req: Request, res: Response) => {
           });
           console.log(`[Backend] Created new success order status for order ${order.id}`);
         }
+        
+        // Update or create transaction record
+        const existingTransaction = await prisma.transaction.findFirst({
+          where: { order_id: order.id }
+        });
+        
+        if (existingTransaction) {
+          await prisma.transaction.update({
+            where: { id: existingTransaction.id },
+            data: {
+              status: 'success',
+              amount: parseFloat(statusResponse.data.amount?.toString() || '0'),
+              payment_details: JSON.stringify(statusResponse.data || {}),
+              payment_time: new Date()
+            }
+          });
+          console.log(`[Backend] Updated transaction record for order ${order.id}`);
+        } else {
+          await prisma.transaction.create({
+            data: {
+              order_id: order.id,
+              school_id: order.school_id,
+              student_id: order.student_info.id,
+              amount: parseFloat(statusResponse.data.amount?.toString() || '0'),
+              status: 'success',
+              payment_details: JSON.stringify(statusResponse.data || {}),
+              payment_time: new Date(),
+            }
+          });
+          console.log(`[Backend] Created new transaction record for order ${order.id}`);
+        }
 
         // Simulate webhook notification for successful payment
         const webhookData = {
@@ -456,6 +470,36 @@ export const checkTransactionStatus = async (req: Request, res: Response) => {
           });
           console.log(`[Backend] Created new failed order status for order ${order.id}`);
         }
+        
+        // Update or create transaction record
+        const existingTransaction = await prisma.transaction.findFirst({
+          where: { order_id: order.id }
+        });
+        
+        if (existingTransaction) {
+          await prisma.transaction.update({
+            where: { id: existingTransaction.id },
+            data: {
+              status: 'failed',
+              payment_time: new Date(),
+              payment_details: JSON.stringify(statusResponse.data || {})
+            }
+          });
+          console.log(`[Backend] Updated transaction record with failed status for order ${order.id}`);
+        } else {
+          await prisma.transaction.create({
+            data: {
+              order_id: order.id,
+              school_id: order.school_id,
+              student_id: order.student_info.id,
+              amount: parseFloat(statusResponse.data.amount?.toString() || '0'),
+              status: 'failed',
+              payment_details: JSON.stringify(statusResponse.data || {}),
+              payment_time: new Date(),
+            }
+          });
+          console.log(`[Backend] Created new transaction record with failed status for order ${order.id}`);
+        }
       } else {
         console.log(`[Backend] No order found for collectRequestId: ${collectRequestId}, cannot update status`);
       }
@@ -495,31 +539,85 @@ export const checkTransactionStatus = async (req: Request, res: Response) => {
  */
 export const getAllTransactions = async (req: Request, res: Response) => {
   try {
-    // Get all transactions using aggregation
-    const transactions = await prisma.order.findMany({
-      include: {
-        orderStatus: true,
+    // Get pagination parameters
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    
+    // Get filters
+    const statusFilter = req.query.status?.toString();
+    const searchFilter = req.query.search?.toString();
+    const startDate = req.query.startDate?.toString();
+    const endDate = req.query.endDate?.toString();
+    
+    // Build where clause
+    const where: any = {};
+    
+    if (statusFilter && statusFilter !== 'all') {
+      where.status = statusFilter;
+    }
+    
+    if (startDate) {
+      where.payment_time = {
+        ...(where.payment_time || {}),
+        gte: new Date(startDate)
+      };
+    }
+    
+    if (endDate) {
+      where.payment_time = {
+        ...(where.payment_time || {}),
+        lte: new Date(endDate)
+      };
+    }
+    
+    // Count total transactions with filters
+    const totalTransactions = await prisma.transaction.count({ where });
+    
+    // Get all transactions from Transaction model with pagination
+    const transactions = await prisma.transaction.findMany({
+      where,
+      orderBy: {
+        createdAt: 'desc'
       },
+      skip,
+      take: limit
     });
 
     // Format response
-    const formattedTransactions = transactions.map((transaction: any) => ({
-      collect_id: transaction.id,
-      school_id: transaction.school_id,
-      gateway: transaction.gateway_name,
-      order_amount: transaction.orderStatus?.order_amount || 0,
-      transaction_amount: transaction.orderStatus?.transaction_amount || 0,
-      status: transaction.orderStatus?.status || 'pending',
-      custom_order_id: transaction.custom_order_id,
-      student_info: transaction.student_info,
-      created_at: transaction.createdAt,
-      payment_time: transaction.orderStatus?.payment_time,
+    const formattedTransactions = await Promise.all(transactions.map(async (transaction: any) => {
+      // Get associated order details
+      const order = await prisma.order.findUnique({
+        where: { id: transaction.order_id }
+      });
+
+      return {
+        collect_id: transaction.id,
+        order_id: transaction.order_id,
+        school_id: transaction.school_id,
+        gateway: order?.gateway_name || 'Unknown',
+        order_amount: transaction.amount,
+        transaction_amount: transaction.amount,
+        status: transaction.status,
+        custom_order_id: order?.custom_order_id,
+        student_info: order?.student_info,
+        created_at: transaction.createdAt,
+        payment_time: transaction.payment_time,
+      };
     }));
+
+    // Calculate pagination data
+    const totalPages = Math.ceil(totalTransactions / limit);
 
     res.status(200).json({
       success: true,
       data: {
         transactions: formattedTransactions,
+        pagination: {
+          total: totalTransactions,
+          page,
+          pages: totalPages
+        }
       },
     });
   } catch (error) {
@@ -539,35 +637,88 @@ export const getAllTransactions = async (req: Request, res: Response) => {
 export const getTransactionsBySchool = async (req: Request, res: Response) => {
   try {
     const { schoolId } = req.params;
+    
+    // Get pagination parameters
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    
+    // Get filters
+    const statusFilter = req.query.status?.toString();
+    const searchFilter = req.query.search?.toString();
+    const startDate = req.query.startDate?.toString();
+    const endDate = req.query.endDate?.toString();
+    
+    // Build where clause
+    const where: any = {
+      school_id: schoolId
+    };
+    
+    if (statusFilter && statusFilter !== 'all') {
+      where.status = statusFilter;
+    }
+    
+    if (startDate) {
+      where.payment_time = {
+        ...(where.payment_time || {}),
+        gte: new Date(startDate)
+      };
+    }
+    
+    if (endDate) {
+      where.payment_time = {
+        ...(where.payment_time || {}),
+        lte: new Date(endDate)
+      };
+    }
+    
+    // Count total transactions with filters
+    const totalTransactions = await prisma.transaction.count({ where });
 
-    // Get transactions by school
-    const transactions = await prisma.order.findMany({
-      where: {
-        school_id: schoolId,
+    // Get transactions by school with pagination
+    const transactions = await prisma.transaction.findMany({
+      where,
+      orderBy: {
+        createdAt: 'desc'
       },
-      include: {
-        orderStatus: true,
-      },
+      skip,
+      take: limit
     });
 
     // Format response
-    const formattedTransactions = transactions.map((transaction: any) => ({
-      collect_id: transaction.id,
-      school_id: transaction.school_id,
-      gateway: transaction.gateway_name,
-      order_amount: transaction.orderStatus?.order_amount || 0,
-      transaction_amount: transaction.orderStatus?.transaction_amount || 0,
-      status: transaction.orderStatus?.status || 'pending',
-      custom_order_id: transaction.custom_order_id,
-      student_info: transaction.student_info,
-      created_at: transaction.createdAt,
-      payment_time: transaction.orderStatus?.payment_time,
+    const formattedTransactions = await Promise.all(transactions.map(async (transaction: any) => {
+      // Get associated order details
+      const order = await prisma.order.findUnique({
+        where: { id: transaction.order_id }
+      });
+
+      return {
+        collect_id: transaction.id,
+        order_id: transaction.order_id,
+        school_id: transaction.school_id,
+        gateway: order?.gateway_name || 'Unknown',
+        order_amount: transaction.amount,
+        transaction_amount: transaction.amount,
+        status: transaction.status,
+        custom_order_id: order?.custom_order_id,
+        student_info: order?.student_info,
+        created_at: transaction.createdAt,
+        payment_time: transaction.payment_time,
+      };
     }));
+
+    // Calculate pagination data
+    const totalPages = Math.ceil(totalTransactions / limit);
 
     res.status(200).json({
       success: true,
       data: {
         transactions: formattedTransactions,
+        pagination: {
+          total: totalTransactions,
+          page,
+          pages: totalPages
+        }
       },
     });
   } catch (error) {
@@ -575,6 +726,134 @@ export const getTransactionsBySchool = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Server error',
+    });
+  }
+};
+
+/**
+ * Get user transactions
+ * @route GET /api/payments/user-transactions
+ * @access Private
+ */
+export const getUserTransactions = async (req: Request, res: Response) => {
+  try {
+    // Get user ID from request
+    const userId = (req as any).user?.id;
+    
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'User not authenticated'
+      });
+    }
+    
+    // Get pagination parameters
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    
+    // Get filters
+    const statusFilter = req.query.status?.toString();
+    const startDate = req.query.startDate?.toString();
+    const endDate = req.query.endDate?.toString();
+    
+    // First find all orders for this user
+    const userOrders = await prisma.order.findMany({
+      where: { userId },
+      select: { id: true }
+    });
+    
+    const orderIds = userOrders.map(order => order.id);
+    
+    if (orderIds.length === 0) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          transactions: [],
+          pagination: {
+            total: 0,
+            page,
+            pages: 0
+          }
+        }
+      });
+    }
+    
+    // Build where clause for transactions
+    const where: any = {
+      order_id: { in: orderIds }
+    };
+    
+    if (statusFilter && statusFilter !== 'all') {
+      where.status = statusFilter;
+    }
+    
+    if (startDate) {
+      where.payment_time = {
+        ...(where.payment_time || {}),
+        gte: new Date(startDate)
+      };
+    }
+    
+    if (endDate) {
+      where.payment_time = {
+        ...(where.payment_time || {}),
+        lte: new Date(endDate)
+      };
+    }
+    
+    // Count total transactions with filters
+    const totalTransactions = await prisma.transaction.count({ where });
+    
+    // Get user transactions
+    const transactions = await prisma.transaction.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit
+    });
+    
+    // Format response
+    const formattedTransactions = await Promise.all(transactions.map(async (transaction: any) => {
+      // Get associated order details
+      const order = await prisma.order.findUnique({
+        where: { id: transaction.order_id }
+      });
+
+      return {
+        collect_id: transaction.id,
+        order_id: transaction.order_id,
+        school_id: transaction.school_id,
+        gateway: order?.gateway_name || 'Unknown',
+        order_amount: transaction.amount,
+        transaction_amount: transaction.amount,
+        status: transaction.status,
+        custom_order_id: order?.custom_order_id,
+        student_info: order?.student_info,
+        created_at: transaction.createdAt,
+        payment_time: transaction.payment_time,
+      };
+    }));
+    
+    // Calculate pagination data
+    const totalPages = Math.ceil(totalTransactions / limit);
+    
+    res.status(200).json({
+      success: true,
+      data: {
+        transactions: formattedTransactions,
+        pagination: {
+          total: totalTransactions,
+          page,
+          pages: totalPages
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Get user transactions error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
     });
   }
 };
@@ -588,17 +867,14 @@ export const getTransactionStatus = async (req: Request, res: Response) => {
   try {
     const { customOrderId } = req.params;
 
-    // Get transaction by custom order ID or collect request ID
+    // First try to find the order
     const order = await prisma.order.findFirst({
       where: {
         OR: [
           { custom_order_id: customOrderId },
           { collect_request_id: customOrderId }
         ]
-      },
-      include: {
-        orderStatus: true,
-      },
+      }
     });
 
     if (!order) {
@@ -612,18 +888,49 @@ export const getTransactionStatus = async (req: Request, res: Response) => {
       });
     }
 
+    // Now find the transaction associated with this order
+    const transaction = await prisma.transaction.findFirst({
+      where: { order_id: order.id }
+    });
+
+    if (!transaction) {
+      console.error(`Transaction record not found for order ID: ${order.id}`);
+      
+      // Fall back to order status
+      const orderStatus = await prisma.orderStatus.findFirst({
+        where: { collect_id: order.id }
+      });
+      
+      return res.status(200).json({
+        success: true,
+        data: {
+          id: order.id,
+          custom_order_id: order.custom_order_id,
+          collect_request_id: order.collect_request_id,
+          status: orderStatus?.status || 'pending',
+          order_amount: orderStatus?.order_amount || 0,
+          transaction_amount: orderStatus?.transaction_amount || 0,
+          payment_mode: orderStatus?.payment_mode,
+          payment_details: orderStatus?.payment_details,
+          payment_time: orderStatus?.payment_time,
+          student_info: order.student_info,
+        },
+      });
+    }
+
     res.status(200).json({
       success: true,
       data: {
-        id: order.id,
+        id: transaction.id,
+        order_id: order.id,
         custom_order_id: order.custom_order_id,
         collect_request_id: order.collect_request_id,
-        status: order.orderStatus?.status || 'pending',
-        order_amount: order.orderStatus?.order_amount || 0,
-        transaction_amount: order.orderStatus?.transaction_amount || 0,
-        payment_mode: order.orderStatus?.payment_mode,
-        payment_details: order.orderStatus?.payment_details,
-        payment_time: order.orderStatus?.payment_time,
+        status: transaction.status,
+        order_amount: transaction.amount,
+        transaction_amount: transaction.amount,
+        payment_mode: transaction.payment_mode,
+        payment_details: transaction.payment_details,
+        payment_time: transaction.payment_time,
         student_info: order.student_info,
       },
     });

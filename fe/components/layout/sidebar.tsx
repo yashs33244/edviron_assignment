@@ -1,12 +1,21 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { LayoutDashboard, CreditCard, School, Search, LogOut, Menu, X } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { useAuth } from "@/lib/auth"
-import { useState } from "react"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  CreditCard,
+  School,
+  Search,
+  LogOut,
+  Menu,
+  X,
+  User,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth";
+import { useState } from "react";
 
 const navItems = [
   {
@@ -15,7 +24,12 @@ const navItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Transactions",
+    title: "My Transactions",
+    href: "/user-transactions",
+    icon: User,
+  },
+  {
+    title: "All Transactions",
     href: "/transactions",
     icon: CreditCard,
   },
@@ -29,12 +43,12 @@ const navItems = [
     href: "/transaction-status",
     icon: Search,
   },
-]
+];
 
 export function Sidebar() {
-  const pathname = usePathname()
-  const { logout } = useAuth()
-  const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname();
+  const { logout } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -48,7 +62,12 @@ export function Sidebar() {
         </Button>
       </div>
 
-      <div className={cn("fixed inset-0 z-50 bg-black md:relative md:block", isOpen ? "block" : "hidden")}>
+      <div
+        className={cn(
+          "fixed inset-0 z-50 bg-black md:relative md:block",
+          isOpen ? "block" : "hidden"
+        )}
+      >
         <div className="flex flex-col h-full p-4">
           <div className="flex items-center space-x-2 mb-8 mt-2">
             <CreditCard className="h-6 w-6 text-primary" />
@@ -63,7 +82,9 @@ export function Sidebar() {
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all",
-                  pathname === item.href ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+                  pathname === item.href
+                    ? "bg-primary text-primary-foreground"
+                    : "hover:bg-muted"
                 )}
               >
                 <item.icon className="h-4 w-4" />
@@ -72,12 +93,16 @@ export function Sidebar() {
             ))}
           </nav>
 
-          <Button variant="ghost" className="justify-start mt-auto" onClick={logout}>
+          <Button
+            variant="ghost"
+            className="justify-start mt-auto"
+            onClick={logout}
+          >
             <LogOut className="mr-2 h-4 w-4" />
             Logout
           </Button>
         </div>
       </div>
     </>
-  )
+  );
 }

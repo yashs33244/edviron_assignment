@@ -21,6 +21,8 @@ model User {
   name     String
   role     String @default("user")
 
+  orders Order[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -33,6 +35,9 @@ model Order {
   gateway_name       String
   custom_order_id    String?     @unique
   collect_request_id String?
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -70,4 +75,22 @@ model WebhookLog {
   payload   Json
   status    String
   createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  order_id        String    @db.ObjectId
+  school_id       String
+  student_id      String
+  amount          Float
+  payment_mode    String?
+  payment_details String?
+  bank_reference  String?
+  payment_message String?
+  status          String
+  error_message   String?
+  payment_time    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -6,6 +6,7 @@ import prisma from '../config/db';
 const PG_API_URL = process.env.PG_API_URL || 'https://dev-vanilla.edviron.com/erp';
 const PG_KEY = process.env.PG_KEY || 'edvtest01';
 const API_KEY = process.env.API_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2LCJpYXQiOjE3MTE2MjIyNzAsImV4cCI6MTc0MzE3OTg3MH0.Rye77Dp59GGxwCmwWekJHRj6edXWJnff9finjMhxKuw';
+const DEFAULT_USER_ID = process.env.DEFAULT_USER_ID || '65b0e552dd31950a9b41c5fa'; // Default user ID for system-created orders
 
 /**
  * Create a collect request at the payment gateway
@@ -17,7 +18,8 @@ export const createCollectRequest = async ({
   amount,
   school_id,
   callback_url,
-  sign
+  sign,
+  userId
 }: {
   studentName: string;
   studentId: string;
@@ -26,6 +28,7 @@ export const createCollectRequest = async ({
   school_id?: string;
   callback_url?: string;
   sign?: string;
+  userId?: string;
 }) => {
   try {
     // Use provided school_id or fall back to environment variable
@@ -82,6 +85,12 @@ export const createCollectRequest = async ({
           gateway_name: 'Edviron Payment Gateway',
           custom_order_id: customOrderId,
           collect_request_id: response.data.collect_request_id,
+          // Add required user relation
+          user: {
+            connect: {
+              id: userId || DEFAULT_USER_ID
+            }
+          }
         },
       });
 
@@ -94,6 +103,18 @@ export const createCollectRequest = async ({
           status: 'pending',
           payment_time: new Date()
         },
+      });
+      
+      // Create initial transaction record
+      await prisma.transaction.create({
+        data: {
+          order_id: order.id,
+          school_id: schoolId,
+          student_id: studentId,
+          amount: parseFloat(amount),
+          status: 'pending',
+          payment_time: new Date()
+        }
       });
 
       return {

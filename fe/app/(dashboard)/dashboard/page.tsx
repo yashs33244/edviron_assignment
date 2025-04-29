@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getTransactions } from "@/lib/api";
+import { getTransactions, getUserTransactions } from "@/lib/api";
 import {
   Card,
   CardContent,
@@ -12,9 +12,11 @@ import {
 import { StatusBadge } from "@/components/ui/status-badge";
 import { CreditCard, TrendingUp, AlertTriangle } from "lucide-react";
 import { PaymentForm } from "@/components/payment-form";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function DashboardPage() {
-  const { data, isLoading } = useQuery({
+  const { data: allTransactionsData, isLoading: isLoadingAll } = useQuery({
     queryKey: ["transactions-summary"],
     queryFn: async () => {
       const response = await getTransactions(1, 100);
@@ -22,21 +24,30 @@ export default function DashboardPage() {
     },
   });
 
-  const transactions = data?.transactions || [];
+  const { data: userTransactionsData, isLoading: isLoadingUser } = useQuery({
+    queryKey: ["user-transactions-summary"],
+    queryFn: async () => {
+      const response = await getUserTransactions(1, 5);
+      return response.data;
+    },
+  });
+
+  const allTransactions = allTransactionsData?.transactions || [];
+  const userTransactions = userTransactionsData?.transactions || [];
 
   // Calculate summary statistics
-  const totalTransactions = transactions.length;
-  const successfulTransactions = transactions.filter(
+  const totalTransactions = allTransactions.length;
+  const successfulTransactions = allTransactions.filter(
     (t: any) => t.status.toLowerCase() === "success"
   ).length;
-  const failedTransactions = transactions.filter(
+  const failedTransactions = allTransactions.filter(
     (t: any) => t.status.toLowerCase() === "failed"
   ).length;
-  const pendingTransactions = transactions.filter(
+  const pendingTransactions = allTransactions.filter(
     (t: any) => t.status.toLowerCase() === "pending"
   ).length;
 
-  const totalAmount = transactions.reduce(
+  const totalAmount = allTransactions.reduce(
     (sum: number, t: any) => sum + (t.order_amount || 0),
     0
   );
@@ -66,7 +77,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {isLoading ? "Loading..." : totalTransactions}
+              {isLoadingAll ? "Loading..." : totalTransactions}
             </div>
             <p className="text-xs text-muted-foreground">
               {successfulTransactions} successful, {pendingTransactions} pending
@@ -81,7 +92,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {isLoading ? "Loading..." : `₹${totalAmount.toLocaleString()}`}
+              {isLoadingAll ? "Loading..." : `₹${totalAmount.toLocaleString()}`}
             </div>
             <p className="text-xs text-muted-foreground">
               Success rate: {successRate.toFixed(1)}%
@@ -98,7 +109,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {isLoading ? "Loading..." : failedTransactions}
+              {isLoadingAll ? "Loading..." : failedTransactions}
             </div>
             <p className="text-xs text-muted-foreground">
               {failedTransactions > 0
@@ -111,16 +122,30 @@ export default function DashboardPage() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="bg-card">
-          <CardHeader>
-            <CardTitle>Recent Transactions</CardTitle>
-            <CardDescription>Latest payment transactions</CardDescription>
+          <CardHeader className="flex justify-between items-center">
+            <div>
+              <CardTitle>Your Recent Transactions</CardTitle>
+              <CardDescription>
+                Your latest payment transactions
+              </CardDescription>
+            </div>
+            <Link href="/user-transactions">
+              <Button variant="outline" size="sm">
+                View All
+              </Button>
+            </Link>
           </CardHeader>
           <CardContent>
-            {isLoading ? (
-              <p>Loading recent transactions...</p>
+            {isLoadingUser ? (
+              <p>Loading your transactions...</p>
+            ) : userTransactions.length === 0 ? (
+              <div className="text-center py-6">
+                <p className="text-muted-foreground">No transactions found</p>
+                <p className="text-sm">Make a payment to get started</p>
+              </div>
             ) : (
               <div className="space-y-4">
-                {transactions.slice(0, 5).map((transaction: any) => (
+                {userTransactions.map((transaction: any) => (
                   <div
                     key={transaction.collect_id}
                     className="flex items-center justify-between"
@@ -148,36 +173,37 @@ export default function DashboardPage() {
 
         <Card className="bg-card">
           <CardHeader>
-            <CardTitle>Transaction Status</CardTitle>
-            <CardDescription>Overview of transaction statuses</CardDescription>
+            <CardTitle>Recent System Transactions</CardTitle>
+            <CardDescription>Latest payment transactions</CardDescription>
           </CardHeader>
-          <CardContent className="flex items-center justify-center p-6">
-            <div className="flex gap-4">
-              <div className="flex flex-col items-center">
-                <div className="text-4xl font-bold text-primary">
-                  {successRate.toFixed(0)}%
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  Success Rate
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-primary"></div>
-                  <div className="text-sm">
-                    Success ({successfulTransactions})
+          <CardContent>
+            {isLoadingAll ? (
+              <p>Loading recent transactions...</p>
+            ) : (
+              <div className="space-y-4">
+                {allTransactions.slice(0, 5).map((transaction: any) => (
+                  <div
+                    key={transaction.collect_id}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {transaction.student_info?.name || "Unknown Student"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {transaction.custom_order_id}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="text-sm font-medium">
+                        ₹{transaction.order_amount}
+                      </div>
+                      <StatusBadge status={transaction.status} />
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                  <div className="text-sm">Pending ({pendingTransactions})</div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-destructive"></div>
-                  <div className="text-sm">Failed ({failedTransactions})</div>
-                </div>
+                ))}
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </div>

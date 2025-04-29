@@ -54,6 +54,16 @@ export const getTransactions = async (page = 1, limit = 10, filters: any = {}) =
   return response.data
 }
 
+export const getUserTransactions = async (page = 1, limit = 10, filters: any = {}) => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+    ...filters,
+  })
+  const response = await api.get(`/api/payments/user-transactions?${params}`)
+  return response.data
+}
+
 export const getTransactionsBySchool = async (schoolId: string, page = 1, limit = 10, filters: any = {}) => {
   const params = new URLSearchParams({
     page: page.toString(),

@@ -127,6 +127,7 @@ exports.Prisma.OrderScalarFieldEnum = {
   gateway_name: 'gateway_name',
   custom_order_id: 'custom_order_id',
   collect_request_id: 'collect_request_id',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -154,6 +155,23 @@ exports.Prisma.WebhookLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.TransactionScalarFieldEnum = {
+  id: 'id',
+  order_id: 'order_id',
+  school_id: 'school_id',
+  student_id: 'student_id',
+  amount: 'amount',
+  payment_mode: 'payment_mode',
+  payment_details: 'payment_details',
+  bank_reference: 'bank_reference',
+  payment_message: 'payment_message',
+  status: 'status',
+  error_message: 'error_message',
+  payment_time: 'payment_time',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -169,7 +187,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Order: 'Order',
   OrderStatus: 'OrderStatus',
-  WebhookLog: 'WebhookLog'
+  WebhookLog: 'WebhookLog',
+  Transaction: 'Transaction'
 };
 
 /**
