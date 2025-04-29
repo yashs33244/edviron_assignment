@@ -18,11 +18,17 @@ ENV NEXT_PUBLIC_API_URL=http://localhost:4000
 ENV NEXT_PUBLIC_PG_API_URL=https://dev-vanilla.edviron.com/erp
 ENV NEXT_PUBLIC_PG_KEY=edvtest01
 
+# Add next.config.js with output: 'standalone'
+RUN if ! grep -q "output: 'standalone'" next.config.js; then \
+    echo "module.exports = { ...require('./next.config.js'), output: 'standalone' };" > temp-config.js && \
+    mv temp-config.js next.config.js; \
+    fi
+
 # Build the application
 RUN bun run build
 
 # Expose the port
 EXPOSE 3000
 
-# Start the application
-CMD ["bun", "start"] 
+# Use the standalone build output
+CMD ["bun", "./node_modules/.bin/next", "start"] 

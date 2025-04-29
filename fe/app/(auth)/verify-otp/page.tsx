@@ -1,56 +1,67 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CreditCard } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { verifyOTP, resendOTP } from "@/lib/api";
 
-export default function VerifyOTPPage() {
-  const [email, setEmail] = useState("");
+// Client component that uses useSearchParams
+function VerifyOtpContent() {
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email") || "";
+  const router = useRouter();
+  const { toast } = useToast();
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
-  const { toast } = useToast();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const [countdown, setCountdown] = useState(60);
+  const [canResend, setCanResend] = useState(false);
 
   useEffect(() => {
-    // Check if email is provided in URL params
-    const emailParam = searchParams.get("email");
-    if (emailParam) {
-      setEmail(emailParam);
+    if (countdown > 0 && !canResend) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (!canResend) {
+      setCanResend(true);
     }
-  }, [searchParams]);
+  }, [countdown, canResend]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const response = await verifyOTP(email, otp);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, otp }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to verify OTP");
+      }
 
       toast({
         title: "Success",
-        description: "Your account has been verified successfully",
+        description: "Email verified successfully",
       });
 
-      // Store the token in both localStorage and cookie
-      localStorage.setItem("token", response.token);
-      document.cookie = `token=${response.token}; path=/; max-age=${
-        60 * 60 * 24 * 7
-      }`; // 7 days
-
-      router.push("/dashboard");
-    } catch (error: any) {
+      router.push("/login");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to verify OTP";
       toast({
-        title: "Verification Failed",
-        description:
-          error.response?.data?.message || "Invalid OTP or OTP expired",
+        title: "Error",
+        description: message,
         variant: "destructive",
       });
     } finally {
@@ -58,33 +69,40 @@ export default function VerifyOTPPage() {
     }
   };
 
-  const handleResendOTP = async () => {
-    if (!email) {
-      toast({
-        title: "Error",
-        description: "Please enter your email address",
-        variant: "destructive",
-      });
-      return;
-    }
-
+  const handleResendOtp = async () => {
     setIsLoading(true);
+
     try {
-      await resendOTP(email);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/resend-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
 
-      setEmailSent(true);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to resend OTP");
+      }
+
+      setCountdown(60);
+      setCanResend(false);
+
       toast({
-        title: "OTP Sent",
-        description: "A new verification code has been sent to your email",
+        title: "Success",
+        description: "OTP sent successfully",
       });
-
-      // Hide the success message after 5 seconds
-      setTimeout(() => setEmailSent(false), 5000);
-    } catch (error: any) {
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to resend OTP";
       toast({
         title: "Error",
-        description:
-          error.response?.data?.message || "Failed to resend verification code",
+        description: message,
         variant: "destructive",
       });
     } finally {
@@ -96,69 +114,70 @@ export default function VerifyOTPPage() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-black p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="flex flex-col items-center space-y-2 text-center">
-          <CreditCard className="h-12 w-12 text-primary" />
-          <h1 className="text-3xl font-bold">Verify Your Account</h1>
+          <h1 className="text-3xl font-bold">Verify Your Email</h1>
           <p className="text-muted-foreground">
-            Enter the verification code sent to your email
+            We've sent a verification code to {email || "your email"}
           </p>
         </div>
-
-        {emailSent && (
-          <div className="bg-green-900/30 border border-green-500 text-green-200 p-4 rounded-md text-sm">
-            Verification code has been sent to your email
-          </div>
-        )}
-
         <div className="space-y-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-muted text-white"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="otp">Verification Code</Label>
+              <Label htmlFor="otp">Enter Verification Code</Label>
               <Input
                 id="otp"
                 type="text"
-                placeholder="Enter 6-digit code"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
                 required
                 className="bg-muted text-white"
-                minLength={6}
+                placeholder="Enter 6-digit code"
                 maxLength={6}
               />
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Verifying..." : "Verify Account"}
+              {isLoading ? "Verifying..." : "Verify"}
             </Button>
           </form>
-
-          <div className="pt-2 text-center">
-            <button
-              onClick={handleResendOTP}
-              className="text-primary text-sm hover:underline"
-              disabled={isLoading}
-            >
-              Didn't receive a code? Send again
-            </button>
+          <div className="text-center text-sm">
+            <p className="text-muted-foreground">
+              Didn't receive the code?{" "}
+              {canResend ? (
+                <button
+                  onClick={handleResendOtp}
+                  className="text-primary hover:underline"
+                  disabled={isLoading}
+                >
+                  Resend
+                </button>
+              ) : (
+                <span className="text-muted-foreground">
+                  Resend in {countdown}s
+                </span>
+              )}
+            </p>
           </div>
-
           <div className="text-center text-sm">
             <Link href="/login" className="text-primary hover:underline">
-              Back to Sign In
+              Back to Login
             </Link>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+// Main component with suspense boundary
+export default function VerifyOtpPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <VerifyOtpContent />
+    </Suspense>
   );
 }
