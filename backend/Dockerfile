@@ -60,4 +60,4 @@ ENV PG_KEY=$PG_KEY \
 EXPOSE $PORT
 
 # Start the application
-CMD ["node", "dist/index.js"] 
+CMD ["bun", "start"] 
