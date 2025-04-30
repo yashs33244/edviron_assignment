@@ -3,12 +3,12 @@
 A comprehensive system for schools to manage fee collections, payments, and financial analytics.
 
 <p align="center">
-  <img src="docs/assets/Desktop_view.png" alt="Edviron Mobile View" width="600"/>
+  <img src="docs/assets/Desktop_view.png" alt="Edviron Desktop View" width="600"/>
 </p>
 
 
 <p align="center">
-  <img src="docs/assets/Dashboard.png" alt="Edviron Mobile View" width="600"/>
+  <img src="docs/assets/Dashboard.png" alt="Edviron Dashboard View" width="600"/>
 </p>
 
 
