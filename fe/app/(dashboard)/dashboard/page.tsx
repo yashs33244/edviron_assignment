@@ -193,42 +193,6 @@ export default function DashboardPage() {
             )}
           </CardContent>
         </Card>
-
-        <Card className="bg-card border-2 rounded-2xl">
-          <CardHeader>
-            <CardTitle>Recent System Transactions</CardTitle>
-            <CardDescription>Latest payment transactions</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {isLoadingAll ? (
-              <p>Loading recent transactions...</p>
-            ) : (
-              <div className="space-y-4">
-                {allTransactions.slice(0, 5).map((transaction: any) => (
-                  <div
-                    key={transaction.collect_id}
-                    className="flex items-center justify-between"
-                  >
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {transaction.student_info?.name || "Unknown Student"}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {transaction.custom_order_id}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="text-sm font-medium">
-                        ₹{transaction.order_amount}
-                      </div>
-                      <StatusBadge status={transaction.status} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
