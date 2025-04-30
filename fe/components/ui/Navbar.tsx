@@ -266,7 +266,7 @@ export const NavbarLogo = () => {
           className="object-contain"
         />
       </div>
-      <span className="font-bold text-white">Malfoy</span>
+      <span className="font-bold text-white">Edviron</span>
     </a>
   );
 };

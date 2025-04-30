@@ -1,155 +1,116 @@
-# Payment Gateway Backend API
+# PayGate Backend API
 
-A simple backend implementation for payment processing with MongoDB Atlas integration.
+A comprehensive backend API for the Edviron school fee management system, built with Node.js, Express, and Prisma.
 
 ## Features
 
-- User authentication with JWT
-- Payment gateway integration
-- Webhook handling for payment statuses
-- Transaction listing and filtering
-- MongoDB with Prisma ORM
+- **Payment Processing**: Integration with multiple payment gateways
+- **Fee Management**: Comprehensive fee structure management
+- **User Authentication**: Secure JWT-based authentication
+- **School Management**: Multi-school support with role-based access control
+- **Analytics**: Advanced reporting and analytics endpoints
+- **Notifications**: SMS, email, and WhatsApp notification services
 
-## Prerequisites
+## Tech Stack
 
-- Node.js (v14+)
-- npm or yarn
-- MongoDB Atlas account
+- **Runtime**: [Node.js](https://nodejs.org/) with [Bun](https://bun.sh/)
+- **Framework**: [Express.js](https://expressjs.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/) with [Prisma ORM](https://www.prisma.io/)
+- **Authentication**: JWT (JSON Web Tokens)
+- **Payment Integrations**: Multiple payment gateway APIs
+- **API Documentation**: Swagger/OpenAPI
 
-## Environment Variables
+## Getting Started
 
-Create a `.env` file in the root directory with the following variables:
+### Prerequisites
 
-```
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-PG_KEY=edvtest01
-PG_API_KEY=your_payment_gateway_api_key
-SCHOOL_ID=your_school_id
-PORT=4000
-NODE_ENV=development
-```
+- Node.js 18.x or later
+- Bun runtime
+- MongoDB connection string
+- Required API keys for payment gateways
 
-## Installation
+### Installation
 
 1. Clone the repository
-2. Install dependencies:
+   ```bash
+   git clone https://github.com/yourusername/edviron.git
+   cd edviron/backend
+   ```
 
-```bash
-npm install
+2. Install dependencies
+   ```bash
+   bun install
+   # or
+   npm install
+   ```
+
+3. Set up environment variables
+   Create a `.env` file in the root directory with the following variables:
+   ```
+   PORT=4000
+   MONGODB_URI=mongodb+srv://your-mongodb-uri
+   JWT_SECRET=your-jwt-secret
+   PG_KEY=edvtest01
+   PG_API_KEY=your-payment-gateway-api-key
+   SCHOOL_ID=your-default-school-id
+   CLIENT_URL=http://localhost:3000
+   FRONTEND_URL=http://localhost:3000
+   ```
+
+4. Generate Prisma client
+   ```bash
+   bunx prisma generate
+   # or
+   npx prisma generate
+   ```
+
+5. Start the development server
+   ```bash
+   bun dev
+   # or
+   npm run dev
+   ```
+
+## Project Structure
+
 ```
-
-3. Generate Prisma client:
-
-```bash
-npm run prisma:generate
-```
-
-4. Push the schema to the database:
-
-```bash
-npm run prisma:push
-```
-
-5. Build the application:
-
-```bash
-npm run build
-```
-
-## Running the Application
-
-### Development Mode
-
-```bash
-npm run dev
-```
-
-### Production Mode
-
-```bash
-npm start
+backend/
+├── src/                    # Source code
+│   ├── controllers/        # Route controllers
+│   ├── middleware/         # Express middleware
+│   ├── models/             # Data models
+│   ├── routes/             # API routes
+│   ├── services/           # Business logic
+│   ├── utils/              # Utility functions
+│   └── index.ts            # Application entry point
+├── prisma/                 # Prisma schema and migrations
+├── types/                  # TypeScript type definitions
+├── generated/              # Generated Prisma client
+└── dist/                   # Compiled JavaScript code
 ```
 
 ## API Endpoints
 
-### Authentication
+The API provides the following main endpoints:
 
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login a user
-- `GET /api/auth/profile` - Get user profile (requires authentication)
+### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/verify-otp` - Verify OTP
+- `POST /api/auth/resend-otp` - Resend OTP
+- `POST /api/auth/forgot-password` - Forgot password
+- `POST /api/auth/reset-password` - Reset password
+- `GET /api/auth/verify-reset-token/:token` - Verify reset token
+- `GET /api/auth/profile` - Get user profile (protected)
 
 ### Payments
+- `POST /api/payments/create-payment` - Create payment (protected)
+- `POST /api/payments/webhook` - Process payment webhook
+- `GET /api/payments/check-status/:collectRequestId` - Check transaction status (protected)
+- `GET /api/payments/transactions` - Get all transactions (protected)
+- `GET /api/payments/user-transactions` - Get user's transactions (protected) 
+- `GET /api/payments/transactions/school/:schoolId` - Get transactions by school (protected)
+- `GET /api/payments/transaction-status/:customOrderId` - Get transaction status
 
-- `POST /api/payments/create-payment` - Create a payment request (requires authentication)
-- `POST /api/payments/webhook` - Webhook endpoint for payment updates
-- `GET /api/payments/transactions` - Get all transactions (requires authentication)
-- `GET /api/payments/transactions/school/:schoolId` - Get transactions by school (requires authentication)
-- `GET /api/payments/transaction-status/:customOrderId` - Get transaction status (requires authentication)
-
-## Testing with Postman
-
-1. Register a user:
-   - Endpoint: `POST /api/auth/register`
-   - Body: 
-     ```json
-     {
-       "name": "Test User",
-       "email": "test@example.com",
-       "password": "password123"
-     }
-     ```
-
-2. Login to get JWT token:
-   - Endpoint: `POST /api/auth/login`
-   - Body:
-     ```json
-     {
-       "email": "test@example.com",
-       "password": "password123"
-     }
-     ```
-   - Save the token from the response
-
-3. Create a payment:
-   - Endpoint: `POST /api/payments/create-payment`
-   - Headers: `Authorization: Bearer <your_token>`
-   - Body:
-     ```json
-     {
-       "studentName": "Student Name",
-       "studentId": "S12345",
-       "studentEmail": "student@example.com",
-       "amount": 2000
-     }
-     ```
-
-4. Simulate a webhook:
-   - Endpoint: `POST /api/payments/webhook`
-   - Body:
-     ```json
-     {
-       "status": 200,
-       "order_info": {
-         "order_id": "<your_generated_order_id>",
-         "order_amount": 2000,
-         "transaction_amount": 2200,
-         "gateway": "PhonePe",
-         "bank_reference": "YESBNK222",
-         "status": "success",
-         "payment_mode": "upi",
-         "payemnt_details": "success@ybl",
-         "Payment_message": "payment success",
-         "payment_time": "2023-04-23T08:14:21.945+00:00",
-         "error_message": "NA"
-       }
-     }
-     ```
-
-5. Get all transactions:
-   - Endpoint: `GET /api/payments/transactions`
-   - Headers: `Authorization: Bearer <your_token>`
-
-## License
-
-MIT 
+### Fee Management
+- `GET /api/fees`
