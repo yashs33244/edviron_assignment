@@ -31,6 +31,8 @@ services:
     ports:
       - "3000:3000"
     environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
       - NEXT_PUBLIC_API_URL=https://edbe.itsyash.space
       - NEXT_PUBLIC_PG_API_URL=https://dev-vanilla.edviron.com/erp
       - NEXT_PUBLIC_PG_KEY=edvtest01
