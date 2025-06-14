@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 // Load environment variables
 dotenv.config();
-const API_URL = process.env.API_URL || "https://edbe.yashprojects.online";
+const API_URL = process.env.API_URL || "https://edbe.itsyash.space";
 // Create a webhook simulator
 async function simulateWebhook() {
   try {

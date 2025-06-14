@@ -14,7 +14,7 @@ COPY . .
 # Set environment variables
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NEXT_PUBLIC_API_URL=https://edbe.yashprojects.online
+ENV NEXT_PUBLIC_API_URL=https://edbe.itsyash.space
 ENV NEXT_PUBLIC_PG_API_URL=https://dev-vanilla.edviron.com/erp
 ENV NEXT_PUBLIC_PG_KEY=edvtest01
 

@@ -4,7 +4,7 @@ const jwt = typeof window === 'undefined'
   ? require('jsonwebtoken')  // Server-side only
   : null  // Client-side will not use this
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://edbe.yashprojects.online"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://edbe.itsyash.space"
 const PG_API_URL = process.env.NEXT_PUBLIC_PG_API_URL || "https://dev-vanilla.edviron.com/erp"
 const PG_KEY = process.env.NEXT_PUBLIC_PG_KEY || "edvtest01"
 

@@ -16,7 +16,7 @@ const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
 // Load environment variables
 dotenv_1.default.config();
-const API_URL = process.env.API_URL || "https://edbe.yashprojects.online";
+const API_URL = process.env.API_URL || "https://edbe.itsyash.space";
 // Create a webhook simulator
 function simulateWebhook() {
     return __awaiter(this, void 0, void 0, function* () {

@@ -102,5 +102,5 @@ Contributions are welcome! Please check out our [contributing guidelines](CONTRI
 
 ## Acknowledgements
 
-- [Edviron Team](https://edviron.yashprojects.online)
+- [Edviron Team](https://edviron.itsyash.space)
 - All the open source libraries and frameworks used in this project 

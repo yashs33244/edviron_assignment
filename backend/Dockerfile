@@ -32,8 +32,8 @@ ARG SCHOOL_ID="65b0e6293e9f76a9694d84b4"
 ARG MONGODB_URI="mongodb+srv://yash:12345678%40123@cluster0.tnfs0tz.mongodb.net/mydb?retryWrites=true&w=majority"
 ARG JWT_SECRET="sjkfnslnfslnlnwf"
 ARG PORT=4000
-ARG CLIENT_URL=https://edviron.yashprojects.online
-ARG FRONTEND_URL=https://edviron.yashprojects.online
+ARG CLIENT_URL=https://edviron.itsyash.space
+ARG FRONTEND_URL=https://edviron.itsyash.space
 
 # Set environment variables from arguments
 ENV PG_KEY=$PG_KEY \
